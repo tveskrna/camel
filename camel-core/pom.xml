@@ -37,14 +37,27 @@
   <properties>
     <camel.osgi.export.pkg>
       !org.apache.camel.tools.*,
-      org.apache.camel.*;-noimport:=true
+      org.apache.camel.builder.*;-noimport:=true,
+      org.apache.camel.cloud.*;-noimport:=true,
+      org.apache.camel.component.*;-noimport:=true,
+      org.apache.camel.converter.*;-noimport:=true,
+      org.apache.camel.impl.*;-noimport:=true,
+      org.apache.camel.language.*;-noimport:=true,
+      org.apache.camel.main.*;-noimport:=true,
+      org.apache.camel.model.*;-noimport:=true,
+      org.apache.camel.processor.*;-noimport:=true,
+      org.apache.camel.reifier.*;-noimport:=true,
+      org.apache.camel.runtimecatalog.*;-noimport:=true,
+      org.apache.camel.saga.*;-noimport:=true,
+      org.apache.camel.support.*;-noimport:=true,
+      org.apache.camel.throttling.*;-noimport:=true
     </camel.osgi.export.pkg>
     <camel.osgi.import>
       org.apache.camel.tools.*;resolution:=optional,
-      !org.apache.camel.*,
       !com.github.benmanes.caffeine.cache,
       !org.json.simple,
       ${camel.osgi.import.defaults},
+      org.apache.camel.*,
       org.springframework.transaction;resolution:=optional,
       org.apache.camel.spring.spi;resolution:=optional,
       org.apache.xalan.xsltc.trax;resolution:=optional,

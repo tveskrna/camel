@@ -34,6 +34,16 @@
   <name>Camel :: Util</name>
   <description>The Camel Utilities</description>
 
+  <properties>
+<camel.osgi.export.pkg>
+      org.apache.camel.*;-noimport:=true
+ </camel.osgi.export.pkg>
+ <camel.osgi.import>
+      !org.apache.camel.*,
+      *
+ </camel.osgi.import>
+  </properties>
+
   <dependencies>
 
     <!-- required dependencies by camel-core -->

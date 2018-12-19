@@ -34,6 +34,16 @@
   <name>Camel :: Management API</name>
   <description>The Camel Management API</description>
 
+  <properties>
+<camel.osgi.export.pkg>
+      org.apache.camel.*;-noimport:=true
+ </camel.osgi.export.pkg>
+ <camel.osgi.import>
+      !org.apache.camel.*,
+      *
+ </camel.osgi.import>
+  </properties>
+
   <dependencies>
 
     <dependency>
