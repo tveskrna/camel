@@ -76,7 +76,7 @@ public class YammerMessagePollingConsumer extends ScheduledPollConsumer {
             args.append(limit);
         }        
 
-        int olderThan = endpoint.getConfig().getOlderThan();
+        long olderThan = endpoint.getConfig().getOlderThan();
         if (olderThan > 0) {
             if (args.length() > 0) {
                 args.append("&");
@@ -85,7 +85,7 @@ public class YammerMessagePollingConsumer extends ScheduledPollConsumer {
             args.append(olderThan);
         }        
 
-        int newerThan = endpoint.getConfig().getNewerThan();
+        long newerThan = endpoint.getConfig().getNewerThan();
         if (newerThan > 0) {
             if (args.length() > 0) {
                 args.append("&");
