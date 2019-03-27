@@ -18,6 +18,7 @@ package org.apache.camel.component.aws.sqs.springboot;
 
 import javax.annotation.Generated;
 import com.amazonaws.services.sqs.AmazonSQS;
+import org.apache.camel.component.aws.sqs.SqsOperations;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -237,6 +238,11 @@ public class SqsComponentConfiguration
          * To define a proxy port when instantiating the SQS client
          */
         private Integer proxyPort;
+        /**
+         * The operation to do in case the user don't want to send only a
+         * message
+         */
+        private SqsOperations operation;
 
         public String getAmazonAWSHost() {
             return amazonAWSHost;
@@ -445,6 +451,14 @@ public class SqsComponentConfiguration
 
         public void setProxyPort(Integer proxyPort) {
             this.proxyPort = proxyPort;
+        }
+
+        public SqsOperations getOperation() {
+            return operation;
+        }
+
+        public void setOperation(SqsOperations operation) {
+            this.operation = operation;
         }
     }
 }
