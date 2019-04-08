@@ -153,11 +153,11 @@ public class ConverterProcessor extends AbstractProcessor {
                             if (ann.getAnnotationType().asElement() == converterAnnotationType) {
                                 for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ann.getElementValues().entrySet()) {
                                     switch (entry.getKey().getSimpleName().toString()) {
-                                        case "allowNull":
-                                            allowNull = (Boolean) entry.getValue().getValue();
-                                            break;
-                                        default:
-                                            throw new IllegalStateException();
+                                    case "allowNull":
+                                        allowNull = (Boolean) entry.getValue().getValue();
+                                        break;
+                                    default:
+                                        throw new IllegalStateException();
                                     }
                                 }
                             }
@@ -180,14 +180,14 @@ public class ConverterProcessor extends AbstractProcessor {
                         if (ann.getAnnotationType().asElement() == fallbackAnnotationType) {
                             for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : ann.getElementValues().entrySet()) {
                                 switch (entry.getKey().getSimpleName().toString()) {
-                                    case "allowNull":
-                                        allowNull = (Boolean) entry.getValue().getValue();
-                                        break;
-                                    case "canPromote":
-                                        canPromote = (Boolean) entry.getValue().getValue();
-                                        break;
-                                    default:
-                                        throw new IllegalStateException();
+                                case "allowNull":
+                                    allowNull = (Boolean) entry.getValue().getValue();
+                                    break;
+                                case "canPromote":
+                                    canPromote = (Boolean) entry.getValue().getValue();
+                                    break;
+                                default:
+                                    throw new IllegalStateException();
                                 }
                             }
                         }
