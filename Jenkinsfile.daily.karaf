@@ -21,7 +21,7 @@ def AGENT_LABEL = 'checkin'
 
 def MAVEN_PARAMS = '-U -B -e -fae -V -Dmaven.repo.local=/home/jenkins/.m2/repository -Dmaven.compiler.fork=true -Dsurefire.rerunFailingTestsCount=2'
 
-def tests_result
+def karaf_itests_result
 
 pipeline {
 
@@ -52,34 +52,24 @@ pipeline {
             }
         }
 
-        stage('Checks') {
+        stage('karaf-itests') {
             steps {
-                sh "./mvnw $MAVEN_PARAMS -Psourcecheck checkstyle:check"
-            }
-            post {
-                always {
-                    checkstyle pattern: '**/checkstyle-result.xml', canRunOnFailed: true
+                dir("platforms/karaf/features") {
+                    script {
+                        sh "../../../mvnw $MAVEN_PARAMS clean install"
+                    }
                 }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    tests_result = sh script: "./mvnw $MAVEN_PARAMS -Dmaven.test.failure.ignore=true test", returnStatus: true
+                dir("tests/camel-itest-karaf/") {
+                    sh "./kill-karaf.sh"
+                    script {
+                        karaf_itests_result = sh script: "./run-tests.sh", returnStatus: true
+                    }
                 }
             }
             post {
                 always {
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
-                    junit allowEmptyResults: true, testResults: '**/target/failsafe-reports/*.xml'
                 }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh "./mvnw $MAVEN_PARAMS -Pdeploy -Dnoassembly -Dmaven.test.skip.exec=true install"
             }
         }
 
@@ -88,7 +78,7 @@ pipeline {
     post {
         always {
             script {
-                currentBuild.result = tests_result == 0 ? 'SUCCESS' : 'FAILURE'
+                currentBuild.result = karaf_itests_result == 0 ? 'SUCCESS' : 'FAILURE'
             }
         }
     }
