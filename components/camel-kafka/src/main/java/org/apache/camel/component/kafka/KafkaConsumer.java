@@ -424,11 +424,11 @@ public class KafkaConsumer extends DefaultConsumer {
             log.debug("onPartitionsRevoked: {} from topic {}", threadId, topicName);
 
             StateRepository<String, String> offsetRepository = endpoint.getConfiguration().getOffsetRepository();
-                for (TopicPartition partition : partitions) {
+            for (TopicPartition partition : partitions) {
                 String offsetKey = serializeOffsetKey(partition);
                 Long offset = lastProcessedOffset.get(offsetKey);
                 if (offset == null) {
-                    offset = -1l;
+                    offset = -1L;
                 }
                 log.debug("Saving offset repository state {} from offsetKey {} with offset: {}", threadId, offsetKey, offset);
                 commitOffset(offsetRepository, partition, offset, true);
