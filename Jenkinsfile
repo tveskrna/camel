@@ -17,20 +17,16 @@
  * under the License.
  */
 
-def LOCAL_REPOSITORY = env.LOCAL_REPOSITORY ?: '/home/jenkins/jenkins-slave/maven-repositories/0'
-def AGENT_LABEL = env.AGENT_LABEL ?: 'checkin'
-def JDK_NAME = env.JDK_NAME ?: 'JDK 1.8 (latest)'
-
-def MAVEN_PARAMS = "-U -B -e -fae -V -Dmaven.repo.local=${LOCAL_REPOSITORY} -Dnoassembly -Dmaven.compiler.fork=true -Dsurefire.rerunFailingTestsCount=2"
+def MAVEN_PARAMS = '-B -e -fae -V -Dmaven.repo.local=/home/jenkins/jenkins-slave/maven-repositories/0 -Dmaven.compiler.fork=true -Dsurefire.rerunFailingTestsCount=2'
 
 pipeline {
 
     agent {
-        label AGENT_LABEL
+        label 'checkin'
     }
 
     tools {
-        jdk JDK_NAME
+        jdk 'jdk8'
     }
 
     options {
@@ -42,29 +38,27 @@ pipeline {
 
     stages {
 
-        stage('Build & Deploy') {
-            when {
-                branch 'master'
-            }
+        stage('Dependencies') {
             steps {
-                sh "./mvnw $MAVEN_PARAMS -Dmaven.test.skip.exec=true clean deploy"
+                configFileProvider([configFile(fileId: 'fuse-maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                    sh "./mvnw $MAVEN_PARAMS -s $MAVEN_SETTINGS -q -Dmaven.artifact.threads=8 go-offline:resolve-dependencies" 
+                }
             }
         }
 
         stage('Build') {
-            when {
-                not {
-                    branch 'master'
-                }
-            }
             steps {
-                sh "./mvnw $MAVEN_PARAMS -Dmaven.test.skip.exec=true clean install"
+                configFileProvider([configFile(fileId: 'fuse-maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                    sh "./mvnw $MAVEN_PARAMS -s $MAVEN_SETTINGS -Dnoassembly -Dmaven.test.skip.exec=true clean install"
+                }
             }
         }
 
         stage('Checks') {
             steps {
-                sh "./mvnw $MAVEN_PARAMS -Psourcecheck -Dcheckstyle.failOnViolation=false checkstyle:check"
+                configFileProvider([configFile(fileId: 'fuse-maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                    sh "./mvnw $MAVEN_PARAMS -s $MAVEN_SETTINGS -Psourcecheck checkstyle:check"
+                }
             }
             post {
                 always {
@@ -75,7 +69,9 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh "./mvnw $MAVEN_PARAMS -Dmaven.test.failure.ignore=true test"
+                configFileProvider([configFile(fileId: 'fuse-maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                    sh "./mvnw $MAVEN_PARAMS -s $MAVEN_SETTINGS -Dnoassembly -Dmaven.test.failure.ignore=true test"
+                }
             }
             post {
                 always {
@@ -85,6 +81,13 @@ pipeline {
             }
         }
 
+        stage('Deploy') {
+            steps {
+                configFileProvider([configFile(fileId: 'fuse-maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                    sh "./mvnw $MAVEN_PARAMS -s $MAVEN_SETTINGS -Pdeploy -Dnoassembly -Dmaven.test.skip.exec=true install"
+                }
+            }
+        }
     }
 
     post {
@@ -97,4 +100,3 @@ pipeline {
         }
     }
 }
-
