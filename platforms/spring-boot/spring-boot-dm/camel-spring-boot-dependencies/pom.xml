@@ -173,8 +173,8 @@
       </dependency>
       <dependency>
         <groupId>io.nessus</groupId>
-        <artifactId>nessus-ipfs-core</artifactId>
-        <version>1.0.0.Beta3</version>
+        <artifactId>nessus-ipfs-client</artifactId>
+        <version>1.0.0.Beta4</version>
       </dependency>
       <dependency>
         <groupId>javax.annotation</groupId>
@@ -209,12 +209,12 @@
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro</artifactId>
-        <version>1.8.2</version>
+        <version>1.9.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-ipc</artifactId>
-        <version>1.8.2</version>
+        <version>1.9.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.avro</groupId>
@@ -3883,6 +3883,12 @@
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
         <version>6.14.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>rhino</groupId>
