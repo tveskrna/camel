@@ -35,6 +35,9 @@ public class CamelSparkTest extends AbstractSpringBootTestSupport {
     public static ITestConfig createTestConfig() {
         return new ITestConfigBuilder()
                 .module(inferModuleName(CamelSparkTest.class))
+                .ignoreLibraryMismatch("org.apache.avro:avro-ipc")
+                .ignoreLibraryMismatch("org.apache.avro:avro-mapred")
+                .ignoreLibraryMismatch("org.apache.avro:avro")
                 .build();
     }
 
