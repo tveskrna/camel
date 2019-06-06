@@ -38,6 +38,8 @@ public class CamelBoxTest extends AbstractSpringBootTestSupport {
                 .unitTestExclusionPattern(".*IntegrationTest$")
                 .unitTestExpectedNumber(0)
                 .autostart(false) // needs configuration
+                .ignoreLibraryMismatch("net.sourceforge.htmlunit:htmlunit-cssparser")
+                .ignoreLibraryMismatch("net.sourceforge.htmlunit:htmlunit")
                 .build();
     }
 
