@@ -36,13 +36,15 @@ public class CamelGoraTest extends AbstractSpringBootTestSupport {
         return new ITestConfigBuilder()
                 .module(inferModuleName(CamelGoraTest.class))
                 .ignoreLibraryMismatch("com.sun.jersey")
+                .ignoreLibraryMismatch("org.apache.avro:avro-ipc")
+                .ignoreLibraryMismatch("org.apache.avro:avro-mapred")
+                .ignoreLibraryMismatch("org.apache.avro:avro")
                 .build();
     }
 
     @Test
     public void componentTests() throws Exception {
         this.runComponentTest(config);
-        this.runModuleUnitTestsIfEnabled(config);
     }
 
 
