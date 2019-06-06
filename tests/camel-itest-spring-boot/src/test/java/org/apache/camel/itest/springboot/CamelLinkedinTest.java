@@ -37,6 +37,8 @@ public class CamelLinkedinTest extends AbstractSpringBootTestSupport {
                 .module(inferModuleName(CamelLinkedinTest.class))
                 .basePath("../../components/camel-linkedin/camel-linkedin-component")
                 .unitTestExpectedNumber(0)
+                .ignoreLibraryMismatch("net.sourceforge.htmlunit:htmlunit-cssparser")
+                .ignoreLibraryMismatch("net.sourceforge.htmlunit:htmlunit")
                 .build();
     }
 
