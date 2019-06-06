@@ -38,13 +38,16 @@ public class CamelServletTest extends AbstractSpringBootTestSupport {
 //                .dependency(DependencyResolver.withVersion("org.springframework.boot:spring-boot-starter-web"))
 //                .dependency(DependencyResolver.withVersion("org.springframework:spring-webmvc"))
                 .unitTestExclusionPattern(".*(\\.integration\\..*|IntegrationTest$|ExposedServletEndpointURIToJMXTest$.*Arquillian.*)")
+                .ignoreLibraryMismatch("org.apache.tomcat.embed:tomcat-embed-core")
+                .ignoreLibraryMismatch("org.apache.tomcat.embed:tomcat-embed-el")
+                .ignoreLibraryMismatch("org.apache.tomcat.embed:tomcat-embed-jasper")
+                .ignoreLibraryMismatch("org.apache.tomcat.embed:tomcat-embed-logging-juli")
                 .build();
     }
 
     @Test
     public void componentTests() throws Exception {
         this.runComponentTest(config);
-        this.runModuleUnitTestsIfEnabled(config);
     }
 
 
