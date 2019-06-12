@@ -64,6 +64,18 @@
       <groupId>io.zipkin.brave</groupId>
       <artifactId>brave</artifactId>
       <version>${brave-zipkin-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.thrift</groupId>
+          <artifactId>libthrift</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.thrift</groupId>
+      <artifactId>libthrift</artifactId>
+      <version>${libthrift-version}</version>
     </dependency>
     <dependency>
 	  <groupId>io.zipkin.brave</groupId>
