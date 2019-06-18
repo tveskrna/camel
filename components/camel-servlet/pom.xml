@@ -38,8 +38,6 @@
     <camel.osgi.export.pkg>org.apache.camel.component.servlet.*</camel.osgi.export.pkg>
     <camel.osgi.export.service>org.apache.camel.spi.ComponentResolver;component=servlet</camel.osgi.export.service>
 
-    <!-- used for testing -->
-    <tomcat.version>8.0.36.redhat-35</tomcat.version>
   </properties>
 
   <dependencyManagement>
@@ -188,19 +186,19 @@
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-core</artifactId>
-      <version>${tomcat.version}</version>
+      <version>${tomcat-version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-jasper</artifactId>
-      <version>${tomcat.version}</version>
+      <version>${tomcat-version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-logging-juli</artifactId>
-      <version>${tomcat.version}</version>
+      <version>${tomcat-version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
