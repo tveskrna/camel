@@ -64,9 +64,10 @@ public class MongoDbEndpoint extends DefaultEndpoint {
 
     private static final Logger LOG = LoggerFactory.getLogger(MongoDbEndpoint.class);
 
+    @UriParam(description = "Sets the connection bean used as a client for connecting to a database.")
     private MongoClient mongoConnection;
 
-    @UriPath
+    @UriPath(description = "Sets the connection bean reference used to lookup a client for connecting to a database.")
     @Metadata(required = "true")
     private String connectionBean;
     @UriParam
@@ -297,8 +298,13 @@ public class MongoDbEndpoint extends DefaultEndpoint {
     
     @Override
     protected void doStart() throws Exception {
-        mongoConnection = CamelContextHelper.mandatoryLookup(getCamelContext(), connectionBean, MongoClient.class);
-        LOG.debug("Resolved the connection with the name {} as {}", connectionBean, mongoConnection);
+        if (mongoConnection == null) {
+            mongoConnection = CamelContextHelper.mandatoryLookup(getCamelContext(), connectionBean, MongoClient.class);
+            LOG.debug("Resolved the connection provided by {} context reference as {}", connectionBean,
+                    mongoConnection);
+        } else {
+            LOG.debug("Resolved the connection provided by mongoConnection property parameter as {}", mongoConnection);
+        }
         super.doStart();
     }
     
@@ -407,8 +413,7 @@ public class MongoDbEndpoint extends DefaultEndpoint {
     /**
      * Set the {@link WriteConcern} for write operations on MongoDB, passing in
      * the bean ref to a custom WriteConcern which exists in the Registry. You
-     * can also use standard WriteConcerns by passing in their key. See the
-     * {@link #setWriteConcern(String) setWriteConcern} method.
+     * can also use standard WriteConcerns by passing in their key.
      * 
      * @param writeConcernRef the name of the bean in the registry that
      *            represents the WriteConcern to use
