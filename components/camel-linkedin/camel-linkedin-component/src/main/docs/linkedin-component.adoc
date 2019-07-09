@@ -128,7 +128,7 @@ The component supports 15 options, which are listed below.
 | *camel.component.linkedin.configuration.api-name* | What kind of operation to perform |  | LinkedInApiName
 | *camel.component.linkedin.configuration.client-id* | LinkedIn application client ID |  | String
 | *camel.component.linkedin.configuration.client-secret* | LinkedIn application client secret |  | String
-| *camel.component.linkedin.configuration.expiry-time* | LinkedIn access token expiry time in milliseconds since Unix Epoch, default is 60 days in the future. |  | Long
+| *camel.component.linkedin.configuration.expiry-time* | A number of milliseconds since the UNIX Epoch. The default is 60 days. A LinkedIn access token expires when this amount of time elapses after the token is in use. |  | Long
 | *camel.component.linkedin.configuration.http-params* | Custom HTTP params, for example proxy host and port, use constants from AllClientPNames |  | Map
 | *camel.component.linkedin.configuration.lazy-auth* | Flag to enable/disable lazy OAuth, default is true. when enabled, OAuth token retrieval or generation is not done until the first REST call | true | Boolean
 | *camel.component.linkedin.configuration.method-name* | What sub operation to use for the selected operation |  | String
