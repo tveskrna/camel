@@ -27,16 +27,18 @@ import org.apache.camel.component.salesforce.api.dto.PlatformEvent;
 import org.assertj.core.api.Assertions;
 import org.awaitility.Awaitility;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static org.assertj.core.api.Assertions.entry;
 
+@Category(Standalone.class)
 public class PlatformEventsConsumerIntegrationTest extends AbstractSalesforceTestBase {
 
     @Test
     public void shouldConsumePlatformEvents() throws InterruptedException, ExecutionException {
         final ExecutorService parallel = Executors.newSingleThreadExecutor();
 
-        final Future<PlatformEvent> futurePlatformEvent = parallel.submit(() -> consumer.receiveBody("salesforce:event/TestEvent__e", PlatformEvent.class));
+        final Future<PlatformEvent> futurePlatformEvent = parallel.submit(() -> consumer.receiveBody("salesforce:event/TestEvent__e?replayId=-1", PlatformEvent.class));
 
         // it takes some time for the subscriber to subscribe, so we'll try to
         // send repeated platform events and wait until the first one is
