@@ -17,6 +17,7 @@
 package org.apache.camel.component.netty4.http;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -32,6 +33,8 @@ import java.util.Map;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -57,6 +60,9 @@ import org.apache.camel.util.StringHelper;
 import org.apache.camel.util.URISupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static io.netty.handler.codec.http.HttpHeaderNames.TRANSFER_ENCODING;
+import static io.netty.handler.codec.http.HttpHeaderValues.CHUNKED;
 
 /**
  * Default {@link NettyHttpBinding}.
@@ -363,44 +369,50 @@ public class DefaultNettyHttpBinding implements NettyHttpBinding, Cloneable {
             ExchangeHelper.setFailureHandled(message.getExchange());
         }
 
-        if (body instanceof ByteBuf) {
-            buffer = (ByteBuf) body;
-        } else {
-            // try to convert to buffer first
-            buffer = message.getBody(ByteBuf.class);
-            if (buffer == null) {
-                // fallback to byte array as last resort
-                byte[] data = message.getBody(byte[].class);
-                if (data != null) {
-                    buffer = NettyConverter.toByteBuffer(data);
-                } else {
-                    // and if byte array fails then try String
-                    String str;
-                    if (body != null) {
-                        str = message.getMandatoryBody(String.class);
-                    } else {
-                        str = "";
-                    }
-                    buffer = NettyConverter.toByteBuffer(str.getBytes());
-                }
-            }
+        HttpResponse response = null;
+
+        if (response == null && body instanceof InputStream && configuration.isDisableStreamCache()) {
+            response = new ChunkedHttpResponse((InputStream)body, new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(code)));
+            response.headers().set(TRANSFER_ENCODING, CHUNKED);
         }
 
-        HttpResponse response;
-
-        if (buffer != null) {
-            response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(code), buffer);
-            // We just need to reset the readerIndex this time
-            if (buffer.readerIndex() == buffer.writerIndex()) {
-                buffer.setIndex(0, buffer.writerIndex());
+        if (response == null) {
+            if (body instanceof ByteBuf) {
+                buffer = (ByteBuf) body;
+            } else {
+                // try to convert to buffer first
+                buffer = message.getBody(ByteBuf.class);
+                if (buffer == null) {
+                    // fallback to byte array as last resort
+                    byte[] data = message.getBody(byte[].class);
+                    if (data != null) {
+                        buffer = NettyConverter.toByteBuffer(data);
+                    } else {
+                        // and if byte array fails then try String
+                        String str;
+                        if (body != null) {
+                            str = message.getMandatoryBody(String.class);
+                        } else {
+                            str = "";
+                        }
+                        buffer = NettyConverter.toByteBuffer(str.getBytes());
+                    }
+                }
             }
-            // TODO How to enable the chunk transport
-            int len = buffer.readableBytes();
-            // set content-length
-            response.headers().set(HttpHeaderNames.CONTENT_LENGTH.toString(), len);
-            LOG.trace("Content-Length: {}", len);
-        } else {
-            response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(code));
+            if (buffer != null) {
+                response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(code), buffer);
+                // We just need to reset the readerIndex this time
+                if (buffer.readerIndex() == buffer.writerIndex()) {
+                    buffer.setIndex(0, buffer.writerIndex());
+                }
+                // TODO How to enable the chunk transport
+                int len = buffer.readableBytes();
+                // set content-length
+                response.headers().set(HttpHeaderNames.CONTENT_LENGTH.toString(), len);
+                LOG.trace("Content-Length: {}", len);
+            } else {
+                response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(code));
+            }
         }
 
         TypeConverter tc = message.getExchange().getContext().getTypeConverter();
@@ -475,9 +487,12 @@ public class DefaultNettyHttpBinding implements NettyHttpBinding, Cloneable {
         Object body = message.getBody();
         if (body != null) {
             // support bodies as native Netty
-            ByteBuf buffer;
+            ByteBuf buffer = null;
             if (body instanceof ByteBuf) {
                 buffer = (ByteBuf) body;
+            } else if (body instanceof InputStream && configuration.isDisableStreamCache()) {
+                request = new ChunkedHttpRequest((InputStream)body, new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, uriForRequest));
+                request.headers().set(TRANSFER_ENCODING, CHUNKED);
             } else {
                 // try to convert to buffer first
                 buffer = message.getBody(ByteBuf.class);
@@ -487,7 +502,7 @@ public class DefaultNettyHttpBinding implements NettyHttpBinding, Cloneable {
                     buffer = NettyConverter.toByteBuffer(data);
                 }
             }
-            if (buffer != null) {
+            if (!((body instanceof InputStream) && configuration.isDisableStreamCache()) && buffer != null) {
                 request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, uriForRequest, buffer);
                 int len = buffer.readableBytes();
                 // set content-length
