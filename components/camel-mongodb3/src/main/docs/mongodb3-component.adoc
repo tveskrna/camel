@@ -54,7 +54,16 @@ mongodb3:connectionBean?database=databaseName&collection=collectionName&operatio
 
 
 // component options: START
-The MongoDB component has no options.
+The MongoDB component supports 2 options, which are listed below.
+
+
+
+[width="100%",cols="2,5,^1,2",options="header"]
+|===
+| Name | Description | Default | Type
+| *mongoConnection* (common) | Set the client used for connection |  | MongoClient
+| *resolveProperty Placeholders* (advanced) | Whether the component should resolve property placeholders on itself when starting. Only properties which are of String type can use property placeholders. | true | boolean
+|===
 // component options: END
 
 
@@ -81,7 +90,7 @@ with the following path and query parameters:
 |===
 
 
-==== Query Parameters (19 parameters):
+==== Query Parameters (20 parameters):
 
 
 [width="100%",cols="2,5,^1,2",options="header"]
@@ -91,6 +100,7 @@ with the following path and query parameters:
 | *collectionIndex* (common) | Sets the collection index (JSON FORMAT : field1 : order1, field2 : order2) |  | String
 | *createCollection* (common) | Create collection during initialisation if it doesn't exist. Default is true. | true | boolean
 | *database* (common) | Sets the name of the MongoDB database to target |  | String
+| *mongoConnection* (common) | Sets the Mongo instance that represents the backing connection |  | MongoClient
 | *operation* (common) | Sets the operation this endpoint will execute against MongoDB. For possible values, see MongoDbOperation. |  | MongoDbOperation
 | *outputType* (common) | Convert the output of the producer to the selected type : DocumentList Document or MongoIterable. DocumentList or MongoIterable applies to findAll and aggregate. Document applies to all other operations. |  | MongoDbOutputType
 | *bridgeErrorHandler* (consumer) | Allows for bridging the consumer to the Camel routing Error Handler, which mean any exceptions occurred while the consumer is trying to pickup incoming messages, or the likes, will now be processed as a message and handled by the routing Error Handler. By default the consumer will use the org.apache.camel.spi.ExceptionHandler to deal with exceptions, that will be logged at WARN or ERROR level and ignored. | false | boolean
