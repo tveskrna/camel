@@ -21,20 +21,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.mongodb.MongoClient;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultComponent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Represents the component that manages {@link MongoDbEndpoint}.
  */
 public class MongoDbComponent extends DefaultComponent {
 
-    public static final Set<MongoDbOperation> WRITE_OPERATIONS = new HashSet<>(Arrays.asList(MongoDbOperation.insert, MongoDbOperation.save, MongoDbOperation.update,
-                                                                                             MongoDbOperation.remove));
-    private static final Logger LOG = LoggerFactory.getLogger(MongoDbComponent.class);
+    public static final Set<MongoDbOperation> WRITE_OPERATIONS = new HashSet<>(Arrays.asList(
+            MongoDbOperation.insert,
+            MongoDbOperation.save,
+            MongoDbOperation.update,
+            MongoDbOperation.remove));
+
+    /**
+     * A connection client provided externally
+     */
+    private MongoClient mongoConnection;
 
     public MongoDbComponent() {
         this(null);
@@ -45,26 +51,42 @@ public class MongoDbComponent extends DefaultComponent {
     }
 
     protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
-
         MongoDbEndpoint endpoint = new MongoDbEndpoint(uri, this);
         endpoint.setConnectionBean(remaining);
+        endpoint.setMongoConnection(mongoConnection);
         setProperties(endpoint, parameters);
 
         return endpoint;
     }
 
+    /**
+     * Get the client used for connection
+     *
+     * @return the client using for connection to db
+     */
+    public MongoClient getMongoConnection() {
+        return mongoConnection;
+    }
+
+    /**
+     * Set the client used for connection
+     *
+     * @param mongoConnection
+     */
+    public void setMongoConnection(MongoClient mongoConnection) {
+        this.mongoConnection = mongoConnection;
+    }
+
     @Override
     protected void doShutdown() throws Exception {
-
         super.doShutdown();
     }
 
     public static CamelMongoDbException wrapInCamelMongoDbException(Throwable t) {
         if (t instanceof CamelMongoDbException) {
-            return (CamelMongoDbException)t;
+            return (CamelMongoDbException) t;
         } else {
             return new CamelMongoDbException(t);
         }
     }
-
 }
