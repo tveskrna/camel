@@ -43,6 +43,12 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>${jackson-redhat-version}</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.zookeeper</groupId>
       <artifactId>zookeeper</artifactId>
@@ -140,6 +146,9 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+          <systemPropertyVariables>
+            <jackson.deserialization.whitelist.packages>org.apache.curator.x.discovery.ServiceInstance,org.apache.camel.component.zookeeper.cloud.ZooKeeperServiceRegistry$MetaData</jackson.deserialization.whitelist.packages>
+          </systemPropertyVariables>
           <childDelegation>false</childDelegation>
           <useFile>true</useFile>
           <forkCount>1</forkCount>
