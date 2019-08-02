@@ -28,6 +28,18 @@
   <packaging>jar</packaging>
   <name>Spring-Boot Starter :: Camel :: Zookeeper</name>
   <description>Spring-Boot Starter for Camel Zookeeper Support</description>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <jackson.deserialization.whitelist.packages>org.apache.camel.component.zookeeper.cloud.ZooKeeperServiceRegistry$MetaData</jackson.deserialization.whitelist.packages>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
