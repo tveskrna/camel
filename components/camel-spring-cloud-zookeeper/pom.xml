@@ -41,6 +41,17 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>${jackson-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-core-asl</artifactId>
+      <version>${jackson-version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
       <version>${spring-boot-version}</version>
@@ -128,6 +139,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+          <systemPropertyVariables>
+            <jackson.deserialization.whitelist.packages>org.springframework.cloud.zookeeper.discovery.ZookeeperInstance</jackson.deserialization.whitelist.packages>
+          </systemPropertyVariables>
           <forkCount>1</forkCount>
           <reuseForks>false</reuseForks>
         </configuration>
