@@ -47,7 +47,7 @@
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-asl</artifactId>
-      <version>${jackson-redhat-version}</version>
+      <version>${jackson-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.zookeeper</groupId>

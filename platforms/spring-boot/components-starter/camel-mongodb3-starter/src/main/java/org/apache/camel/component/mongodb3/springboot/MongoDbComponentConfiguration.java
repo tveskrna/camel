@@ -37,11 +37,24 @@ public class MongoDbComponentConfiguration
      */
     private Boolean enabled;
     /**
+     * Set the client used for connection. The option is a
+     * com.mongodb.MongoClient type.
+     */
+    private String mongoConnection;
+    /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
      * placeholders.
      */
     private Boolean resolvePropertyPlaceholders = true;
+
+    public String getMongoConnection() {
+        return mongoConnection;
+    }
+
+    public void setMongoConnection(String mongoConnection) {
+        this.mongoConnection = mongoConnection;
+    }
 
     public Boolean getResolvePropertyPlaceholders() {
         return resolvePropertyPlaceholders;
