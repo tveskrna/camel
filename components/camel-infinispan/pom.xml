@@ -77,7 +77,7 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
-            <version>${infinispan-version}</version>
+            <version>${infinispan-community-version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>org.infinispan.server</groupId>
             <artifactId>infinispan-server-testsuite</artifactId>
-            <version>${infinispan-version}</version>
+            <version>${infinispan-community-version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
             <exclusions>
