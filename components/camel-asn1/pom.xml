@@ -108,7 +108,7 @@
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>${jaxb-version}</version>
+      <version>${javax-jaxb-version}</version>
       <optional>true</optional>
     </dependency>
   </dependencies>

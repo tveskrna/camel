@@ -510,7 +510,7 @@
                 <dependency>
                   <groupId>org.glassfish.jaxb</groupId>
                   <artifactId>jaxb-jxc-jdk9</artifactId>
-                  <version>${jaxb-version}</version>
+                  <version>${javax-jaxb-version}</version>
                 </dependency>
                 <dependency>
                   <groupId>javax.activation</groupId>
