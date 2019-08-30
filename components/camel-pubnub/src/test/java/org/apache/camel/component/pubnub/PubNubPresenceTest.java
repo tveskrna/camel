@@ -54,6 +54,7 @@ public class PubNubPresenceTest extends PubNubTestBase {
         PNPresenceEventResult presence = mockResult.getReceivedExchanges().get(0).getIn().getBody(PNPresenceEventResult.class);
         assertThat(presence.getEvent(), equalTo("join"));
         assertThat(presence.getOccupancy(), equalTo(3));
+        context.stop();
     }
 
     @Test
@@ -71,6 +72,7 @@ public class PubNubPresenceTest extends PubNubTestBase {
         assertMockEndpointsSatisfied();
         PNPresenceEventResult presence = mockResult.getReceivedExchanges().get(0).getIn().getBody(PNPresenceEventResult.class);
         assertThat(presence.getHereNowRefresh(), equalTo(true));
+        context.stop();
     }
 
 
