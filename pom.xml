@@ -185,7 +185,7 @@
    <repository>
       <id>brew-jb-fuse-6.2</id>
       <name>brew-jb-fuse-6.2</name>
-      <url>https://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6.2-build/latest/maven</url>
+      <url>http://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6.2-build/latest/maven</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -206,7 +206,7 @@
     <pluginRepository>
       <id>brew-jb-fuse-6.2</id>
       <name>brew-jb-fuse-6.2</name>
-      <url>https://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6.2-build/latest/maven</url>
+      <url>http://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6.2-build/latest/maven</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
