@@ -35,8 +35,8 @@ import org.apache.camel.support.ServiceSupport;
 import org.apache.camel.util.ObjectHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.core.Constants;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -63,11 +63,11 @@ import org.springframework.util.FileCopyUtils;
  */
 public class JdbcAggregationRepository extends ServiceSupport implements RecoverableAggregationRepository, OptimisticLockingAggregationRepository {
 
+    protected static final String EXCHANGE = "exchange";
+    protected static final String ID = "id";
+    protected static final String BODY = "body";
 
     private static final Logger LOG = LoggerFactory.getLogger(JdbcAggregationRepository.class);
-    private static final String ID = "id";
-    private static final String EXCHANGE = "exchange";
-    private static final String BODY = "body";
     private static final Constants PROPAGATION_CONSTANTS = new Constants(TransactionDefinition.class);
 
     private JdbcOptimisticLockingExceptionMapper jdbcOptimisticLockingExceptionMapper = new DefaultJdbcOptimisticLockingExceptionMapper();
@@ -244,9 +244,9 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
         insertAndUpdateHelper(camelContext, correlationId, exchange, sql, true);
     }
 
-    protected void insertAndUpdateHelper(final CamelContext camelContext, final String key, final Exchange exchange, String sql, final boolean idComesFirst) throws Exception {
+    protected int insertAndUpdateHelper(final CamelContext camelContext, final String key, final Exchange exchange, String sql, final boolean idComesFirst) throws Exception {
         final byte[] data = codec.marshallExchange(camelContext, exchange, allowSerializedHeaders);
-        jdbcTemplate.execute(sql,
+        Integer updateCount = jdbcTemplate.execute(sql,
                 new AbstractLobCreatingPreparedStatementCallback(getLobHandler()) {
                     @Override
                     protected void setValues(PreparedStatement ps, LobCreator lobCreator) throws SQLException {
@@ -269,6 +269,7 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
                         }
                     }
                 });
+        return updateCount == null ? 0 : updateCount;
     }
 
     @Override
@@ -452,6 +453,10 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
         return this.headersToStoreAsText != null && !this.headersToStoreAsText.isEmpty();
     }
 
+    public List<String> getHeadersToStoreAsText() {
+        return headersToStoreAsText;
+    }
+
     /**
      * Allows to store headers as String which is human readable. By default this option is disabled,
      * storing the headers in binary format.
@@ -460,6 +465,10 @@ public class JdbcAggregationRepository extends ServiceSupport implements Recover
      */
     public void setHeadersToStoreAsText(List<String> headersToStoreAsText) {
         this.headersToStoreAsText = headersToStoreAsText;
+    }
+
+    public boolean isStoreBodyAsText() {
+        return storeBodyAsText;
     }
 
     /**
