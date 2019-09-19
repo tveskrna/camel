@@ -76,6 +76,10 @@
           <artifactId>log4j</artifactId>
         </exclusion> 
         <exclusion>
+          <groupId>org.apache.mesos</groupId>
+          <artifactId>mesos</artifactId>
+        </exclusion> 
+        <exclusion>
           <groupId>org.slf4j</groupId>
           <artifactId>jul-to-slf4j</artifactId>
         </exclusion>
@@ -153,6 +157,12 @@
       <groupId>org.apache.thrift</groupId>
       <artifactId>libthrift</artifactId>
       <version>${libthrift-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.mesos</groupId>
+      <artifactId>mesos</artifactId>
+      <version>1.4.3</version>
     </dependency>
 
     <!-- jackson -->
