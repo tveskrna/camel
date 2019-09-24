@@ -190,6 +190,17 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>indy</id>
+      <name>indy</name>
+      <url>http://indy.psi.redhat.com/api/group/builds-untested+shared-imports+public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <pluginRepositories>
