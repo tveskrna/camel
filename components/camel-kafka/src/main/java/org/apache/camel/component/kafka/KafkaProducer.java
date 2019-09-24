@@ -82,7 +82,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
     }
 
     /**
-     * To use a custom {@link org.apache.kafka.clients.producer.KafkaProducer} instance.
+     * To use a custom {@link org.apache.kafka.clients.producer.KafkaProducer}
+     * instance.
      */
     @SuppressWarnings("rawtypes")
     public void setKafkaProducer(org.apache.kafka.clients.producer.KafkaProducer kafkaProducer) {
@@ -104,7 +105,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
         if (kafkaProducer == null) {
             ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
             try {
-                // Kafka uses reflection for loading authentication settings, use its classloader
+                // Kafka uses reflection for loading authentication settings,
+                // use its classloader
                 Thread.currentThread().setContextClassLoader(org.apache.kafka.clients.producer.KafkaProducer.class.getClassLoader());
                 kafkaProducer = new org.apache.kafka.clients.producer.KafkaProducer(props);
             } finally {
@@ -140,17 +142,17 @@ public class KafkaProducer extends DefaultAsyncProducer {
             String headerTopic = exchange.getIn().getHeader(KafkaConstants.TOPIC, String.class);
             boolean allowHeader = true;
 
-            // when we do not bridge then detect if we try to send back to ourselves
+            // when we do not bridge then detect if we try to send back to
+            // ourselves
             // which we most likely do not want to do
             if (headerTopic != null && endpoint.getConfiguration().isCircularTopicDetection()) {
                 Endpoint from = exchange.getFromEndpoint();
                 if (from instanceof KafkaEndpoint) {
-                    String fromTopic = ((KafkaEndpoint) from).getConfiguration().getTopic();
+                    String fromTopic = ((KafkaEndpoint)from).getConfiguration().getTopic();
                     allowHeader = !headerTopic.equals(fromTopic);
                     if (!allowHeader) {
-                        log.debug("Circular topic detected from message header."
-                                + " Cannot send to same topic as the message comes from: {}"
-                                + ". Will use endpoint configured topic: {}", from, topic);
+                        log.debug("Circular topic detected from message header." + " Cannot send to same topic as the message comes from: {}"
+                                  + ". Will use endpoint configured topic: {}", from, topic);
                     }
                 }
             }
@@ -160,20 +162,19 @@ public class KafkaProducer extends DefaultAsyncProducer {
         }
 
         if (topic == null) {
-            // if topic property was not received from configuration or header parameters take it from the remaining URI
+            // if topic property was not received from configuration or header
+            // parameters take it from the remaining URI
             topic = URISupport.extractRemainderPath(new URI(endpoint.getEndpointUri()), true);
         }
 
         // endpoint take precedence over header configuration
         final Integer partitionKey = endpoint.getConfiguration().getPartitionKey() != null
-                ? endpoint.getConfiguration().getPartitionKey() : exchange.getIn().getHeader(KafkaConstants.PARTITION_KEY, Integer.class);
+            ? endpoint.getConfiguration().getPartitionKey() : exchange.getIn().getHeader(KafkaConstants.PARTITION_KEY, Integer.class);
         final boolean hasPartitionKey = partitionKey != null;
 
         // endpoint take precedence over header configuration
-        Object key = endpoint.getConfiguration().getKey() != null
-                ? endpoint.getConfiguration().getKey() : exchange.getIn().getHeader(KafkaConstants.KEY);
-        final Object messageKey = key != null
-                ? tryConvertToSerializedType(exchange, key, endpoint.getConfiguration().getKeySerializerClass()) : null;
+        Object key = endpoint.getConfiguration().getKey() != null ? endpoint.getConfiguration().getKey() : exchange.getIn().getHeader(KafkaConstants.KEY);
+        final Object messageKey = key != null ? tryConvertToSerializedType(exchange, key, endpoint.getConfiguration().getKeySerializerClass()) : null;
         final boolean hasMessageKey = messageKey != null;
 
         // extracting headers which need to be propagated
@@ -184,9 +185,9 @@ public class KafkaProducer extends DefaultAsyncProducer {
         // is the message body a list or something that contains multiple values
         Iterator<Object> iterator = null;
         if (msg instanceof Iterable) {
-            iterator = ((Iterable<Object>) msg).iterator();
+            iterator = ((Iterable<Object>)msg).iterator();
         } else if (msg instanceof Iterator) {
-            iterator = (Iterator<Object>) msg;
+            iterator = (Iterator<Object>)msg;
         }
         if (iterator != null) {
             final Iterator<Object> msgList = iterator;
@@ -199,7 +200,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
 
                 @Override
                 public ProducerRecord next() {
-                    // must convert each entry of the iterator into the value according to the serializer
+                    // must convert each entry of the iterator into the value
+                    // according to the serializer
                     Object next = msgList.next();
                     Object value = tryConvertToSerializedType(exchange, next, endpoint.getConfiguration().getSerializerClass());
 
@@ -219,7 +221,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
             };
         }
 
-        // must convert each entry of the iterator into the value according to the serializer
+        // must convert each entry of the iterator into the value according to
+        // the serializer
         Object value = tryConvertToSerializedType(exchange, msg, endpoint.getConfiguration().getSerializerClass());
 
         ProducerRecord record;
@@ -236,11 +239,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
     private List<Header> getPropagatedHeaders(Exchange exchange, KafkaConfiguration getConfiguration) {
         HeaderFilterStrategy headerFilterStrategy = getConfiguration.getHeaderFilterStrategy();
         KafkaHeaderSerializer headerSerializer = getConfiguration.getKafkaHeaderSerializer();
-        return exchange.getIn().getHeaders().entrySet().stream()
-                .filter(entry -> shouldBeFiltered(entry, exchange, headerFilterStrategy))
-                .map(entry -> getRecordHeader(entry, headerSerializer))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        return exchange.getIn().getHeaders().entrySet().stream().filter(entry -> shouldBeFiltered(entry, exchange, headerFilterStrategy))
+            .map(entry -> getRecordHeader(entry, headerSerializer)).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private boolean shouldBeFiltered(Map.Entry<String, Object> entry, Exchange exchange, HeaderFilterStrategy headerFilterStrategy) {
@@ -257,7 +257,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
 
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    // Camel calls this method if the endpoint isSynchronous(), as the KafkaEndpoint creates a SynchronousDelegateProducer for it
+    // Camel calls this method if the endpoint isSynchronous(), as the
+    // KafkaEndpoint creates a SynchronousDelegateProducer for it
     public void process(Exchange exchange) throws Exception {
         Iterator<ProducerRecord> c = createRecorder(exchange);
         List<Future<RecordMetadata>> futures = new LinkedList<>();
@@ -279,7 +280,7 @@ public class KafkaProducer extends DefaultAsyncProducer {
             futures.add(kafkaProducer.send(rec));
         }
         for (Future<RecordMetadata> f : futures) {
-            //wait for them all to be sent
+            // wait for them all to be sent
             recordMetadatas.add(f.get());
         }
     }
@@ -307,7 +308,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
     }
 
     /**
-     * Attempts to convert the object to the same type as the serialized class specified
+     * Attempts to convert the object to the same type as the serialized class
+     * specified
      */
     protected Object tryConvertToSerializedType(Exchange exchange, Object object, String serializerClass) {
         Object answer = null;
@@ -355,7 +357,7 @@ public class KafkaProducer extends DefaultAsyncProducer {
         boolean allSent() {
             if (count.decrementAndGet() == 0) {
                 log.trace("All messages sent, continue routing.");
-                //was able to get all the work done while queuing the requests
+                // was able to get all the work done while queuing the requests
                 callback.done(true);
                 return true;
             }
@@ -372,7 +374,8 @@ public class KafkaProducer extends DefaultAsyncProducer {
 
             if (count.decrementAndGet() == 0) {
                 // use worker pool to continue routing the exchange
-                // as this thread is from Kafka Callback and should not be used by Camel routing
+                // as this thread is from Kafka Callback and should not be used
+                // by Camel routing
                 workerPool.submit(new Runnable() {
                     @Override
                     public void run() {

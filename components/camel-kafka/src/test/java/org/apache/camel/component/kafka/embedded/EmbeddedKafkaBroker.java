@@ -94,16 +94,11 @@ public class EmbeddedKafkaBroker extends ExternalResource {
         kafkaServer = startBroker(properties);
     }
 
-
     private KafkaServer startBroker(Properties props) {
-        zkUtils = ZkUtils.apply(
-                zkConnection,
-                30000,
-                30000,
-                false);
+        zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, false);
         List<KafkaMetricsReporter> kmrList = new ArrayList<>();
         Buffer<KafkaMetricsReporter> metricsList = scala.collection.JavaConversions.asScalaBuffer(kmrList);
-        KafkaServer server = new KafkaServer(new KafkaConfig(props), new SystemTime(), Option.<String>empty(), metricsList);
+        KafkaServer server = new KafkaServer(new KafkaConfig(props), new SystemTime(), Option.<String> empty(), metricsList);
         server.startup();
         return server;
     }

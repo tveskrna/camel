@@ -42,7 +42,8 @@ public class KafkaConsumerOffsetRepositoryResumeTest extends BaseEmbeddedKafkaTe
         Properties props = getDefaultProperties();
         producer = new org.apache.kafka.clients.producer.KafkaProducer<>(props);
 
-        // Create the topic with 2 partitions + send 10 messages (5 in each partitions)
+        // Create the topic with 2 partitions + send 10 messages (5 in each
+        // partitions)
         kafkaBroker.createTopic(TOPIC, 2);
         for (int i = 0; i < 10; i++) {
             producer.send(new ProducerRecord<>(TOPIC, i % 2, "key", "message-" + i));
@@ -63,9 +64,8 @@ public class KafkaConsumerOffsetRepositoryResumeTest extends BaseEmbeddedKafkaTe
     }
 
     /**
-     * Given an offset repository with values
-     * When consuming with this repository
-     * Then we're consuming from the saved offsets
+     * Given an offset repository with values When consuming with this
+     * repository Then we're consuming from the saved offsets
      */
     @Test
     public void shouldResumeFromAnyParticularOffset() throws InterruptedException {
@@ -89,13 +89,22 @@ public class KafkaConsumerOffsetRepositoryResumeTest extends BaseEmbeddedKafkaTe
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-                from("kafka:" + TOPIC
-                             + "?groupId=A"
-                             + "&autoCommitIntervalMs=1000"
-                             + "&autoOffsetReset=earliest"             // Ask to start from the beginning if we have unknown offset
-                             + "&consumersCount=2"                     // We have 2 partitions, we want 1 consumer per partition
-                             + "&offsetRepository=#offset")            // Keep the offset in our repository
-                        .to("mock:result");
+                from("kafka:" + TOPIC + "?groupId=A" + "&autoCommitIntervalMs=1000" + "&autoOffsetReset=earliest" // Ask
+                                                                                                                  // to
+                                                                                                                  // start
+                                                                                                                  // from
+                                                                                                                  // the
+                                                                                                                  // beginning
+                                                                                                                  // if
+                                                                                                                  // we
+                                                                                                                  // have
+                                                                                                                  // unknown
+                                                                                                                  // offset
+                     + "&consumersCount=2" // We have 2 partitions, we want 1
+                                           // consumer per partition
+                     + "&offsetRepository=#offset") // Keep the offset in our
+                                                    // repository
+                         .to("mock:result");
             }
         };
     }

@@ -23,7 +23,6 @@ import java.net.ServerSocket;
 
 import org.apache.commons.lang.RandomStringUtils;
 
-
 final class TestUtils {
 
     private static final String TMPDIR = System.getProperty("java.io.tmpdir");

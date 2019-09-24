@@ -40,7 +40,8 @@ public class KafkaConsumerOffsetRepositoryEmptyTest extends BaseEmbeddedKafkaTes
     // FIXME lifecycle issue here
     @Override
     protected void doPreSetup() throws Exception {
-        // Create the topic with 2 partitions + send 10 messages (5 in each partitions)
+        // Create the topic with 2 partitions + send 10 messages (5 in each
+        // partitions)
         kafkaBroker.createTopic(TOPIC, 2);
 
         Properties props = getDefaultProperties();
@@ -61,15 +62,13 @@ public class KafkaConsumerOffsetRepositoryEmptyTest extends BaseEmbeddedKafkaTes
     }
 
     /**
-     * Given an empty offset repository
-     * When consuming with this repository
-     * Then we consume according to the {@code autoOffsetReset} setting
+     * Given an empty offset repository When consuming with this repository Then
+     * we consume according to the {@code autoOffsetReset} setting
      */
     @Test
     public void shouldStartFromBeginningWithEmptyOffsetRepository() throws InterruptedException {
         result.expectedMessageCount(10);
-        result.expectedBodiesReceivedInAnyOrder("message-0", "message-1", "message-2", "message-3", "message-4", "message-5", "message-6", "message-7",
-                                                "message-8", "message-9");
+        result.expectedBodiesReceivedInAnyOrder("message-0", "message-1", "message-2", "message-3", "message-4", "message-5", "message-6", "message-7", "message-8", "message-9");
 
         result.assertIsSatisfied(3000);
 
@@ -89,12 +88,22 @@ public class KafkaConsumerOffsetRepositoryEmptyTest extends BaseEmbeddedKafkaTes
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-                from("kafka:" + TOPIC
-                             + "?groupId=A"
-                             + "&autoOffsetReset=earliest"             // Ask to start from the beginning if we have unknown offset
-                             + "&consumersCount=2"                     // We have 2 partitions, we want 1 consumer per partition
-                             + "&offsetRepository=#offset")            // Keep the offset in our repository
-                        .to("mock:result");
+                from("kafka:" + TOPIC + "?groupId=A" + "&autoOffsetReset=earliest" // Ask
+                                                                                   // to
+                                                                                   // start
+                                                                                   // from
+                                                                                   // the
+                                                                                   // beginning
+                                                                                   // if
+                                                                                   // we
+                                                                                   // have
+                                                                                   // unknown
+                                                                                   // offset
+                     + "&consumersCount=2" // We have 2 partitions, we want 1
+                                           // consumer per partition
+                     + "&offsetRepository=#offset") // Keep the offset in our
+                                                    // repository
+                         .to("mock:result");
             }
         };
     }

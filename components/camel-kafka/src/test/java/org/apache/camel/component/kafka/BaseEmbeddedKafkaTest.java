@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package org.apache.camel.component.kafka;
+
 import java.util.Properties;
 
 import org.apache.camel.CamelContext;
@@ -30,19 +31,13 @@ import org.junit.ClassRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class BaseEmbeddedKafkaTest extends CamelTestSupport {
 
     @ClassRule
-    public static EmbeddedZookeeper zookeeper = new EmbeddedZookeeper(
-            AvailablePortFinder.getNextAvailable(23000));
+    public static EmbeddedZookeeper zookeeper = new EmbeddedZookeeper(AvailablePortFinder.getNextAvailable(23000));
 
     @ClassRule
-    public static EmbeddedKafkaBroker kafkaBroker =
-            new EmbeddedKafkaBroker(0,
-                    AvailablePortFinder.getNextAvailable(24000),
-                    zookeeper.getConnection(),
-                    new Properties());
+    public static EmbeddedKafkaBroker kafkaBroker = new EmbeddedKafkaBroker(0, AvailablePortFinder.getNextAvailable(24000), zookeeper.getConnection(), new Properties());
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseEmbeddedKafkaTest.class);
 

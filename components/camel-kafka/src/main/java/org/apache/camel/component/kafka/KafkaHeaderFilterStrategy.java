@@ -21,7 +21,7 @@ import org.apache.camel.impl.DefaultHeaderFilterStrategy;
 public class KafkaHeaderFilterStrategy extends DefaultHeaderFilterStrategy {
 
     public KafkaHeaderFilterStrategy() {
-        initialize();  
+        initialize();
     }
 
     protected void initialize() {
