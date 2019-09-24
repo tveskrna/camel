@@ -37,7 +37,7 @@ public class KafkaConsumerRebalancePartitionRevokeTest extends BaseEmbeddedKafka
 
     private OffsetStateRepository stateRepository;
     private CountDownLatch messagesLatch;
-    
+
     private org.apache.kafka.clients.producer.KafkaProducer<String, String> producer;
 
     @Override
@@ -63,8 +63,8 @@ public class KafkaConsumerRebalancePartitionRevokeTest extends BaseEmbeddedKafka
     @Test
     public void ensurePartitionRevokeCallsWithLastProcessedOffset() throws Exception {
         boolean partitionRevokeCalled = messagesLatch.await(30000, TimeUnit.MILLISECONDS);
-        assertTrue("StateRepository.setState should have been called with offset >= 0 for topic" + TOPIC  
-                + ". Remaining count : " + messagesLatch.getCount(), partitionRevokeCalled);
+        assertTrue("StateRepository.setState should have been called with offset >= 0 for topic" + TOPIC + ". Remaining count : " + messagesLatch.getCount(),
+                   partitionRevokeCalled);
     }
 
     @Override
@@ -79,21 +79,15 @@ public class KafkaConsumerRebalancePartitionRevokeTest extends BaseEmbeddedKafka
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-                from("kafka:" + TOPIC
-                             + "?groupId=" + TOPIC + "_GROUP"
-                             + "&autoCommitIntervalMs=1000"
-                             + "&autoOffsetReset=earliest"
-                             + "&consumersCount=1"
-                             + "&offsetRepository=#offset")
-                        .routeId("consumer-rebalance-route")
-                        .to("mock:result");
+                from("kafka:" + TOPIC + "?groupId=" + TOPIC + "_GROUP" + "&autoCommitIntervalMs=1000" + "&autoOffsetReset=earliest" + "&consumersCount=1"
+                     + "&offsetRepository=#offset").routeId("consumer-rebalance-route").to("mock:result");
             }
         };
     }
 
     public class OffsetStateRepository extends MemoryStateRepository {
         CountDownLatch messagesLatch;
-        
+
         public OffsetStateRepository(CountDownLatch messagesLatch) {
             this.messagesLatch = messagesLatch;
         }
@@ -113,8 +107,7 @@ public class KafkaConsumerRebalancePartitionRevokeTest extends BaseEmbeddedKafka
 
         @Override
         public void setState(String key, String value) {
-            if (key.contains(TOPIC) && messagesLatch.getCount() > 0
-                && Long.parseLong(value) >= 0) {
+            if (key.contains(TOPIC) && messagesLatch.getCount() > 0 && Long.parseLong(value) >= 0) {
                 messagesLatch.countDown();
             }
             super.setState(key, value);

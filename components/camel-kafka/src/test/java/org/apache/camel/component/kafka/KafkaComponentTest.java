@@ -38,7 +38,7 @@ public class KafkaComponentTest {
     public void testPropertiesSet() throws Exception {
         String uri = "kafka:mytopic?brokers=broker1:12345,broker2:12566&partitioner=com.class.Party";
 
-        KafkaEndpoint endpoint = (KafkaEndpoint) new KafkaComponent(context).createEndpoint(uri);
+        KafkaEndpoint endpoint = (KafkaEndpoint)new KafkaComponent(context).createEndpoint(uri);
         assertEquals("broker1:12345,broker2:12566", endpoint.getConfiguration().getBrokers());
         assertEquals("mytopic", endpoint.getConfiguration().getTopic());
         assertEquals("com.class.Party", endpoint.getConfiguration().getPartitioner());
@@ -51,7 +51,7 @@ public class KafkaComponentTest {
 
         String uri = "kafka:mytopic?partitioner=com.class.Party";
 
-        KafkaEndpoint endpoint = (KafkaEndpoint) kafka.createEndpoint(uri);
+        KafkaEndpoint endpoint = (KafkaEndpoint)kafka.createEndpoint(uri);
         assertEquals("broker1:12345,broker2:12566", endpoint.getConfiguration().getBrokers());
         assertEquals("broker1:12345,broker2:12566", endpoint.getComponent().getBrokers());
         assertEquals("mytopic", endpoint.getConfiguration().getTopic());
@@ -215,5 +215,5 @@ public class KafkaComponentTest {
         params.put("sslKeymanagerAlgorithm", "SunX509");
         params.put("sslTrustmanagerAlgorithm", "PKIX");
     }
-    
+
 }
