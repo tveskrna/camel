@@ -191,9 +191,9 @@
       </snapshots>
     </repository>
     <repository>
-      <id>indy</id>
-      <name>indy</name>
-      <url>http://indy.psi.redhat.com/api/group/builds-untested+shared-imports+public</url>
+      <id>kafka-brew</id>
+      <name>kafka-brew</name>
+      <url>http://download.eng.bos.redhat.com/brewroot/packages/org.apache.kafka-kafka/2.3.0.redhat_00002/1/maven/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
