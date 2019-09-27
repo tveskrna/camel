@@ -201,6 +201,17 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>grpc-brew</id>
+      <name>grpc-brew</name>
+      <url>http://download.eng.bos.redhat.com/brewroot/packages/io.grpc-grpc-parent/1.23.0.redhat_00002/1/maven/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <pluginRepositories>
