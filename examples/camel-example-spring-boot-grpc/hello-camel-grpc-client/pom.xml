@@ -67,6 +67,48 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-grpc-starter</artifactId>
+        <exclusions>
+         <exclusion>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-netty</artifactId>
+         </exclusion>
+         <exclusion>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-stub</artifactId>
+         </exclusion>
+         <exclusion>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-auth</artifactId>
+         </exclusion>
+         <exclusion>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-protobuf</artifactId>
+         </exclusion>
+        </exclusions>
+    </dependency>
+
+    <dependency>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-netty</artifactId>
+             <version>${grpc-version}</version>
+    </dependency>
+
+    <dependency>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-stub</artifactId>
+             <version>${grpc-version}</version>
+    </dependency>
+
+    <dependency>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-auth</artifactId>
+             <version>${grpc-version}</version>
+    </dependency>
+
+    <dependency>
+             <groupId>io.grpc</groupId>
+             <artifactId>grpc-protobuf</artifactId>
+             <version>${grpc-version}</version>
     </dependency>
 
     <!-- Test -->
@@ -110,7 +152,7 @@
         <configuration>
           <protocArtifact>com.google.protobuf:protoc:${protobuf-version}:exe:${os.detected.classifier}</protocArtifact>
           <pluginId>grpc-java</pluginId>
-          <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc-version}:exe:${os.detected.classifier}</pluginArtifact>
+          <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc-community-version}:exe:${os.detected.classifier}</pluginArtifact>
         </configuration>
         <executions>
           <execution>
