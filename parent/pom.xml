@@ -426,6 +426,7 @@
     <json-simple-version>1.1.1</json-simple-version>
     <json-simple2-version>2.2.0</json-simple2-version>
     <json-smart-version>2.3</json-smart-version>
+    <json-org-version>20180813</json-org-version>
     <jsoup-version>1.11.3</jsoup-version>
     <jsp-api-2.1-version>1.0.1</jsp-api-2.1-version>
     <jsr311-api-version>1.1.1</jsr311-api-version>
