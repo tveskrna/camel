@@ -42,7 +42,7 @@ public class JwtCallCredentials extends CallCredentials {
 
     @Override
     public void applyRequestMetadata(RequestInfo requestInfo, Executor executor, MetadataApplier metadataApplier) {
-    	String authority = requestInfo.getTransportAttrs().get(ATTR_LB_ADDR_AUTHORITY);
+        String authority = requestInfo.getTransportAttrs().get(ATTR_LB_ADDR_AUTHORITY);
 
         LOG.debug("Using authority {} for credentials", authority);
         executor.execute(new Runnable() {
