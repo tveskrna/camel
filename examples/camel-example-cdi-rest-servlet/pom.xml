@@ -56,12 +56,6 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
       <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.tomcat.embed</groupId>
-          <artifactId>tomcat-embed-logging-juli</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     
     <!-- logging -->
