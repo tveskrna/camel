@@ -18,6 +18,7 @@ package org.apache.camel.component.salesforce;
 
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -65,6 +66,16 @@ public class SalesforceHttpClient extends HttpClient {
 
     public SalesforceHttpClient(HttpClientTransport transport, SslContextFactory sslContextFactory) {
         super(ofNullable(transport).orElse(new HttpClientTransportOverHTTP()), sslContextFactory);
+
+        //jetty client adds into excluded cipher suites all ciphers starting with SSL_
+        //it makes sense for Oracle jdk, but in IBM jdk all ciphers starts with SSL_, even ciphers for TLS
+        //see https://github.com/eclipse/jetty.project/issues/2921
+        if (System.getProperty("java.vendor").contains("IBM")) {
+            String[] excludedCiphersWithoutSSLExclusion = Arrays.stream(sslContextFactory.getExcludeCipherSuites())
+                    .filter(cipher -> !cipher.equals("^SSL_.*$"))
+                    .toArray(String[]::new);
+            sslContextFactory.setExcludeCipherSuites(excludedCiphersWithoutSSLExclusion);
+        }
 
         // Jetty 9.3, as opposed to 9.2 the way to add ProtocolHandler to
         // HttpClient changed in 9.2 HttpClient::getProtocolHandlers returned
