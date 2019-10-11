@@ -172,6 +172,7 @@
 	* [AHC Websocket](ahc-ws-component.adoc)
 	* [AMQP](amqp-component.adoc)
 	* [Apache Flink](flink-component.adoc)
+	* [Apache Pulsar](pulsar-component.adoc)
 	* [Apache Spark](spark-component.adoc)
 	* [APNS](apns-component.adoc)
 	* [AS2](as2-component.adoc)

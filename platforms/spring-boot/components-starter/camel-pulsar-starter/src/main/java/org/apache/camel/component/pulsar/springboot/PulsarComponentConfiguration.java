@@ -18,9 +18,7 @@ package org.apache.camel.component.pulsar.springboot;
 
 import javax.annotation.Generated;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
-import org.apache.pulsar.client.api.PulsarClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Camel Apache Pulsar Component
@@ -34,14 +32,19 @@ public class PulsarComponentConfiguration
             ComponentConfigurationPropertiesCommon {
 
     /**
+     * Whether to enable auto configuration of the pulsar component. This is
+     * enabled by default.
+     */
+    private Boolean enabled;
+    /**
      * The pulsar autoconfiguration
      */
     private AutoConfigurationNestedConfiguration autoConfiguration;
     /**
-     * The pulsar client
+     * The pulsar client. The option is a
+     * org.apache.pulsar.client.api.PulsarClient type.
      */
-    @NestedConfigurationProperty
-    private PulsarClient pulsarClient;
+    private String pulsarClient;
     /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
@@ -58,11 +61,11 @@ public class PulsarComponentConfiguration
         this.autoConfiguration = autoConfiguration;
     }
 
-    public PulsarClient getPulsarClient() {
+    public String getPulsarClient() {
         return pulsarClient;
     }
 
-    public void setPulsarClient(PulsarClient pulsarClient) {
+    public void setPulsarClient(String pulsarClient) {
         this.pulsarClient = pulsarClient;
     }
 
