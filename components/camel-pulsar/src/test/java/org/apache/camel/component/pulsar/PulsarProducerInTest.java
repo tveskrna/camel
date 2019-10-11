@@ -47,12 +47,8 @@ public class PulsarProducerInTest extends CamelTestSupport {
     @Produce(uri = "direct:start")
     private ProducerTemplate producerTemplate;
 
-    @EndpointInject(uri = "pulsar:" + TOPIC_URI
-        + "?numberOfConsumers=1&subscriptionType=Exclusive"
-        + "&subscriptionName=camel-subscription&consumerQueueSize=1"
-        + "&consumerName=camel-consumer"
-        + "&producerName=" + PRODUCER
-    )
+    @EndpointInject(uri = "pulsar:" + TOPIC_URI + "?numberOfConsumers=1&subscriptionType=Exclusive" + "&subscriptionName=camel-subscription&consumerQueueSize=1"
+                          + "&consumerName=camel-consumer" + "&producerName=" + PRODUCER)
     private Endpoint from;
 
     @EndpointInject(uri = "mock:result")
@@ -91,11 +87,7 @@ public class PulsarProducerInTest extends CamelTestSupport {
     }
 
     private PulsarClient givenPulsarClient() throws PulsarClientException {
-        return new ClientBuilderImpl()
-            .serviceUrl(pulsarContainer.getPulsarBrokerUrl())
-            .ioThreads(1)
-            .listenerThreads(1)
-            .build();
+        return new ClientBuilderImpl().serviceUrl(pulsarContainer.getPulsarBrokerUrl()).ioThreads(1).listenerThreads(1).build();
     }
 
     @Test

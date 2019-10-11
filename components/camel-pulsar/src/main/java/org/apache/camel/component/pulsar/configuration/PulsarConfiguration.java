@@ -56,7 +56,8 @@ public class PulsarConfiguration {
     }
 
     /**
-     * Type of the subscription [EXCLUSIVE|SHARED|FAILOVER], defaults to EXCLUSIVE
+     * Type of the subscription [EXCLUSIVE|SHARED|FAILOVER], defaults to
+     * EXCLUSIVE
      */
     public void setSubscriptionType(SubscriptionType subscriptionType) {
         this.subscriptionType = subscriptionType;
@@ -111,7 +112,8 @@ public class PulsarConfiguration {
     }
 
     /**
-     * Prefix to add to consumer names when a SHARED or FAILOVER subscription is used
+     * Prefix to add to consumer names when a SHARED or FAILOVER subscription is
+     * used
      */
     public void setConsumerNamePrefix(String consumerNamePrefix) {
         this.consumerNamePrefix = consumerNamePrefix;

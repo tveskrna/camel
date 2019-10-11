@@ -34,6 +34,7 @@ public class PulsarPath {
             namespace = matcher.group("namespace");
         }
     }
+
     public String getTenant() {
         return tenant;
     }

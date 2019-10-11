@@ -43,8 +43,7 @@ public class PulsarProducer extends DefaultProducer {
         final Message message = exchange.getIn();
         byte[] body;
         try {
-            body = exchange.getContext().getTypeConverter()
-                    .mandatoryConvertTo(byte[].class, exchange, message.getBody());
+            body = exchange.getContext().getTypeConverter().mandatoryConvertTo(byte[].class, exchange, message.getBody());
         } catch (NoTypeConversionAvailableException | TypeConversionException exception) {
             // fallback to try serialize the data
             body = PulsarMessageUtils.serialize(message.getBody());
@@ -59,11 +58,7 @@ public class PulsarProducer extends DefaultProducer {
             if (producerName == null) {
                 producerName = topicUri + "-" + Thread.currentThread().getId();
             }
-            final ProducerBuilder<byte[]> producerBuilder = pulsarEndpoint
-                    .getPulsarClient()
-                    .newProducer()
-                    .producerName(producerName)
-                    .topic(topicUri);
+            final ProducerBuilder<byte[]> producerBuilder = pulsarEndpoint.getPulsarClient().newProducer().producerName(producerName).topic(topicUri);
             producer = producerBuilder.create();
         }
     }

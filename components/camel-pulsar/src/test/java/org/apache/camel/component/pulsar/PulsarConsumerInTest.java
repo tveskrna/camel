@@ -48,10 +48,8 @@ public class PulsarConsumerInTest extends CamelTestSupport {
     @Rule
     public PulsarContainer pulsarContainer = new PulsarContainer();
 
-    @EndpointInject(uri = "pulsar:" + TOPIC_URI
-        + "?numberOfConsumers=1&subscriptionType=Exclusive"
-        + "&subscriptionName=camel-subscription&consumerQueueSize=1&consumerName=camel-consumer"
-    )
+    @EndpointInject(uri = "pulsar:" + TOPIC_URI + "?numberOfConsumers=1&subscriptionType=Exclusive"
+                          + "&subscriptionName=camel-subscription&consumerQueueSize=1&consumerName=camel-consumer")
     private Endpoint from;
 
     @EndpointInject(uri = "mock:result")
@@ -96,21 +94,14 @@ public class PulsarConsumerInTest extends CamelTestSupport {
     }
 
     private PulsarClient givenPulsarClient() throws PulsarClientException {
-        return new ClientBuilderImpl()
-            .serviceUrl(pulsarContainer.getPulsarBrokerUrl())
-            .ioThreads(1)
-            .listenerThreads(1)
-            .build();
+        return new ClientBuilderImpl().serviceUrl(pulsarContainer.getPulsarBrokerUrl()).ioThreads(1).listenerThreads(1).build();
     }
 
     @Test
     public void testAMessageToClusterIsConsumed() throws Exception {
         to.expectedMessageCount(1);
 
-        Producer<String> producer = givenPulsarClient().newProducer(Schema.STRING)
-            .producerName(PRODUCER)
-            .topic(TOPIC_URI)
-            .create();
+        Producer<String> producer = givenPulsarClient().newProducer(Schema.STRING).producerName(PRODUCER).topic(TOPIC_URI).create();
 
         producer.send("Hello World!");
 
