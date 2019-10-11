@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -26,17 +26,19 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Client that uses the <a href="http://camel.apache.org/message-endpoint.html">Mesage Endpoint</a>
+ * Client that uses the
+ * <a href="http://camel.apache.org/message-endpoint.html">Mesage Endpoint</a>
  * pattern to easily exchange messages with the Server.
  * <p/>
- * Notice this very same API can use for all components in Camel, so if we were using TCP communication instead
- * of JMS messaging we could just use <code>camel.getEndpoint("mina:tcp://someserver:port")</code>.
+ * Notice this very same API can use for all components in Camel, so if we were
+ * using TCP communication instead of JMS messaging we could just use
+ * <code>camel.getEndpoint("mina:tcp://someserver:port")</code>.
  * <p/>
  * Requires that the JMS broker is running, as well as CamelServer
  */
 public final class CamelClientEndpoint {
     private CamelClientEndpoint() {
-        //Helper class
+        // Helper class
     }
 
     // START SNIPPET: e1
@@ -50,7 +52,8 @@ public final class CamelClientEndpoint {
         Endpoint endpoint = camel.getEndpoint("pulsar:tn1/ns1/cameltest");
 
         // create the exchange used for the communication
-        // we use the in out pattern for a synchronized exchange where we expect a response
+        // we use the in out pattern for a synchronized exchange where we expect
+        // a response
         Exchange exchange = endpoint.createExchange(ExchangePattern.InOut);
         // set the input on the in body
         // must be correct type to match the expected type of an Integer object
@@ -61,7 +64,8 @@ public final class CamelClientEndpoint {
         // start the producer so it can operate
         producer.start();
 
-        // let the producer process the exchange where it does all the work in this oneline of code
+        // let the producer process the exchange where it does all the work in
+        // this oneline of code
         System.out.println("Invoking the multiply with 11");
         producer.process(exchange);
 
@@ -69,8 +73,10 @@ public final class CamelClientEndpoint {
         int response = exchange.getOut().getBody(Integer.class);
         System.out.println("... the result is: " + response);
 
-        // stopping the JMS producer has the side effect of the "ReplyTo Queue" being properly
-        // closed, making this client not to try any further reads for the replies from the server
+        // stopping the JMS producer has the side effect of the "ReplyTo Queue"
+        // being properly
+        // closed, making this client not to try any further reads for the
+        // replies from the server
         producer.stop();
 
         // we're done so let's properly close the application context

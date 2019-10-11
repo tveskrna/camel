@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -35,7 +35,8 @@ public class SpringJmsClientServerTest extends CamelSpringTestSupport {
     @BeforeClass
     public static void setupFreePort() throws Exception {
         // find a free port number, and write that in the custom.properties file
-        // which we will use for the unit tests, to avoid port number in use problems
+        // which we will use for the unit tests, to avoid port number in use
+        // problems
         int port = AvailablePortFinder.getNextAvailable();
         String bank1 = "tcp.port=" + port;
 
@@ -49,21 +50,23 @@ public class SpringJmsClientServerTest extends CamelSpringTestSupport {
     protected AbstractApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("/META-INF/spring/camel-server.xml");
     }
-    
+
     @Test
     public void testCamelClientInvocation() {
-        // as opposed to the CamelClientRemoting example we need to define the service URI in this java code
+        // as opposed to the CamelClientRemoting example we need to define the
+        // service URI in this java code
         int response = template.requestBody("jms:queue:numbers", 22, Integer.class);
         assertEquals("Get a wrong response", 66, response);
     }
-    
+
     @Test
     public void testCamelEndpointInvocation() throws Exception {
         // get the endpoint from the camel context
         Endpoint endpoint = context.getEndpoint("jms:queue:numbers");
 
         // create the exchange used for the communication
-        // we use the in out pattern for a synchronized exchange where we expect a response
+        // we use the in out pattern for a synchronized exchange where we expect
+        // a response
         Exchange exchange = endpoint.createExchange(ExchangePattern.InOut);
         // set the input on the in body
         // must you correct type to match the expected type of an Integer object
@@ -74,16 +77,17 @@ public class SpringJmsClientServerTest extends CamelSpringTestSupport {
         // start the producer so it can operate
         producer.start();
 
-        // let the producer process the exchange where it does all the work in this one line of code
+        // let the producer process the exchange where it does all the work in
+        // this one line of code
         producer.process(exchange);
 
         // get the response from the out body and cast it to an integer
         int response = exchange.getOut().getBody(Integer.class);
-        
+
         assertEquals("Get a wrong response.", 33, response);
 
         // stop the producer after usage
         producer.stop();
     }
-    
+
 }

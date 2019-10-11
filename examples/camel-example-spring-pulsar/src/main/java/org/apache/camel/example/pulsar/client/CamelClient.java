@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -25,12 +25,14 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Client that uses the {@link ProducerTemplate} to easily exchange messages with the Server.
+ * Client that uses the {@link ProducerTemplate} to easily exchange messages
+ * with the Server.
  * <p/>
  * Requires that the Pulsar broker is running, as well as CamelServer
  */
 public final class CamelClient {
     static Logger log = LoggerFactory.getLogger(CamelClient.class);
+
     private CamelClient() {
         // Helper class
     }
@@ -41,7 +43,8 @@ public final class CamelClient {
 
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("camel-client.xml");
 
-        // get the camel template for Spring template style sending of messages (= producer)
+        // get the camel template for Spring template style sending of messages
+        // (= producer)
         ProducerTemplate camelTemplate = context.getBean("camelTemplate", ProducerTemplate.class);
 
         System.out.println("Invoking the multiply with 22");

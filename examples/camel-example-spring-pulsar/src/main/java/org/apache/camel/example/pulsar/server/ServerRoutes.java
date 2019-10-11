@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -19,20 +19,22 @@ package org.apache.camel.example.pulsar.server;
 import org.apache.camel.builder.RouteBuilder;
 
 /**
- * This class defines the routes on the Server. The class extends a base class in Camel {@link RouteBuilder}
- * that can be used to easily setup the routes in the configure() method.
+ * This class defines the routes on the Server. The class extends a base class
+ * in Camel {@link RouteBuilder} that can be used to easily setup the routes in
+ * the configure() method.
  */
 // START SNIPPET: e1
 public class ServerRoutes extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        // route from the numbers queue to our business that is a spring bean registered with the id=multiplier
-        // Camel will introspect the multiplier bean and find the best candidate of the method to invoke.
-        // As our multiplier bean only have one method its easy for Camel to find the method to use.
-        from("pulsar:non-persistent://tn1/ns1/cameltest?subscriptionName=serversub&numberOfConsumers=1&consumerQueueSize=1")
-                .to("multiplier")
-                .to("log:INFO?showBody=true");
+        // route from the numbers queue to our business that is a spring bean
+        // registered with the id=multiplier
+        // Camel will introspect the multiplier bean and find the best candidate
+        // of the method to invoke.
+        // As our multiplier bean only have one method its easy for Camel to
+        // find the method to use.
+        from("pulsar:non-persistent://tn1/ns1/cameltest?subscriptionName=serversub&numberOfConsumers=1&consumerQueueSize=1").to("multiplier").to("log:INFO?showBody=true");
 
     }
 
