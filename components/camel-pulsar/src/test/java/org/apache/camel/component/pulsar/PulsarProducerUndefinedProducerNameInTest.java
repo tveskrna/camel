@@ -25,15 +25,21 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.pulsar.utils.AutoConfiguration;
 import org.apache.camel.impl.JndiRegistry;
+import org.apache.camel.test.junit4.CamelTestSupport;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.impl.ClientBuilderImpl;
+import org.junit.Rule;
 import org.junit.Test;
+import org.testcontainers.containers.PulsarContainer;
 
-public class PulsarProducerUndefinedProducerNameInTest extends PulsarTestSupport {
+public class PulsarProducerUndefinedProducerNameInTest extends CamelTestSupport {
 
     private static final String TOPIC_URI = "persistent://public/default/camel-producer-topic";
 
+    @Rule
+    public PulsarContainer pulsarContainer = new PulsarContainer();
+    
     @Produce(uri = "direct:start1")
     private ProducerTemplate producerTemplate1;
 
@@ -89,7 +95,7 @@ public class PulsarProducerUndefinedProducerNameInTest extends PulsarTestSupport
 
     private PulsarClient givenPulsarClient() throws PulsarClientException {
         return new ClientBuilderImpl()
-                .serviceUrl(getPulsarBrokerUrl())
+                .serviceUrl(pulsarContainer.getPulsarBrokerUrl())
                 .ioThreads(1)
                 .listenerThreads(1)
                 .build();
