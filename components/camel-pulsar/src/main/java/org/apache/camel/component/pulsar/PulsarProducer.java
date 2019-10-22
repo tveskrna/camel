@@ -16,12 +16,13 @@
  */
 package org.apache.camel.component.pulsar;
 
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.NoTypeConversionAvailableException;
 import org.apache.camel.TypeConversionException;
+import org.apache.camel.component.pulsar.configuration.PulsarConfiguration;
 import org.apache.camel.component.pulsar.utils.message.PulsarMessageUtils;
 import org.apache.camel.impl.DefaultProducer;
 import org.apache.pulsar.client.api.Producer;
@@ -54,11 +55,27 @@ public class PulsarProducer extends DefaultProducer {
     private synchronized void createProducer() throws org.apache.pulsar.client.api.PulsarClientException {
         if (producer == null) {
             final String topicUri = pulsarEndpoint.getTopicUri();
-            String producerName = pulsarEndpoint.getPulsarConfiguration().getProducerName();
+            PulsarConfiguration configuration = pulsarEndpoint.getPulsarConfiguration();
+            String producerName = configuration.getProducerName();
             if (producerName == null) {
                 producerName = topicUri + "-" + Thread.currentThread().getId();
             }
-            final ProducerBuilder<byte[]> producerBuilder = pulsarEndpoint.getPulsarClient().newProducer().producerName(producerName).topic(topicUri);
+
+            final ProducerBuilder<byte[]> producerBuilder = pulsarEndpoint
+                    .getPulsarClient()
+                    .newProducer()
+                    .producerName(producerName)
+                    .topic(topicUri)
+                    .sendTimeout(configuration.getSendTimeoutMs(), TimeUnit.MILLISECONDS)
+                    .blockIfQueueFull(configuration.isBlockIfQueueFull())
+                    .maxPendingMessages(configuration.getMaxPendingMessages())
+                    .maxPendingMessagesAcrossPartitions(configuration.getMaxPendingMessagesAcrossPartitions())
+                    .batchingMaxPublishDelay(configuration.getBatchingMaxPublishDelayMicros(), TimeUnit.MICROSECONDS)
+                    .batchingMaxMessages(configuration.getMaxPendingMessages())
+                    .enableBatching(configuration.isBatchingEnabled())
+                    .initialSequenceId(configuration.getInitialSequenceId())
+                    .compressionType(configuration.getCompressionType());
+
             producer = producerBuilder.create();
         }
     }
