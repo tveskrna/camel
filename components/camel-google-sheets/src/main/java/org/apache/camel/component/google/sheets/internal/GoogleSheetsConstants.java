@@ -26,8 +26,7 @@ public final class GoogleSheetsConstants {
     // thread profile name for this component
     public static final String THREAD_PROFILE_NAME = "CamelGoogleSheets";
 
-    /**
-     * Prevent instantiation.
-     */
-    private GoogleSheetsConstants() { }
+    private GoogleSheetsConstants() {
+        // Prevent instantiation of utility class.
+    }
 }
