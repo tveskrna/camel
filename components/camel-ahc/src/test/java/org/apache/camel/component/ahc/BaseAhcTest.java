@@ -88,9 +88,6 @@ public abstract class BaseAhcTest extends CamelTestSupport {
         sslContextParameters.setKeyManagers(kmp);
         sslContextParameters.setTrustManagers(tmp);
         sslContextParameters.setServerParameters(scsp);
-        // use SSLv3 to avoid issue with (eg disable TLS)
-        // Caused by: javax.net.ssl.SSLException: bad record MAC
-        sslContextParameters.setSecureSocketProtocol("SSLv3");
 
         return sslContextParameters;
     }
