@@ -20,8 +20,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.olingo2.api.batch.Olingo2BatchChangeRequest;
 import org.apache.camel.component.olingo2.api.batch.Olingo2BatchQueryRequest;
 import org.apache.camel.component.olingo2.api.batch.Olingo2BatchRequest;
@@ -49,10 +49,10 @@ import org.slf4j.LoggerFactory;
  * which is dynamically installed and started during the test.
  * </p>
  */
-public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
+public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Olingo2ComponentTest.class);
-    private static final int PORT = AvailablePortFinder.getNextAvailable();  
+    private static final Logger LOG = LoggerFactory.getLogger(Olingo2ComponentProducerTest.class);
+    private static final int PORT = AvailablePortFinder.getNextAvailable();
     private static final String ID_PROPERTY = "Id";
     private static final String MANUFACTURERS = "Manufacturers";
     private static final String TEST_MANUFACTURER = "Manufacturers('1')";
@@ -66,7 +66,7 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
 
     private static Olingo2SampleServer server;
 
-    public Olingo2ComponentTest() {
+    public Olingo2ComponentProducerTest() {
         setDefaultTestProperty("serviceUri", "http://localhost:" + PORT + "/MyFormula.svc");
     }
 
@@ -121,6 +121,7 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
         LOG.info("Manufacturer: {}", properties);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testCreateUpdateDelete() throws Exception {
         final Map<String, Object> data = getEntityData();
@@ -163,6 +164,7 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
         return data;
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testBatch() throws Exception {
         final List<Olingo2BatchRequest> batchParts = new ArrayList<>();
@@ -247,6 +249,90 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
         LOG.info("Read deleted entry exception: {}", exception);
     }
 
+    /**
+     *
+     * Read entity set of the People object
+     * and with no filter already seen, all items
+     * should be present in each message
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testProducerReadNoFilterAlreadySeen() throws Exception {
+        final Map<String, Object> headers = new HashMap<>();
+        String endpoint = "direct:read-people-nofilterseen";
+        int expectedMsgCount = 3;
+
+        MockEndpoint mockEndpoint = getMockEndpoint("mock:producer-noalreadyseen");
+        mockEndpoint.expectedMessageCount(expectedMsgCount);
+
+        int expectedEntities = -1;
+        for (int i = 0; i < expectedMsgCount; ++i) {
+            final ODataFeed manufacturers = (ODataFeed)requestBodyAndHeaders(endpoint, null, headers);
+            assertNotNull(manufacturers);
+            if (i == 0) {
+                expectedEntities = manufacturers.getEntries().size();
+            }
+        }
+
+        mockEndpoint.assertIsSatisfied();
+
+        for (int i = 0; i < expectedMsgCount; ++i) {
+            Object body = mockEndpoint.getExchanges().get(i).getIn().getBody();
+            assertTrue(body instanceof ODataFeed);
+            ODataFeed set = (ODataFeed) body;
+
+            //
+            // All messages contained all the manufacturers
+            //
+            assertEquals(expectedEntities, set.getEntries().size());
+        }
+    }
+
+    /**
+     * Read entity set of the People object
+     * and filter already seen items on subsequent exchanges
+     */
+    @Test
+    public void testProducerReadFilterAlreadySeen() throws Exception {
+        final Map<String, Object> headers = new HashMap<>();
+        String endpoint = "direct:read-people-filterseen";
+        int expectedMsgCount = 3;
+
+        MockEndpoint mockEndpoint = getMockEndpoint("mock:producer-alreadyseen");
+        mockEndpoint.expectedMessageCount(expectedMsgCount);
+
+        int expectedEntities = -1;
+        for (int i = 0; i < expectedMsgCount; ++i) {
+            final ODataFeed manufacturers = (ODataFeed)requestBodyAndHeaders(endpoint, null, headers);
+            assertNotNull(manufacturers);
+            if (i == 0) {
+                expectedEntities = manufacturers.getEntries().size();
+            }
+        }
+
+        mockEndpoint.assertIsSatisfied();
+
+        for (int i = 0; i < expectedMsgCount; ++i) {
+            Object body = mockEndpoint.getExchanges().get(i).getIn().getBody();
+            assertTrue(body instanceof ODataFeed);
+            ODataFeed set = (ODataFeed) body;
+
+            if (i == 0) {
+                //
+                // First polled messages contained all the manufacturers
+                //
+                assertEquals(expectedEntities, set.getEntries().size());
+            } else {
+                //
+                // Subsequent messages should be empty
+                // since the filterAlreadySeen property is true
+                //
+                assertEquals(0, set.getEntries().size());
+            }
+        }
+    }
+
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new RouteBuilder() {
@@ -287,6 +373,13 @@ public class Olingo2ComponentTest extends AbstractOlingo2TestSupport {
                 from("direct://BATCH")
                     .to("olingo2://batch");
 
+                from("direct:read-people-nofilterseen")
+                    .to("olingo2://read/Manufacturers")
+                    .to("mock:producer-noalreadyseen");
+
+                from("direct:read-people-filterseen")
+                    .to("olingo2://read/Manufacturers?filterAlreadySeen=true")
+                    .to("mock:producer-alreadyseen");
             }
         };
     }
