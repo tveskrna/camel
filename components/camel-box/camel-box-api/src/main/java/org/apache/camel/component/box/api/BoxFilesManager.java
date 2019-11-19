@@ -26,6 +26,7 @@ import java.util.List;
 
 import com.box.sdk.BoxAPIConnection;
 import com.box.sdk.BoxAPIException;
+import com.box.sdk.BoxAPIResponseException;
 import com.box.sdk.BoxFile;
 import com.box.sdk.BoxFileVersion;
 import com.box.sdk.BoxFolder;
@@ -148,7 +149,7 @@ public class BoxFilesManager {
      * @return The uploaded file.
      */
     public BoxFile uploadFile(String parentFolderId, InputStream content, String fileName, Date created, Date modified,
-            Long size, boolean check, ProgressListener listener) {
+            Long size, Boolean check, ProgressListener listener) {
         try {
             LOG.debug("Uploading file with name '" + fileName + "' to parent_folder(id=" + parentFolderId + ")");
             if (parentFolderId == null) {
@@ -162,18 +163,56 @@ public class BoxFilesManager {
             }
             BoxFile boxFile = null;
             boolean uploadNewFile = true;
-            if (check) {
-                BoxSearchManager bsm = new BoxSearchManager(boxConnection);
-                Collection<BoxItem> res = bsm.searchFolder(parentFolderId, fileName);
-                if (!res.isEmpty()) {
-                    BoxItem boxItem = res.iterator().next();
-                    boxFile = uploadNewFileVersion(boxItem.getID(), content, modified, size, listener);
-                    uploadNewFile = false;
+            BoxFolder parentFolder = new BoxFolder(boxConnection, parentFolderId);
+            if (check != null && check) {
+                try {
+                    // check if the file can be uploaded
+                    // otherwise upload a new revision of the existing file
+                    parentFolder.canUpload(fileName, 0);
+                } catch (BoxAPIResponseException boxException) {
+                    // https://developer.box.com/en/reference/options-files-content/
+                    // error 409, filename exists, get the file info to upload a new revision
+                    if (409 == boxException.getResponseCode()) {
+                        // the box search api relies on a folder index to search for items, however our tests
+                        // noticed the folder (box service) can take 11 minutes to reindex
+                        // for a recently uploaded file, the folder search will return empty as the file was not indexed yet.
+                        // see https://community.box.com/t5/Platform-and-Development-Forum/Box-Search-Delay/m-p/40072
+                        // this check operation uses the folder list item as fallback mechanism to check if the file really exists
+                        // it is slower than the search api, but reliable
+                        // for faster results, we recommend the folder to contain no more than 500 items
+                        // otherwise it can take more time to iterate over all items to check if the filename exists
+                        // display a WARN if the delay is higher than 5s
+                        long init = System.currentTimeMillis();
+                        int delayLimit = 5;
+                        boolean exists = false;
+
+                        BoxItem.Info existingFile = null;
+                        // returns only the name and type fields of each folder item
+                        for (BoxItem.Info itemInfo : parentFolder.getChildren("name", BoxFolder.SortDirection.ASC, "name", "type")) {
+                            // check if the filename exists
+                            exists = "file".equals(itemInfo.getType()) && fileName.equals(itemInfo.getName());
+                            if (exists) {
+                                existingFile = itemInfo;
+                                break;
+                            }
+                        }
+                        long end = System.currentTimeMillis();
+                        long elapsed = (end - init) / 1000;
+                        if (elapsed > delayLimit) {
+                            LOG.warn("The upload operation, checks if the file exists by using the Box list folder, however it took "
+                                + elapsed + " seconds to verify, try to reduce the size of the folder items for faster results.");
+                        }
+                        if (exists) {
+                            boxFile = uploadNewFileVersion(existingFile.getID(), content, modified, size, listener);
+                            uploadNewFile = false;
+                        }
+                    } else {
+                        throw boxException;
+                    }
                 }
             }
 
             if (uploadNewFile) {
-                BoxFolder parentFolder = new BoxFolder(boxConnection, parentFolderId);
                 FileUploadParams uploadParams = new FileUploadParams();
                 uploadParams.setName(fileName);
                 uploadParams.setContent(content);
