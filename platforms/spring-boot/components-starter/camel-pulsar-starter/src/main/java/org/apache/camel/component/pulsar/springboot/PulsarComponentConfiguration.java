@@ -17,6 +17,7 @@
 package org.apache.camel.component.pulsar.springboot;
 
 import javax.annotation.Generated;
+import org.apache.camel.component.pulsar.PulsarMessageReceiptFactory;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -46,6 +47,21 @@ public class PulsarComponentConfiguration
      */
     private String pulsarClient;
     /**
+     * Whether to allow manual message acknowledgements. If this option is
+     * enabled, then messages are not immediately acknowledged after being
+     * consumed. Instead, an instance of PulsarMessageReceipt is stored as a
+     * header on the org.apache.camel.Exchange. Messages can then be
+     * acknowledged using PulsarMessageReceipt at any time before the ackTimeout
+     * occurs.
+     */
+    private Boolean allowManualAcknowledgement = false;
+    /**
+     * Provide a factory to create an alternate implementation of
+     * PulsarMessageReceipt.
+     */
+    @NestedConfigurationProperty
+    private PulsarMessageReceiptFactory pulsarMessageReceiptFactory;
+    /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
      * placeholders.
@@ -67,6 +83,23 @@ public class PulsarComponentConfiguration
 
     public void setPulsarClient(String pulsarClient) {
         this.pulsarClient = pulsarClient;
+    }
+
+    public Boolean getAllowManualAcknowledgement() {
+        return allowManualAcknowledgement;
+    }
+
+    public void setAllowManualAcknowledgement(Boolean allowManualAcknowledgement) {
+        this.allowManualAcknowledgement = allowManualAcknowledgement;
+    }
+
+    public PulsarMessageReceiptFactory getPulsarMessageReceiptFactory() {
+        return pulsarMessageReceiptFactory;
+    }
+
+    public void setPulsarMessageReceiptFactory(
+            PulsarMessageReceiptFactory pulsarMessageReceiptFactory) {
+        this.pulsarMessageReceiptFactory = pulsarMessageReceiptFactory;
     }
 
     public Boolean getResolvePropertyPlaceholders() {
