@@ -25,22 +25,28 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.pulsar.utils.AutoConfiguration;
 import org.apache.camel.component.pulsar.utils.message.PulsarMessageHeaders;
 import org.apache.camel.impl.JndiRegistry;
+import org.apache.camel.test.junit4.CamelTestSupport;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.Schema;
 import org.apache.pulsar.client.impl.ClientBuilderImpl;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testcontainers.containers.PulsarContainer;
 
-public class PulsarConsumerAcknowledgementTest extends PulsarTestSupport {
+public class PulsarConsumerAcknowledgementTest extends CamelTestSupport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PulsarConsumerAcknowledgementTest.class);
 
     private static final String TOPIC_URI = "persistent://public/default/camel-topic";
     private static final String PRODUCER = "camel-producer-1";
+    
+    @Rule
+    public PulsarContainer pulsarContainer = new PulsarContainer();
 
     @EndpointInject(uri = "pulsar:" + TOPIC_URI
             + "?numberOfConsumers=1&subscriptionType=Exclusive"
@@ -86,7 +92,7 @@ public class PulsarConsumerAcknowledgementTest extends PulsarTestSupport {
 
     private PulsarClient givenPulsarClient() throws PulsarClientException {
         return new ClientBuilderImpl()
-                .serviceUrl(getPulsarBrokerUrl())
+                .serviceUrl(pulsarContainer.getPulsarBrokerUrl())
                 .ioThreads(1)
                 .listenerThreads(1)
                 .build();

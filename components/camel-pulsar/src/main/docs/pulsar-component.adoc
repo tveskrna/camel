@@ -31,7 +31,6 @@ pulsar:[persistent|non-persistent]://tenant/namespace/topic
 The Apache Pulsar component supports 3 options, which are listed below.
 
 
-
 [width="100%",cols="2,5,^1,2",options="header"]
 |===
 | Name | Description | Default | Type
@@ -66,7 +65,7 @@ with the following path and query parameters:
 |===
 
 
-==== Query Parameters (20 parameters):
+==== Query Parameters (23 parameters):
 
 
 [width="100%",cols="2,5,^1,2",options="header"]

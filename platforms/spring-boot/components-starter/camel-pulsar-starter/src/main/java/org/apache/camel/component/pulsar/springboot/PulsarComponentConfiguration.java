@@ -17,6 +17,7 @@
 package org.apache.camel.component.pulsar.springboot;
 
 import javax.annotation.Generated;
+import org.apache.camel.component.pulsar.PulsarMessageReceiptFactory;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -56,10 +57,10 @@ public class PulsarComponentConfiguration
     private Boolean allowManualAcknowledgement = false;
     /**
      * Provide a factory to create an alternate implementation of
-     * PulsarMessageReceipt. The option is a
-     * org.apache.camel.component.pulsar.PulsarMessageReceiptFactory type.
+     * PulsarMessageReceipt.
      */
-    private String pulsarMessageReceiptFactory;
+    @NestedConfigurationProperty
+    private PulsarMessageReceiptFactory pulsarMessageReceiptFactory;
     /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
@@ -92,12 +93,12 @@ public class PulsarComponentConfiguration
         this.allowManualAcknowledgement = allowManualAcknowledgement;
     }
 
-    public String getPulsarMessageReceiptFactory() {
+    public PulsarMessageReceiptFactory getPulsarMessageReceiptFactory() {
         return pulsarMessageReceiptFactory;
     }
 
     public void setPulsarMessageReceiptFactory(
-            String pulsarMessageReceiptFactory) {
+            PulsarMessageReceiptFactory pulsarMessageReceiptFactory) {
         this.pulsarMessageReceiptFactory = pulsarMessageReceiptFactory;
     }
 

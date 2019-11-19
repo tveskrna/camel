@@ -24,17 +24,23 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.pulsar.utils.AutoConfiguration;
 import org.apache.camel.impl.JndiRegistry;
+import org.apache.camel.test.junit4.CamelTestSupport;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.Schema;
 import org.apache.pulsar.client.impl.ClientBuilderImpl;
+import org.junit.Rule;
 import org.junit.Test;
+import org.testcontainers.containers.PulsarContainer;
 
-public class PulsarConsumerNoAcknowledgementTest extends PulsarTestSupport {
+public class PulsarConsumerNoAcknowledgementTest extends CamelTestSupport {
 
     private static final String TOPIC_URI = "persistent://public/default/camel-topic";
     private static final String PRODUCER = "camel-producer-1";
+    
+    @Rule
+    public PulsarContainer pulsarContainer = new PulsarContainer();
 
     @EndpointInject(uri = "pulsar:" + TOPIC_URI
             + "?numberOfConsumers=1&subscriptionType=Exclusive"
@@ -80,7 +86,7 @@ public class PulsarConsumerNoAcknowledgementTest extends PulsarTestSupport {
 
     private PulsarClient givenPulsarClient() throws PulsarClientException {
         return new ClientBuilderImpl()
-                .serviceUrl(getPulsarBrokerUrl())
+                .serviceUrl(pulsarContainer.getPulsarBrokerUrl())
                 .ioThreads(1)
                 .listenerThreads(1)
                 .build();
