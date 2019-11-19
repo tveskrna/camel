@@ -225,6 +225,12 @@ abstract class AbstractSalesforceMojo extends AbstractMojo {
         // set ssl context parameters
         try {
             final SslContextFactory sslContextFactory = new SslContextFactory();
+
+            //salesforce requires tls1.2. Oracle jdk is by default accepting such connections, but IBM java works by default only with TLS1
+            // and this is a way to force it to use TLS1.2 (or to use -Dcom.ibm.jsse2.overrideDefaultTLS=true for jdk)
+            if (System.getProperty("java.vendor").contains("IBM")) {
+                sslContextParameters.setSecureSocketProtocol("TLSv1.2");
+            }
             sslContextFactory.setSslContext(sslContextParameters.createSSLContext(new DefaultCamelContext()));
 
             httpClient = new SalesforceHttpClient(sslContextFactory);
