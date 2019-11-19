@@ -226,6 +226,8 @@ public class AS2ClientManagerIntegrationTest extends AbstractAS2TestSupport {
         headers.put("CamelAS2.signingCertificateChain", null);
         // parameter type is java.security.PrivateKey
         headers.put("CamelAS2.signingPrivateKey", null);
+        // parameter signingAlgorithm
+        headers.put("CamelAS2.signingAlgorithm", null);
         // parameter type is String
         headers.put("CamelAS2.dispositionNotificationTo", "mrAS2@example.com");
         // parameter type is String[]
@@ -306,6 +308,8 @@ public class AS2ClientManagerIntegrationTest extends AbstractAS2TestSupport {
         headers.put("CamelAS2.signingCertificateChain", null);
         // parameter type is java.security.PrivateKey
         headers.put("CamelAS2.signingPrivateKey", null);
+        // parameter signingAlgorithm
+        headers.put("CamelAS2.signingAlgorithm", null);
         // parameter type is String
         headers.put("CamelAS2.dispositionNotificationTo", "mrAS2@example.com");
         // parameter type is String[]
@@ -388,6 +392,8 @@ public class AS2ClientManagerIntegrationTest extends AbstractAS2TestSupport {
         headers.put("CamelAS2.signingCertificateChain", certList.toArray(new Certificate[0]));
         // parameter type is java.security.PrivateKey
         headers.put("CamelAS2.signingPrivateKey", signingKP.getPrivate());
+        // parameter signingAlgorithm
+        headers.put("CamelAS2.signingAlgorithm", AS2SignatureAlgorithm.SHA1WITHRSA);
         // parameter type is String
         headers.put("CamelAS2.dispositionNotificationTo", "mrAS2@example.com");
         // parameter type is String[]
@@ -514,6 +520,7 @@ public class AS2ClientManagerIntegrationTest extends AbstractAS2TestSupport {
     public static void teardownTest() throws Exception {
         if (serverConnection != null) {
             serverConnection.stopListening("/");
+            serverConnection.close();
         }
     }
 
