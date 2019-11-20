@@ -17,13 +17,16 @@
 package org.apache.camel.component.amqp;
 
 import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.Set;
 
 import javax.jms.ConnectionFactory;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Endpoint;
 import org.apache.camel.component.jms.JmsComponent;
 import org.apache.camel.component.jms.JmsConfiguration;
+import org.apache.camel.component.jms.JmsEndpoint;
 import org.apache.qpid.jms.JmsConnectionFactory;
 
 /**
@@ -49,22 +52,6 @@ public class AMQPComponent extends JmsComponent {
         setConnectionFactory(connectionFactory);
     }
 
-    // Life-cycle
-
-    @Override
-    protected void doStart() throws Exception {
-        Set<AMQPConnectionDetails> connectionDetails = getCamelContext().getRegistry().findByType(AMQPConnectionDetails.class);
-        if (connectionDetails.size() == 1) {
-            AMQPConnectionDetails details = connectionDetails.iterator().next();
-            JmsConnectionFactory connectionFactory = new JmsConnectionFactory(details.username(), details.password(), details.uri());
-            if (details.setTopicPrefix()) {
-                connectionFactory.setTopicPrefix("topic://");
-            }
-            setConnectionFactory(connectionFactory);
-        }
-        super.doStart();
-    }
-
     // Factory methods
 
     /**
@@ -87,6 +74,54 @@ public class AMQPComponent extends JmsComponent {
         JmsConnectionFactory connectionFactory = new JmsConnectionFactory(username, password, uri);
         connectionFactory.setTopicPrefix("topic://");
         return new AMQPComponent(connectionFactory);
+    }
+
+    // Life-cycle
+
+    @Override
+    protected void doStart() throws Exception {
+        Set<AMQPConnectionDetails> connectionDetails = getCamelContext().getRegistry().findByType(AMQPConnectionDetails.class);
+        if (connectionDetails.size() == 1) {
+            AMQPConnectionDetails details = connectionDetails.iterator().next();
+            JmsConnectionFactory connectionFactory = new JmsConnectionFactory(details.username(), details.password(), details.uri());
+            if (details.setTopicPrefix()) {
+                connectionFactory.setTopicPrefix("topic://");
+            }
+            setConnectionFactory(connectionFactory);
+        }
+        super.doStart();
+    }
+
+    @Override
+    protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
+        JmsEndpoint endpoint = (JmsEndpoint) super.createEndpoint(uri, remaining, parameters);
+        endpoint.setBinding(new AMQPJmsBinding(endpoint));
+        return endpoint;
+    }
+
+    /**
+     * Factory method to create the default configuration instance
+     *
+     * @return a newly created configuration object which can then be further
+     *         customized
+     */
+    @Override
+    protected JmsConfiguration createConfiguration() {
+        return new AMQPConfiguration();
+    }
+
+    // Properties
+
+    /**
+     * Whether to include AMQP annotations when mapping from AMQP to Camel Message.
+     * Setting this to true will map AMQP message annotations to message headers.
+     * Due to limitations in Apache Qpid JMS API, currently delivery annotations
+     * are ignored.
+     */
+    public void setIncludeAmqpAnnotations(boolean includeAmqpAnnotations) {
+        if (getConfiguration() instanceof AMQPConfiguration) {
+            ((AMQPConfiguration) getConfiguration()).setIncludeAmqpAnnotations(includeAmqpAnnotations);
+        }
     }
 
 }
