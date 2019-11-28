@@ -17,22 +17,6 @@
 package org.apache.camel.component.as2.api;
 
 import java.security.Key;
-/**
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,35 +55,35 @@ public class AS2SignedDataGenerator extends CMSSignedDataGenerator {
      * Signing algorithms for DSA keys in order of preference
      */
     public static final String[] DSA_SIGNING_ALGORITHMS = {
-    "SHA512WITHDSA",
-    "SHA384WITHDSA",
-    "SHA256WITHDSA",
-    "SHA224WITHDSA",
-    "SHA1WITHDSA",
+        "SHA512WITHDSA",
+        "SHA384WITHDSA",
+        "SHA256WITHDSA",
+        "SHA224WITHDSA",
+        "SHA1WITHDSA",
     };
 
     /**
      * Signing algorithms for RSA keys in order of preference
      */
     public static final String[] RSA_SIGNING_ALGORITHMS = {
-    "SHA512WITHRSA",
-    "SHA384WITHRSA",
-    "SHA256WITHRSA",
-    "SHA224WITHRSA",
-    "SHA1WITHRSA",
-    "MD5WITHRSA",
-    "MD2WITHRSA",
+        "SHA512WITHRSA",
+        "SHA384WITHRSA",
+        "SHA256WITHRSA",
+        "SHA224WITHRSA",
+        "SHA1WITHRSA",
+        "MD5WITHRSA",
+        "MD2WITHRSA",
     };
 
     /**
      * Signing algorithms for EC keys in order of preference
      */
     public static final String[] EC_SIGNING_ALGORITHMS = {
-    "SHA512WITHECDSA",
-    "SHA384WITHECDSA",
-    "SHA256WITHECDSA",
-    "SHA224WITHECDSA",
-    "SHA1WITHECDSA",
+        "SHA512WITHECDSA",
+        "SHA384WITHECDSA",
+        "SHA256WITHECDSA",
+        "SHA224WITHECDSA",
+        "SHA1WITHECDSA",
     };
 
     public AS2SignedDataGenerator() {
@@ -118,7 +102,7 @@ public class AS2SignedDataGenerator extends CMSSignedDataGenerator {
 
         // Collect algorithm names used by pre-calculated signers
         for (@SuppressWarnings("rawtypes")
-        Iterator it = _signers.iterator(); it.hasNext();) {
+            Iterator it = _signers.iterator(); it.hasNext();) {
             SignerInformation signer = (SignerInformation) it.next();
             ASN1ObjectIdentifier digestOID = signer.getDigestAlgorithmID().getAlgorithm();
 
@@ -133,7 +117,7 @@ public class AS2SignedDataGenerator extends CMSSignedDataGenerator {
 
         // Collect algorithm names used by signer generators
         for (@SuppressWarnings("rawtypes")
-        Iterator it = signerGens.iterator(); it.hasNext();) {
+            Iterator it = signerGens.iterator(); it.hasNext();) {
             SignerInfoGenerator signerInfoGen = (SignerInfoGenerator) it.next();
             ASN1ObjectIdentifier digestOID = signerInfoGen.getDigestAlgorithm().getAlgorithm();
 

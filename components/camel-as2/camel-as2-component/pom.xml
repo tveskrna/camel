@@ -155,8 +155,21 @@
                     <apiName>client</apiName>
                     <proxyClass>org.apache.camel.component.as2.api.AS2ClientManager</proxyClass>
                     <fromJavadoc>
-                      <excludeMethods>createSigningGenerator</excludeMethods>
+                                        <excludeMethods>
+                                            createSigningGenerator|createEncryptingGenerator|createCompressorGenerator|createEncryptor|createCompressor
+                                        </excludeMethods>
                     </fromJavadoc>
+                                    <nullableOptions>
+                                        <nullableOption>ediMessageTransferEncoding</nullableOption>
+                                        <nullableOption>signingAlgorithm</nullableOption>
+                                        <nullableOption>signingCertificateChain</nullableOption>
+                                        <nullableOption>signingPrivateKey</nullableOption>
+                                        <nullableOption>compressionAlgorithm</nullableOption>
+                                        <nullableOption>dispositionNotificationTo</nullableOption>
+                                        <nullableOption>signedReceiptMicAlgorithms</nullableOption>
+                                        <nullableOption>encryptingAlgorithm</nullableOption>
+                                        <nullableOption>encryptingCertificateChain</nullableOption>
+                                    </nullableOptions>
                 </api>
                 <api>
                     <apiName>server</apiName>

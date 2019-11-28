@@ -19,6 +19,7 @@ package org.apache.camel.component.as2.springboot;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import javax.annotation.Generated;
+import org.apache.camel.component.as2.api.AS2CompressionAlgorithm;
 import org.apache.camel.component.as2.api.AS2EncryptionAlgorithm;
 import org.apache.camel.component.as2.api.AS2MessageStructure;
 import org.apache.camel.component.as2.api.AS2SignatureAlgorithm;
@@ -26,6 +27,7 @@ import org.apache.camel.component.as2.internal.AS2ApiName;
 import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.apache.http.entity.ContentType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
 
 /**
  * Component used for transferring data secure and reliable over the internet
@@ -37,23 +39,21 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "camel.component.as2")
 public class AS2ComponentConfiguration
         extends
-            ComponentConfigurationPropertiesCommon {
+        ComponentConfigurationPropertiesCommon {
 
-    /**
-     * Whether to enable auto configuration of the as2 component. This is
-     * enabled by default.
-     */
-    private Boolean enabled;
+
     /**
      * To use the shared configuration
      */
     private AS2ConfigurationNestedConfiguration configuration;
+
     /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
      * placeholders.
      */
     private Boolean resolvePropertyPlaceholders = true;
+
 
     public AS2ConfigurationNestedConfiguration getConfiguration() {
         return configuration;
@@ -167,6 +167,10 @@ public class AS2ComponentConfiguration
          */
         private PrivateKey signingPrivateKey;
         /**
+         * The algorithm used to compress EDI message.
+         */
+        private AS2CompressionAlgorithm compressionAlgorithm;
+        /**
          * The value of the Disposition-Notification-To header. Assigning a
          * value to this parameter requests a message disposition notification
          * (MDN) for the AS2 message.
@@ -189,7 +193,11 @@ public class AS2ComponentConfiguration
         /**
          * The key used to encrypt the EDI message.
          */
-        private PrivateKey encryptingPrivateKey;
+        private PrivateKey decryptingPrivateKey;
+        /**
+         * The template used to format MDN message
+         */
+        private String mdnMessageTemplate;
 
         public AS2ApiName getApiName() {
             return apiName;
@@ -362,6 +370,15 @@ public class AS2ComponentConfiguration
             this.signingPrivateKey = signingPrivateKey;
         }
 
+        public AS2CompressionAlgorithm getCompressionAlgorithm() {
+            return compressionAlgorithm;
+        }
+
+        public void setCompressionAlgorithm(
+                AS2CompressionAlgorithm compressionAlgorithm) {
+            this.compressionAlgorithm = compressionAlgorithm;
+        }
+
         public String getDispositionNotificationTo() {
             return dispositionNotificationTo;
         }
@@ -398,12 +415,20 @@ public class AS2ComponentConfiguration
             this.encryptingCertificateChain = encryptingCertificateChain;
         }
 
-        public PrivateKey getEncryptingPrivateKey() {
-            return encryptingPrivateKey;
+        public PrivateKey getDecryptingPrivateKey() {
+            return decryptingPrivateKey;
         }
 
-        public void setEncryptingPrivateKey(PrivateKey encryptingPrivateKey) {
-            this.encryptingPrivateKey = encryptingPrivateKey;
+        public void setDecryptingPrivateKey(PrivateKey decryptingPrivateKey) {
+            this.decryptingPrivateKey = decryptingPrivateKey;
+        }
+
+        public String getMdnMessageTemplate() {
+            return mdnMessageTemplate;
+        }
+
+        public void setMdnMessageTemplate(String mdnMessageTemplate) {
+            this.mdnMessageTemplate = mdnMessageTemplate;
         }
     }
 }

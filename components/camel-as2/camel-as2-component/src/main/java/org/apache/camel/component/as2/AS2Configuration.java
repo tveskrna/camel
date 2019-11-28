@@ -20,6 +20,7 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
 import org.apache.camel.RuntimeCamelException;
+import org.apache.camel.component.as2.api.AS2CompressionAlgorithm;
 import org.apache.camel.component.as2.api.AS2EncryptionAlgorithm;
 import org.apache.camel.component.as2.api.AS2MessageStructure;
 import org.apache.camel.component.as2.api.AS2SignatureAlgorithm;
@@ -37,10 +38,10 @@ import org.apache.http.entity.ContentType;
 public class AS2Configuration {
 
     @UriPath
-    @Metadata(required = "true")
+    @Metadata(required = "true", enums = "client,server")
     private AS2ApiName apiName;
 
-    @UriParam
+    @UriPath
     @Metadata(required = "true")
     private String methodName;
 
@@ -60,7 +61,7 @@ public class AS2Configuration {
     private String targetHostname;
 
     @UriParam
-    private Integer targetPortNumber;
+    private Integer targetPortNumber = 80;
 
     @UriParam(defaultValue = "camel.apache.org")
     private String clientFqdn = "camel.apache.org";
@@ -102,6 +103,9 @@ public class AS2Configuration {
     private PrivateKey signingPrivateKey;
 
     @UriParam
+    private AS2CompressionAlgorithm compressionAlgorithm;
+
+    @UriParam
     private String dispositionNotificationTo;
 
     @UriParam
@@ -114,7 +118,10 @@ public class AS2Configuration {
     private Certificate[] encryptingCertificateChain;
 
     @UriParam
-    private PrivateKey encryptingPrivateKey;
+    private PrivateKey decryptingPrivateKey;
+    
+    @UriParam
+    private String mdnMessageTemplate;
 
     public AS2ApiName getApiName() {
         return apiName;
@@ -186,7 +193,7 @@ public class AS2Configuration {
      * Used in message ids sent by endpoint.
      */
     public void setServerFqdn(String serverFqdn) {
-        if (clientFqdn == null) {
+        if (serverFqdn == null) {
             throw new RuntimeCamelException("Parameter 'serverFqdn' can not be null");
         }
         this.serverFqdn = serverFqdn;
@@ -200,6 +207,9 @@ public class AS2Configuration {
      * The host name (IP or DNS name) of target host.
      */
     public void setTargetHostname(String targetHostname) {
+        if (targetHostname == null) {
+            throw new RuntimeCamelException("Parameter 'targetHostname' can not be null");
+        }
         this.targetHostname = targetHostname;
     }
 
@@ -242,17 +252,6 @@ public class AS2Configuration {
 
     public Integer getServerPortNumber() {
         return serverPortNumber;
-    }
-
-    /**
-     * The port number of server.
-     */
-    public void setServerPortNumber(String serverPortNumber) {
-        try {
-            this.serverPortNumber = Integer.valueOf(serverPortNumber);
-        } catch (NumberFormatException e) {
-            throw new RuntimeCamelException(String.format("Invalid target port number: %s", targetPortNumber));
-        }
     }
 
     /**
@@ -388,6 +387,17 @@ public class AS2Configuration {
         this.signingPrivateKey = signingPrivateKey;
     }
 
+    public AS2CompressionAlgorithm getCompressionAlgorithm() {
+        return compressionAlgorithm;
+    }
+
+    /**
+     * The algorithm used to compress EDI message.
+     */
+    public void setCompressionAlgorithm(AS2CompressionAlgorithm compressionAlgorithm) {
+        this.compressionAlgorithm = compressionAlgorithm;
+    }
+
     public String getDispositionNotificationTo() {
         return dispositionNotificationTo;
     }
@@ -415,7 +425,7 @@ public class AS2Configuration {
         this.signedReceiptMicAlgorithms = signedReceiptMicAlgorithms;
     }
 
-    public AS2EncryptionAlgorithm getEncryptingingAlgorithm() {
+    public AS2EncryptionAlgorithm getEncryptingAlgorithm() {
         return encryptingAlgorithm;
     }
 
@@ -437,14 +447,27 @@ public class AS2Configuration {
         this.encryptingCertificateChain = signingCertificateChain;
     }
 
-    public PrivateKey getEncryptingPrivateKey() {
-        return encryptingPrivateKey;
+    public PrivateKey getDecryptingPrivateKey() {
+        return decryptingPrivateKey;
     }
 
     /**
      * The key used to encrypt the EDI message.
      */
-    public void setEncryptingPrivateKey(PrivateKey signingPrivateKey) {
-        this.encryptingPrivateKey = signingPrivateKey;
+    public void setDecryptingPrivateKey(PrivateKey signingPrivateKey) {
+        this.decryptingPrivateKey = signingPrivateKey;
     }
+
+    public String getMdnMessageTemplate() {
+        return mdnMessageTemplate;
+    }
+
+    /**
+     * The template used to format MDN message
+     */
+    public void setMdnMessageTemplate(String mdnMessageTemplate) {
+        this.mdnMessageTemplate = mdnMessageTemplate;
+    }
+    
+    
 }
