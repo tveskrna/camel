@@ -16,7 +16,12 @@
  */
 package org.apache.camel.component.jira;
 
-public enum JIRAType {
+public interface JiraTestConstants {
 
-    NEWISSUE, NEWCOMMENT
+    String KEY = "TST";
+    String TEST_JIRA_URL = "https://somerepo.atlassian.net";
+    String PROJECT = "TST";
+    String USERNAME = "someguy";
+    String PASSWORD = "my_password";
+    String JIRA_CREDENTIALS = TEST_JIRA_URL + "&username=" + USERNAME + "&password=" + PASSWORD;
 }

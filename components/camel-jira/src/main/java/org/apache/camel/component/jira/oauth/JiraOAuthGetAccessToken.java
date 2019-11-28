@@ -14,23 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.camel.component.jira.mocks;
+package org.apache.camel.component.jira.oauth;
 
-import java.net.URI;
+import com.google.api.client.auth.oauth.OAuthGetAccessToken;
 
-import com.atlassian.jira.rest.client.JiraRestClient;
-import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClientFactory;
+public class JiraOAuthGetAccessToken extends OAuthGetAccessToken {
 
-
-public class MockJerseyJiraRestClientFactory extends JerseyJiraRestClientFactory {
-    MockJiraRestClient client = new MockJiraRestClient();
-
-    @Override
-    public JiraRestClient createWithBasicHttpAuthentication(URI serverUri, String username, String password) {
-        return client;
+    public JiraOAuthGetAccessToken(String authorizationServerUrl) {
+        super(authorizationServerUrl);
+        // use POST http method
+        this.usePost = true;
     }
 
-    public MockJiraRestClient getClient() {
-        return client;
-    }
 }

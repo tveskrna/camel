@@ -16,30 +16,28 @@
  */
 package org.apache.camel.component.jira.producer;
 
-import java.net.URI;
-
-import com.atlassian.jira.rest.client.JiraRestClient;
-import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClientFactory;
+import com.atlassian.jira.rest.client.api.IssueRestClient;
+import com.atlassian.jira.rest.client.api.JiraRestClient;
 import org.apache.camel.Exchange;
-import org.apache.camel.component.jira.JIRAEndpoint;
+import org.apache.camel.component.jira.JiraEndpoint;
 import org.apache.camel.impl.DefaultProducer;
 
-public abstract class AbstractJIRAProducer extends DefaultProducer {
-    
-    private final JiraRestClient client;
-    
-    public AbstractJIRAProducer(JIRAEndpoint endpoint) throws Exception {
+import static org.apache.camel.component.jira.JiraConstants.ISSUE_KEY;
+
+public class DeleteIssueProducer extends DefaultProducer {
+
+    public DeleteIssueProducer(JiraEndpoint endpoint) {
         super(endpoint);
-        
-        final JerseyJiraRestClientFactory factory = new JerseyJiraRestClientFactory();
-        final URI jiraServerUri = URI.create(endpoint.getServerUrl());
-        client = factory.createWithBasicHttpAuthentication(jiraServerUri, endpoint.getUsername(),
-                                                           endpoint.getPassword());
-    }
-    
-    protected JiraRestClient client() {
-        return client;
     }
 
-    public abstract void process(Exchange exchange) throws Exception;
+    @Override
+    public void process(Exchange exchange) {
+        String issueKey = exchange.getIn().getHeader(ISSUE_KEY, String.class);
+        if (issueKey == null) {
+            throw new IllegalArgumentException("Missing exchange input header named \'IssueKey\', it should specify the issue key to remove it.");
+        }
+        JiraRestClient client = ((JiraEndpoint) getEndpoint()).getClient();
+        IssueRestClient issueClient = client.getIssueClient();
+        issueClient.deleteIssue(issueKey, true);
+    }
 }

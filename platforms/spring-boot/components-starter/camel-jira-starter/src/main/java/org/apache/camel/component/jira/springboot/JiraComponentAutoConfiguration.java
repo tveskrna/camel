@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import org.apache.camel.CamelContext;
-import org.apache.camel.component.jira.JIRAComponent;
+import org.apache.camel.component.jira.JiraComponent;
 import org.apache.camel.spi.ComponentCustomizer;
 import org.apache.camel.spi.HasId;
 import org.apache.camel.spring.boot.CamelAutoConfiguration;
@@ -51,22 +51,22 @@ import org.springframework.context.annotation.Lazy;
 @Generated("org.apache.camel.maven.packaging.SpringBootAutoConfigurationMojo")
 @Configuration
 @Conditional({ConditionalOnCamelContextAndAutoConfigurationBeans.class,
-        JIRAComponentAutoConfiguration.GroupConditions.class})
+        JiraComponentAutoConfiguration.GroupConditions.class})
 @AutoConfigureAfter(CamelAutoConfiguration.class)
 @EnableConfigurationProperties({ComponentConfigurationProperties.class,
-        JIRAComponentConfiguration.class})
-public class JIRAComponentAutoConfiguration {
+        JiraComponentConfiguration.class})
+public class JiraComponentAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(JIRAComponentAutoConfiguration.class);
+            .getLogger(JiraComponentAutoConfiguration.class);
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
     private CamelContext camelContext;
     @Autowired
-    private JIRAComponentConfiguration configuration;
+    private JiraComponentConfiguration configuration;
     @Autowired(required = false)
-    private List<ComponentCustomizer<JIRAComponent>> customizers;
+    private List<ComponentCustomizer<JiraComponent>> customizers;
 
     static class GroupConditions extends GroupCondition {
         public GroupConditions() {
@@ -76,9 +76,9 @@ public class JIRAComponentAutoConfiguration {
 
     @Lazy
     @Bean(name = "jira-component")
-    @ConditionalOnMissingBean(JIRAComponent.class)
-    public JIRAComponent configureJIRAComponent() throws Exception {
-        JIRAComponent component = new JIRAComponent();
+    @ConditionalOnMissingBean(JiraComponent.class)
+    public JiraComponent configureJiraComponent() throws Exception {
+        JiraComponent component = new JiraComponent();
         component.setCamelContext(camelContext);
         Map<String, Object> parameters = new HashMap<>();
         IntrospectionSupport.getProperties(configuration, parameters, null,
@@ -105,7 +105,7 @@ public class JIRAComponentAutoConfiguration {
         CamelPropertiesHelper.setCamelProperties(camelContext, component,
                 parameters, false);
         if (ObjectHelper.isNotEmpty(customizers)) {
-            for (ComponentCustomizer<JIRAComponent> customizer : customizers) {
+            for (ComponentCustomizer<JiraComponent> customizer : customizers) {
                 boolean useCustomizer = (customizer instanceof HasId)
                         ? HierarchicalPropertiesEvaluator.evaluate(
                                 applicationContext.getEnvironment(),

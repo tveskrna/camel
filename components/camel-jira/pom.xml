@@ -29,7 +29,7 @@
 
   <artifactId>camel-jira</artifactId>
   <packaging>jar</packaging>
-  <name>Camel :: JIRA (deprecated)</name>
+  <name>Camel :: JIRA</name>
 
    <properties>
       <camel.osgi.export.pkg>org.apache.camel.component.jira.*</camel.osgi.export.pkg>
@@ -42,16 +42,61 @@
       <artifactId>camel-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.atlassian.jira</groupId>
-      <artifactId>jira-rest-java-client</artifactId>
-      <scope>provided</scope>
+      <groupId>com.google.oauth-client</groupId>
+      <artifactId>google-oauth-client</artifactId>
+      <version>${google-api-client-version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${jira-guava-version}</version>
+    </dependency>
+
+    <!-- atlassian jira dependencies -->
     <dependency>
       <groupId>com.atlassian.jira</groupId>
       <artifactId>jira-rest-java-client-api</artifactId>
       <version>${jira-rest-client-api-version}</version>
-      <scope>test</scope>
+      <!--<exclusions>
+        <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+      </exclusions>-->
     </dependency>
+    <dependency>
+      <groupId>com.atlassian.jira</groupId>
+      <artifactId>jira-rest-java-client-core</artifactId>
+      <version>${jira-rest-client-api-version}</version>
+      <!--<exclusions>
+        <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-core-asl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-mapper-asl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-jaxrs</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-xc</artifactId>
+        </exclusion>
+      </exclusions>-->
+    </dependency>
+    <dependency>
+      <groupId>io.atlassian.fugue</groupId>
+      <artifactId>fugue</artifactId>
+      <version>${atlassian-fugue-version}</version>
+    </dependency>
+
 
     <!-- testing -->
     <dependency>
@@ -59,8 +104,18 @@
       <artifactId>camel-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-    <!-- logging -->   
+    <!-- logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -81,7 +136,8 @@
   <repositories>
     <repository>
       <id>atlassian-public</id>
-      <url>https://maven.atlassian.com/repository/public</url>
+      <name>atlassian-public</name>
+      <url>https://packages.atlassian.com/maven-external</url>
     </repository>
   </repositories>
 </project>

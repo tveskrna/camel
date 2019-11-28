@@ -38,12 +38,16 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jira</artifactId>
       <version>${project.version}</version>
+      <!--START OF GENERATED CODE-->
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+      <!--END OF GENERATED CODE-->
     </dependency>
     <!--START OF GENERATED CODE-->
-    <dependency>
-      <groupId>com.atlassian.jira</groupId>
-      <artifactId>jira-rest-java-client</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core-starter</artifactId>
@@ -58,7 +62,8 @@
   <repositories>
     <repository>
       <id>atlassian-public</id>
-      <url>https://maven.atlassian.com/repository/public</url>
+      <name>atlassian-public</name>
+      <url>https://packages.atlassian.com/maven-external</url>
     </repository>
   </repositories>
   <!--END OF GENERATED CODE-->
