@@ -54,7 +54,7 @@ mongodb3:connectionBean?database=databaseName&collection=collectionName&operatio
 
 
 // component options: START
-The MongoDB component supports 2 options which are listed below.
+The MongoDB component supports 2 options, which are listed below.
 
 
 
@@ -80,7 +80,7 @@ mongodb3:connectionBean
 
 with the following path and query parameters:
 
-=== Path Parameters (1 parameters):
+==== Path Parameters (1 parameters):
 
 
 [width="100%",cols="2,5,^1,2",options="header"]
@@ -90,7 +90,7 @@ with the following path and query parameters:
 |===
 
 
-=== Query Parameters (21 parameters):
+==== Query Parameters (22 parameters):
 
 
 [width="100%",cols="2,5,^1,2",options="header"]
@@ -117,26 +117,14 @@ with the following path and query parameters:
 | *tailTrackCollection* (tail) | Collection where tail tracking information will be persisted. If not specified, MongoDbTailTrackingConfig#DEFAULT_COLLECTION will be used by default. |  | String
 | *tailTrackDb* (tail) | Indicates what database the tail tracking mechanism will persist to. If not specified, the current database will be picked by default. Dynamicity will not be taken into account even if enabled, i.e. the tail tracking database will not vary past endpoint initialisation. |  | String
 | *tailTrackField* (tail) | Field where the last tracked value will be placed. If not specified, MongoDbTailTrackingConfig#DEFAULT_FIELD will be used by default. |  | String
-| *tailTrackIncreasingField* (tail) | Correlation field in the incoming record which is of increasing nature and will be used to position the tailing cursor every time it is generated. The cursor will be (re)created with a query of type: tailTrackIncreasingField lastValue (possibly recovered from persistent tail tracking). Can be of type Integer, Date, String, etc. NOTE: No support for dot notation at the current time, so the field should be at the top level of the document. |  | String
+| *tailTrackIncreasingField* (tail) | Correlation field in the incoming record which is of increasing nature and will be used to position the tailing cursor every time it is generated. The cursor will be (re)created with a query of type: tailTrackIncreasingField greater than lastValue (possibly recovered from persistent tail tracking). Can be of type Integer, Date, String, etc. NOTE: No support for dot notation at the current time, so the field should be at the top level of the document. |  | String
 |===
 // endpoint options: END
 // spring-boot-auto-configure options: START
-== Spring Boot Auto-Configuration
-
-When using Spring Boot make sure to use the following Maven dependency to have support for auto configuration:
-
-[source,xml]
-----
-<dependency>
-  <groupId>org.apache.camel</groupId>
-  <artifactId>camel-mongodb3-starter</artifactId>
-  <version>x.x.x</version>
-  <!-- use the same version as your Camel core version -->
-</dependency>
-----
+=== Spring Boot Auto-Configuration
 
 
-The component supports 2 options, which are listed below.
+The component supports 3 options, which are listed below.
 
 
 
@@ -144,6 +132,7 @@ The component supports 2 options, which are listed below.
 |===
 | Name | Description | Default | Type
 | *camel.component.mongodb3.enabled* | Enable mongodb3 component | true | Boolean
+| *camel.component.mongodb3.mongo-connection* | Set the client used for connection. The option is a com.mongodb.MongoClient type. |  | String
 | *camel.component.mongodb3.resolve-property-placeholders* | Whether the component should resolve property placeholders on itself when starting. Only properties which are of String type can use property placeholders. | true | Boolean
 |===
 // spring-boot-auto-configure options: END

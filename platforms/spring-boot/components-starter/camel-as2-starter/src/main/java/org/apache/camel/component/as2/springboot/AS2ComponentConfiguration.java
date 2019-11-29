@@ -28,7 +28,6 @@ import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.apache.http.entity.ContentType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-
 /**
  * Component used for transferring data secure and reliable over the internet
  * using the AS2 protocol.
@@ -39,21 +38,23 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "camel.component.as2")
 public class AS2ComponentConfiguration
         extends
-        ComponentConfigurationPropertiesCommon {
+            ComponentConfigurationPropertiesCommon {
 
-
+    /**
+     * Whether to enable auto configuration of the as2 component. This is
+     * enabled by default.
+     */
+    private Boolean enabled;
     /**
      * To use the shared configuration
      */
     private AS2ConfigurationNestedConfiguration configuration;
-
     /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
      * placeholders.
      */
     private Boolean resolvePropertyPlaceholders = true;
-
 
     public AS2ConfigurationNestedConfiguration getConfiguration() {
         return configuration;

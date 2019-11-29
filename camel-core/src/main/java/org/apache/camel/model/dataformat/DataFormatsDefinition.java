@@ -79,7 +79,6 @@ public class DataFormatsDefinition {
         @XmlElement(required = false, name = "univocity-tsv", type = UniVocityTsvDataFormat.class),
         @XmlElement(required = false, name = "xmlBeans", type = XMLBeansDataFormat.class),
         @XmlElement(required = false, name = "xmljson", type = XmlJsonDataFormat.class),
-        @XmlElement(required = false, name = "xmlrpc", type = XmlRpcDataFormat.class),
         @XmlElement(required = false, name = "xstream", type = XStreamDataFormat.class),
         @XmlElement(required = false, name = "pgp", type = PGPDataFormat.class),
         @XmlElement(required = false, name = "yaml", type = YAMLDataFormat.class),
