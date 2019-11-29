@@ -2,7 +2,7 @@ Components
 ^^^^^^^^^^
 
 // components: START
-Number of Components: 305 in 206 JAR artifacts (22 deprecated)
+Number of Components: 304 in 205 JAR artifacts (21 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -30,7 +30,7 @@ Number of Components: 305 in 206 JAR artifacts (22 deprecated)
 `apns:name` | 2.8 | For sending notifications to Apple iOS devices.
 
 | link:camel-as2/camel-as2-component/src/main/docs/as2-component.adoc[AS2] (camel-as2) +
-`as2:apiName` | 2.22 | Component used for transferring data secure and reliable over the internet using the AS2 protocol.
+`as2:apiName/methodName` | 2.22 | Component used for transferring data secure and reliable over the internet using the AS2 protocol.
 
 | link:camel-asterisk/src/main/docs/asterisk-component.adoc[Asterisk] (camel-asterisk) +
 `asterisk:name` | 2.18 | The asterisk component is used to interact with Asterisk PBX Server.
@@ -893,9 +893,6 @@ Number of Components: 305 in 206 JAR artifacts (22 deprecated)
 | link:camel-xchange/src/main/docs/xchange-component.adoc[XChange] (camel-xchange) +
 `xchange:name` | 2.21 | The camel-xchange component provide access to many bitcoin and altcoin exchanges for trading and accessing market data.
 
-| link:camel-xmlrpc/src/main/docs/xmlrpc-component.adoc[XML RPC] (camel-xmlrpc) +
-`xmlrpc:address` | 2.11 | *deprecated* The xmlrpc component is used for sending messages to a XML RPC service.
-
 | link:camel-xmlsecurity/src/main/docs/xmlsecurity-component.adoc[XML Security] (camel-xmlsecurity) +
 `xmlsecurity:command:name` | 2.12 | Used to sign and verify exchanges using the XML signature specification.
 
@@ -931,7 +928,7 @@ Data Formats
 ^^^^^^^^^^^^
 
 // dataformats: START
-Number of Data Formats: 50 in 40 JAR artifacts (4 deprecated)
+Number of Data Formats: 49 in 39 JAR artifacts (4 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -1024,8 +1021,6 @@ Number of Data Formats: 50 in 40 JAR artifacts (4 deprecated)
 | link:camel-xmlbeans/src/main/docs/xmlBeans-dataformat.adoc[XML Beans] (camel-xmlbeans) | 1.2 | *deprecated* XML Beans data format is used for unmarshal a XML payload to POJO or to marshal POJO back to XML payload.
 
 | link:camel-xmljson/src/main/docs/xmljson-dataformat.adoc[XML JSon] (camel-xmljson) | 2.10 | *deprecated* XML JSon data format can convert from XML to JSON and vice-versa directly, without stepping through intermediate POJOs.
-
-| link:camel-xmlrpc/src/main/docs/xmlrpc-dataformat.adoc[XML RPC] (camel-xmlrpc) | 2.11 | The XML RPC data format is used for working with the XML RPC protocol.
 
 | link:camel-xmlsecurity/src/main/docs/secureXML-dataformat.adoc[XML Security] (camel-xmlsecurity) | 2.0 | The XML Security data format facilitates encryption and decryption of XML payloads.
 
