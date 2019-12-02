@@ -18,18 +18,47 @@ package org.apache.camel.component.jira;
 
 import java.util.Map;
 
+import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultComponent;
+import org.apache.camel.spi.Metadata;
 
 /**
- * Represents the component that manages {@link JIRAEndpoint}.
+ * Represents the component that manages {@link JiraEndpoint}.
  */
-public class JIRAComponent extends DefaultComponent {
+public class JiraComponent extends DefaultComponent {
+
+    @Metadata(label = "advanced")
+    private JiraConfiguration configuration;
+
+    public JiraComponent() {
+        this(null);
+    }
+
+    public JiraComponent(CamelContext context) {
+        super(context);
+        configuration = new JiraConfiguration();
+        registerExtension(new JiraVerifierExtension());
+    }
 
     protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
-        JIRAEndpoint endpoint = new JIRAEndpoint(uri, this);
-        setProperties(endpoint, parameters);
-        endpoint.setType(getCamelContext().getTypeConverter().convertTo(JIRAType.class, remaining));
+        // override configuration from route parameters
+        setProperties(configuration, parameters);
+
+        JiraEndpoint endpoint = new JiraEndpoint(uri, this, configuration);
+        endpoint.setType(getCamelContext().getTypeConverter().convertTo(JiraType.class, remaining));
         return endpoint;
     }
+
+    /**
+     * The JiraConfiguration parameters
+     */
+    public JiraConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(JiraConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
 }
