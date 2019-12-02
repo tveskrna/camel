@@ -356,12 +356,12 @@ public class RestSwaggerEndpointTest {
     }
 
     @Test
-    public void shouldLoadSwaggerSpecifications() throws IOException {
+    public void shouldLoadSwaggerSpecifications() throws Exception {
         final CamelContext camelContext = mock(CamelContext.class);
         when(camelContext.getClassResolver()).thenReturn(new DefaultClassResolver());
 
         assertThat(
-            RestSwaggerEndpoint.loadSpecificationFrom(camelContext, RestSwaggerComponent.DEFAULT_SPECIFICATION_URI))
+            RestSwaggerEndpoint.loadSpecificationFrom(camelContext, RestSwaggerComponent.DEFAULT_SPECIFICATION_URI, null))
                 .isNotNull();
     }
 
@@ -382,11 +382,11 @@ public class RestSwaggerEndpointTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldRaiseExceptionsForMissingSpecifications() throws IOException {
+    public void shouldRaiseExceptionsForMissingSpecifications() throws Exception {
         final CamelContext camelContext = mock(CamelContext.class);
         when(camelContext.getClassResolver()).thenReturn(new DefaultClassResolver());
 
-        RestSwaggerEndpoint.loadSpecificationFrom(camelContext, URI.create("non-existant.json"));
+        RestSwaggerEndpoint.loadSpecificationFrom(camelContext, URI.create("non-existant.json"), null);
     }
 
     @Test
