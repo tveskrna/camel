@@ -33,7 +33,6 @@
 
   <properties>
     <camel.osgi.export.pkg>org.apache.camel.component.sparkrest.*</camel.osgi.export.pkg>
-    <skipTests>true</skipTests>
   </properties>
 
   <dependencies>
