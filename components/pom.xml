@@ -252,6 +252,7 @@
     <module>camel-reactive-streams</module>
     <module>camel-reactor</module>
     <module>camel-rest-swagger</module>
+    <module>camel-rest-openapi</module>
     <module>camel-restlet</module>
     <module>camel-rmi</module>
     <module>camel-routebox</module>
