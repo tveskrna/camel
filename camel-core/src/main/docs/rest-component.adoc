@@ -70,9 +70,9 @@ with the following path and query parameters:
 | *description* (consumer) | Human description to document this REST service |  | String
 | *exceptionHandler* (consumer) | To let the consumer use a custom ExceptionHandler. Notice if the option bridgeErrorHandler is enabled then this options is not in use. By default the consumer will deal with exceptions, that will be logged at WARN/ERROR level and ignored. |  | ExceptionHandler
 | *exchangePattern* (consumer) | Sets the default exchange pattern when creating an exchange. |  | ExchangePattern
-| *apiDoc* (producer) | The swagger api doc resource to use. The resource is loaded from classpath by default and must be in JSon format. |  | String
+| *apiDoc* (producer) | The openapi api doc resource to use. The resource is loaded from classpath by default and must be in JSon format. |  | String
 | *bindingMode* (producer) | Configures the binding mode for the producer. If set to anything other than 'off' the producer will try to convert the body of the incoming message from inType to the json or xml, and the response from json or xml to outType. |  | RestBindingMode
-| *host* (producer) | Host and port of HTTP service to use (override host in swagger schema) |  | String
+| *host* (producer) | Host and port of HTTP service to use (override host in openapi schema) |  | String
 | *queryParameters* (producer) | Query parameters for the HTTP service to call |  | String
 | *synchronous* (advanced) | Sets whether synchronous processing should be strictly used, or Camel is allowed to use asynchronous processing (if supported). | false | boolean
 |===

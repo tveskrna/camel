@@ -51,7 +51,7 @@ public class RestEndpoint extends DefaultEndpoint {
 
     public static final String[] DEFAULT_REST_CONSUMER_COMPONENTS = new String[]{"coap", "netty-http", "netty4-http", "jetty", "restlet", "servlet", "spark-java", "undertow"};
     public static final String[] DEFAULT_REST_PRODUCER_COMPONENTS = new String[]{"http", "http4", "netty4-http", "jetty", "restlet", "undertow"};
-    public static final String DEFAULT_API_COMPONENT_NAME = "swagger";
+    public static final String DEFAULT_API_COMPONENT_NAME = "openapi";
     public static final String RESOURCE_PATH = "META-INF/services/org/apache/camel/rest/";
 
     private static final Logger LOG = LoggerFactory.getLogger(RestEndpoint.class);
@@ -227,7 +227,7 @@ public class RestEndpoint extends DefaultEndpoint {
     }
 
     /**
-     * The swagger api doc resource to use.
+     * The openapi api doc resource to use.
      * The resource is loaded from classpath by default and must be in JSon format.
      */
     public void setApiDoc(String apiDoc) {
@@ -239,7 +239,7 @@ public class RestEndpoint extends DefaultEndpoint {
     }
 
     /**
-     * Host and port of HTTP service to use (override host in swagger schema)
+     * Host and port of HTTP service to use (override host in openapi schema)
      */
     public void setHost(String host) {
         this.host = host;
@@ -282,18 +282,18 @@ public class RestEndpoint extends DefaultEndpoint {
         RestProducerFactory factory = null;
 
         if (apiDoc != null) {
-            LOG.debug("Discovering camel-swagger-java on classpath for using api-doc: {}", apiDoc);
-            // lookup on classpath using factory finder to automatic find it (just add camel-swagger-java to classpath etc)
+            LOG.debug("Discovering camel-openapi-java on classpath for using api-doc: {}", apiDoc);
+            // lookup on classpath using factory finder to automatic find it (just add camel-openapi-java to classpath etc)
             try {
                 FactoryFinder finder = getCamelContext().getFactoryFinder(RESOURCE_PATH);
                 Object instance = finder.newInstance(DEFAULT_API_COMPONENT_NAME);
                 if (instance instanceof RestProducerFactory) {
-                    // this factory from camel-swagger-java will facade the http component in use
+                    // this factory from camel-openapi-java will facade the http component in use
                     apiDocFactory = (RestProducerFactory) instance;
                 }
                 parameters.put("apiDoc", apiDoc);
             } catch (NoFactoryAvailableException e) {
-                throw new IllegalStateException("Cannot find camel-swagger-java on classpath to use with api-doc: " + apiDoc);
+                throw new IllegalStateException("Cannot find camel-openapi-java on classpath to use with api-doc: " + apiDoc);
             }
         }
 
