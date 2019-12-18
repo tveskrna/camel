@@ -233,6 +233,7 @@
     <module>camel-ognl</module>
     <module>camel-olingo2</module>
     <module>camel-olingo4</module>
+    <module>camel-openapi-java</module>
     <module>camel-openshift</module>
     <module>camel-openstack</module>
     <module>camel-opentracing</module>
