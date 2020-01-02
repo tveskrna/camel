@@ -16,7 +16,6 @@
  */
 package org.apache.camel.component.netty4.handlers;
 
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.camel.AsyncCallback;
@@ -147,12 +146,6 @@ public class ClientChannelHandler extends SimpleChannelInboundHandler<Object> {
 
         if (LOG.isTraceEnabled()) {
             LOG.trace("Message received: {}", msg);
-        }
-
-        ChannelHandler handler = ctx.pipeline().get("timeout");
-        if (handler != null) {
-            LOG.trace("Removing timeout channel as we received message");
-            ctx.pipeline().remove(handler);
         }
 
         NettyCamelState state = getState(ctx, msg);
