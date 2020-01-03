@@ -17,13 +17,22 @@
 package org.apache.camel.component.aws.sqs;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.model.DeleteMessageRequest;
+import com.amazonaws.services.sqs.model.DeleteMessageResult;
 import com.amazonaws.services.sqs.model.MessageAttributeValue;
+import com.amazonaws.services.sqs.model.SendMessageBatchRequest;
+import com.amazonaws.services.sqs.model.SendMessageBatchRequestEntry;
+import com.amazonaws.services.sqs.model.SendMessageBatchResult;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 import org.apache.camel.Exchange;
@@ -57,6 +66,24 @@ public class SqsProducer extends DefaultProducer {
     }
 
     public void process(Exchange exchange) throws Exception {
+        SqsOperations operation = determineOperation(exchange);
+        if (ObjectHelper.isEmpty(operation)) {
+            processSingleMessage(exchange);
+        } else {
+            switch (operation) {
+            case sendBatchMessage:
+                sendBatchMessage(getClient(), exchange);
+                break;
+            case deleteMessage:
+                deleteMessage(getClient(), exchange);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported operation");
+            }
+        }
+    }
+
+    public void processSingleMessage(final Exchange exchange) {
         String body = exchange.getIn().getBody(String.class);
         SendMessageRequest request = new SendMessageRequest(getQueueUrl(), body);
         request.setMessageAttributes(translateAttributes(exchange.getIn().getHeaders(), exchange));
@@ -74,7 +101,62 @@ public class SqsProducer extends DefaultProducer {
         message.setHeader(SqsConstants.MD5_OF_BODY, result.getMD5OfMessageBody());
     }
 
+    private void sendBatchMessage(AmazonSQS amazonSQS, Exchange exchange) {
+        SendMessageBatchRequest request = new SendMessageBatchRequest(getQueueUrl());
+        Collection<SendMessageBatchRequestEntry> entries = new ArrayList<SendMessageBatchRequestEntry>();
+        if (exchange.getIn().getBody() instanceof Iterable) {
+            Iterable c = exchange.getIn().getBody(Iterable.class);
+            for (Iterator iterator = c.iterator(); iterator.hasNext();) {
+                String object = (String) iterator.next();
+                SendMessageBatchRequestEntry entry = new SendMessageBatchRequestEntry();
+                entry.setId(UUID.randomUUID().toString());
+                entry.setMessageAttributes(translateAttributes(exchange.getIn().getHeaders(), exchange));
+                entry.setMessageBody(object);
+                addDelay(entry, exchange);
+                configureFifoAttributes(entry, exchange);
+                entries.add(entry);
+            }
+            request.setEntries(entries);
+            SendMessageBatchResult result = amazonSQS.sendMessageBatch(request);
+            Message message = getMessageForResponse(exchange);
+            message.setBody(result);
+        } else {
+            request = exchange.getIn().getBody(SendMessageBatchRequest.class);
+            SendMessageBatchResult result = amazonSQS.sendMessageBatch(request);
+            Message message = getMessageForResponse(exchange);
+            message.setBody(result);
+        }
+    }
+
+    private void deleteMessage(AmazonSQS amazonSQS, Exchange exchange) {
+        String receiptHandle = exchange.getIn().getHeader(SqsConstants.RECEIPT_HANDLE, String.class);
+        DeleteMessageRequest request = new DeleteMessageRequest();
+        request.setQueueUrl(getQueueUrl());
+        if (ObjectHelper.isEmpty(receiptHandle)) {
+            throw new IllegalArgumentException("Receipt Handle must be specified for the operation deleteMessage");
+        }
+        request.setReceiptHandle(receiptHandle);
+        DeleteMessageResult result = new DeleteMessageResult();
+        result = amazonSQS.deleteMessage(request);
+        Message message = getMessageForResponse(exchange);
+        message.setBody(result);
+    }
+
     private void configureFifoAttributes(SendMessageRequest request, Exchange exchange) {
+        if (getEndpoint().getConfiguration().isFifoQueue()) {
+            // use strategies
+            MessageGroupIdStrategy messageGroupIdStrategy = getEndpoint().getConfiguration().getMessageGroupIdStrategy();
+            String messageGroupId = messageGroupIdStrategy.getMessageGroupId(exchange);
+            request.setMessageGroupId(messageGroupId);
+
+            MessageDeduplicationIdStrategy messageDeduplicationIdStrategy = getEndpoint().getConfiguration().getMessageDeduplicationIdStrategy();
+            String messageDeduplicationId = messageDeduplicationIdStrategy.getMessageDeduplicationId(exchange);
+            request.setMessageDeduplicationId(messageDeduplicationId);
+
+        }
+    }
+
+    private void configureFifoAttributes(SendMessageBatchRequestEntry request, Exchange exchange) {
         if (getEndpoint().getConfiguration().isFifoQueue()) {
             // use strategies
             MessageGroupIdStrategy messageGroupIdStrategy = getEndpoint().getConfiguration().getMessageGroupIdStrategy();
@@ -102,12 +184,30 @@ public class SqsProducer extends DefaultProducer {
         request.setDelaySeconds(delayValue == null ? Integer.valueOf(0) : delayValue);
     }
 
+    private void addDelay(SendMessageBatchRequestEntry request, Exchange exchange) {
+        Integer headerValue = exchange.getIn().getHeader(SqsConstants.DELAY_HEADER, Integer.class);
+        Integer delayValue;
+        if (headerValue == null) {
+            log.trace("Using the config delay");
+            delayValue = getEndpoint().getConfiguration().getDelaySeconds();
+        } else {
+            log.trace("Using the header delay");
+            delayValue = headerValue;
+        }
+        log.trace("found delay: {}", delayValue);
+        request.setDelaySeconds(delayValue == null ? Integer.valueOf(0) : delayValue);
+    }
+
     protected AmazonSQS getClient() {
         return getEndpoint().getClient();
     }
 
     protected String getQueueUrl() {
         return getEndpoint().getQueueUrl();
+    }
+
+    protected SqsConfiguration getConfiguration() {
+        return getEndpoint().getConfiguration();
     }
 
     @Override
@@ -171,6 +271,37 @@ public class SqsProducer extends DefaultProducer {
                     mav.setDataType("String");
                     mav.withStringValue(value.toString());
                     result.put(entry.getKey(), mav);
+                } else if (value instanceof Boolean) {
+                    MessageAttributeValue mav = new MessageAttributeValue();
+                    mav.setDataType("Number.Boolean");
+                    mav.withStringValue(((Boolean)value) ? "1" : "0");
+                    result.put(entry.getKey(), mav);
+                } else if (value instanceof Number) {
+                    MessageAttributeValue mav = new MessageAttributeValue();
+                    final String dataType;
+                    if (value instanceof Integer) {
+                        dataType = "Number.int";
+                    } else if (value instanceof Byte) {
+                        dataType = "Number.byte";
+                    } else if (value instanceof Double) {
+                        dataType = "Number.double";
+                    } else if (value instanceof Float) {
+                        dataType = "Number.float";
+                    } else if (value instanceof Long) {
+                        dataType = "Number.long";
+                    } else if (value instanceof Short) {
+                        dataType = "Number.short";
+                    } else {
+                        dataType = "Number";
+                    }
+                    mav.setDataType(dataType);
+                    mav.withStringValue(((Number)value).toString());
+                    result.put(entry.getKey(), mav);
+                } else if (value instanceof Date) {
+                    MessageAttributeValue mav = new MessageAttributeValue();
+                    mav.setDataType("String");
+                    mav.withStringValue(value.toString());
+                    result.put(entry.getKey(), mav);
                 } else {
                     // cannot translate the message header to message attribute value
                     LOG.warn("Cannot put the message header key={}, value={} into Sqs MessageAttribute", entry.getKey(), entry.getValue());
@@ -178,5 +309,13 @@ public class SqsProducer extends DefaultProducer {
             }
         }
         return result;
+    }
+
+    private SqsOperations determineOperation(Exchange exchange) {
+        SqsOperations operation = exchange.getIn().getHeader(SqsConstants.SQS_OPERATION, SqsOperations.class);
+        if (operation == null) {
+            operation = getConfiguration().getOperation();
+        }
+        return operation;
     }
 }
