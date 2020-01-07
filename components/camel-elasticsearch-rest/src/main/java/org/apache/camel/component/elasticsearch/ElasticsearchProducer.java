@@ -256,10 +256,6 @@ public class ElasticsearchProducer extends DefaultProducer {
             message.removeHeader(ElasticsearchConstants.PARAM_INDEX_NAME);
         }
 
-        if (configIndexType) {
-            message.removeHeader(ElasticsearchConstants.PARAM_INDEX_TYPE);
-        }
-
         if (configWaitForActiveShards) {
             message.removeHeader(ElasticsearchConstants.PARAM_WAIT_FOR_ACTIVE_SHARDS);
         }
