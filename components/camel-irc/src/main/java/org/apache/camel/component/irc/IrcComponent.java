@@ -78,7 +78,7 @@ public class IrcComponent extends UriEndpointComponent implements SSLContextPara
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Creating SSL Connection to {} destination(s): {} nick: {} user: {}",
-                    new Object[]{configuration.getHostname(), configuration.getListOfChannels(), configuration.getNickname(), configuration.getUsername()});
+                    new Object[]{configuration.getHostname(), configuration.getSpaceSeparatedChannelNames(), configuration.getNickname(), configuration.getUsername()});
             }
 
             SSLContextParameters sslParams = configuration.getSslContextParameters();
@@ -100,7 +100,7 @@ public class IrcComponent extends UriEndpointComponent implements SSLContextPara
         } else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Creating Connection to {} destination(s): {} nick: {} user: {}",
-                        new Object[]{configuration.getHostname(), configuration.getListOfChannels(), configuration.getNickname(), configuration.getUsername()});
+                        new Object[]{configuration.getHostname(), configuration.getSpaceSeparatedChannelNames(), configuration.getNickname(), configuration.getUsername()});
             }
 
             conn = new IRCConnection(configuration.getHostname(), configuration.getPorts(), configuration.getPassword(),

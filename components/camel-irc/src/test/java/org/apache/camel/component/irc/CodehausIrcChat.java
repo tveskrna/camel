@@ -96,9 +96,7 @@ public final class CodehausIrcChat {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        List<IrcChannel> channels = new ArrayList<>();
-        channels.add(new IrcChannel("camel-test", null));
-        final IrcConfiguration config = new IrcConfiguration("irc.codehaus.org", "camel-rc", "Camel IRC Component", channels);
+        final IrcConfiguration config = new IrcConfiguration("irc.codehaus.org", "camel-rc", "Camel IRC Component", "camel-test");
 
         final IRCConnection conn = new IRCConnection(config.getHostname(), config.getPorts(), config.getPassword(), config.getNickname(), config.getUsername(), config.getRealname());
 
@@ -122,7 +120,7 @@ public final class CodehausIrcChat {
 
         // LOG.info("Joining Channel: " + config.getTarget());
 
-        for (IrcChannel channel : config.getChannels()) {
+        for (IrcChannel channel : config.getChannelList()) {
             conn.doJoin(channel.getName());
         }
 
