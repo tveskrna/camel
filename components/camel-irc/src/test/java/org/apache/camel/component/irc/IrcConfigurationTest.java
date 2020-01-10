@@ -26,6 +26,20 @@ import org.junit.Test;
 public class IrcConfigurationTest extends CamelTestSupport {
 
     @Test
+    public void testConfigureFormat1() throws Exception {
+        IrcComponent component = context.getComponent("irc", IrcComponent.class);
+
+        // irc:nick@host[:port]/#room[?options]
+        IrcEndpoint endpoint = (IrcEndpoint) component.createEndpoint("irc://camelbot@irc.freenode.net/#camel");
+        IrcConfiguration conf = endpoint.getConfiguration();
+        assertEquals("camelbot", conf.getNickname());
+        assertEquals("irc.freenode.net", conf.getHostname());
+        List<IrcChannel> channels = conf.getChannelList();
+        assertEquals(1, channels.size());
+        assertEquals("#camel", channels.get(0).getName());
+    }
+
+    @Test
     public void testConfigureFormat2() throws Exception {
         IrcComponent component = context.getComponent("irc", IrcComponent.class);
 

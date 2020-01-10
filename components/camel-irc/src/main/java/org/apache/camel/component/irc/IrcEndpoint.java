@@ -38,8 +38,8 @@ import org.slf4j.LoggerFactory;
     firstVersion = "1.1.0", 
     scheme = "irc", 
     title = "IRC", 
-    syntax = "irc:hostname:port",
-    alternativeSyntax = "irc:username:password@hostname:port", 
+    syntax = "irc:hostname:port/channel",
+    alternativeSyntax = "irc:username:password/channel@hostname:port",
     consumerClass = IrcConsumer.class, 
     label = "chat")
 public class IrcEndpoint extends DefaultEndpoint {

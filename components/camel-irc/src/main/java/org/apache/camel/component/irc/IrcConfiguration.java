@@ -19,7 +19,6 @@ package org.apache.camel.component.irc;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +30,7 @@ import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriParams;
 import org.apache.camel.spi.UriPath;
 import org.apache.camel.util.ObjectHelper;
-import org.apache.camel.util.URISupport;
+import org.apache.camel.util.StringHelper;
 import org.apache.camel.util.UnsafeUriCharactersEncoder;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.schwering.irc.lib.ssl.SSLDefaultTrustManager;
@@ -50,6 +49,8 @@ public class IrcConfiguration implements Cloneable {
     private String hostname;
     @UriPath
     private int port;
+    @UriPath
+    private String channel;
     private int[] ports = {6667, 6668, 6669};
     @UriParam(label = "security", secret = true)
     private String password;
@@ -182,6 +183,11 @@ public class IrcConfiguration implements Cloneable {
         setPassword(password);
         setHostname(uri.getHost());
 
+        //we have to deal with room at the end of the uri
+        if (uriStr.contains("/%23")) {
+            setChannels("#" + StringHelper.after(uriStr, "/%23"));
+        }
+
         String path = uri.getPath();
         if (path != null && !path.isEmpty()) {
             LOG.warn("Channel {} should not be specified in the URI path. Use an @channel query parameter instead.", path);
@@ -295,7 +301,7 @@ public class IrcConfiguration implements Cloneable {
     private void createChannels() {
         channelList.clear();
 
-        if(channels == null) {
+        if (channels == null) {
             return;
         }
 
@@ -347,6 +353,20 @@ public class IrcConfiguration implements Cloneable {
 
     public boolean isPersistent() {
         return persistent;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    /**
+     * Name of the IRC channel to join.
+     *
+     * @param channel
+     */
+    public void setChannel(String channel) {
+        this.channel = channel;
+        channelList.add(createChannel(channel));
     }
 
     /**
