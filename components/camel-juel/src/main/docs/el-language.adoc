@@ -120,4 +120,4 @@ the download page for the latest versions).
 -------------------------------------
 
 Otherwise you'll also need to include
-http://repo2.maven.org/maven2/de/odysseus/juel/juel/2.1.3/juel-2.1.3.jar[JUEL].
+https://repo1.maven.org/maven2/de/odysseus/juel/juel/2.1.3/juel-2.1.3.jar[JUEL].
