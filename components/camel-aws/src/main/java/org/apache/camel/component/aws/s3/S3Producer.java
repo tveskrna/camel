@@ -156,7 +156,7 @@ public class S3Producer extends DefaultProducer {
             // PutObjectRequest#setAccessControlList for more details
             initRequest.setAccessControlList(acl);
         }
-        
+
         if (getConfiguration().isUseAwsKMS()) {
             SSEAwsKeyManagementParams keyManagementParams;
             if (ObjectHelper.isNotEmpty(getConfiguration().getAwsKMSKeyId())) {
@@ -239,12 +239,7 @@ public class S3Producer extends DefaultProducer {
             }
         }
 
-        String bucketName = exchange.getIn().getHeader(S3Constants.BUCKET_NAME, String.class);
-        if (bucketName == null) {
-            LOG.trace("Bucket name is not in header, using default one  [{}]...", getConfiguration().getBucketName());
-            bucketName = getConfiguration().getBucketName();
-        }
-        putObjectRequest = new PutObjectRequest(bucketName, determineKey(exchange), is, objectMetadata);
+        putObjectRequest = new PutObjectRequest(getConfiguration().getBucketName(), determineKey(exchange), is, objectMetadata);
 
         String storageClass = determineStorageClass(exchange);
         if (storageClass != null) {
@@ -264,7 +259,7 @@ public class S3Producer extends DefaultProducer {
             // PutObjectRequest#setAccessControlList for more details
             putObjectRequest.setAccessControlList(acl);
         }
-        
+
         if (getConfiguration().isUseAwsKMS()) {
             SSEAwsKeyManagementParams keyManagementParams;
             if (ObjectHelper.isNotEmpty(getConfiguration().getAwsKMSKeyId())) {
@@ -274,7 +269,7 @@ public class S3Producer extends DefaultProducer {
             }
             putObjectRequest.setSSEAwsKeyManagementParams(keyManagementParams);
         }
-        
+
         LOG.trace("Put object [{}] from exchange [{}]...", putObjectRequest, exchange);
 
         PutObjectResult putObjectResult = getEndpoint().getS3Client().putObject(putObjectRequest);
@@ -340,7 +335,7 @@ public class S3Producer extends DefaultProducer {
             }
             copyObjectRequest.setSSEAwsKeyManagementParams(keyManagementParams);
         }
-        
+
         CopyObjectResult copyObjectResult = s3Client.copyObject(copyObjectRequest);
 
         Message message = getMessageForResponse(exchange);
@@ -392,7 +387,7 @@ public class S3Producer extends DefaultProducer {
         DeleteBucketRequest deleteBucketRequest = new DeleteBucketRequest(bucketName);
         s3Client.deleteBucket(deleteBucketRequest);
     }
-    
+
     private void listObjects(AmazonS3 s3Client, Exchange exchange) {
         String bucketName;
 
@@ -400,7 +395,7 @@ public class S3Producer extends DefaultProducer {
         if (ObjectHelper.isEmpty(bucketName)) {
             bucketName = getConfiguration().getBucketName();
         }
-        
+
         ObjectListing objectList = s3Client.listObjects(bucketName);
 
         Message message = getMessageForResponse(exchange);
@@ -505,38 +500,38 @@ public class S3Producer extends DefaultProducer {
         if (ObjectHelper.isEmpty(bucketName)) {
             bucketName = getConfiguration().getBucketName();
         }
-        
+
         if (bucketName == null) {
             throw new IllegalArgumentException("AWS S3 Bucket name header is missing.");
         }
-        
+
         String key = exchange.getIn().getHeader(S3Constants.KEY, String.class);
         if (key == null) {
             throw new IllegalArgumentException("AWS S3 Key header is missing.");
         }
-        
+
         Date expiration = new Date();
         long milliSeconds = expiration.getTime();
-        
+
         Long expirationMillis = exchange.getIn().getHeader(S3Constants.DOWNLOAD_LINK_EXPIRATION, Long.class);
         if (expirationMillis != null) {
             milliSeconds += expirationMillis;
         } else {
             milliSeconds += 1000 * 60 * 60; // Default: Add 1 hour.
         }
-        
+
         expiration.setTime(milliSeconds);
-        
+
         GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, key);
-        generatePresignedUrlRequest.setMethod(HttpMethod.GET); 
+        generatePresignedUrlRequest.setMethod(HttpMethod.GET);
         generatePresignedUrlRequest.setExpiration(expiration);
 
-        URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest); 
-        
+        URL url = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
+
         Message message = getMessageForResponse(exchange);
         message.setHeader(S3Constants.DOWNLOAD_LINK, url.toString());
     }
-            
+
     protected S3Configuration getConfiguration() {
         return getEndpoint().getConfiguration();
     }
