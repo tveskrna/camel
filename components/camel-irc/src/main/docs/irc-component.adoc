@@ -57,12 +57,12 @@ The IRC component supports 2 options, which are listed below.
 The IRC endpoint is configured using URI syntax:
 
 ----
-irc:hostname:port
+irc:hostname:port/channel
 ----
 
 with the following path and query parameters:
 
-==== Path Parameters (2 parameters):
+==== Path Parameters (3 parameters):
 
 
 [width="100%",cols="2,5,^1,2",options="header"]
@@ -70,17 +70,20 @@ with the following path and query parameters:
 | Name | Description | Default | Type
 | *hostname* | *Required* Hostname for the IRC chat server |  | String
 | *port* | Port number for the IRC chat server. If no port is configured then a default port of either 6667, 6668 or 6669 is used. |  | int
+| *channel* | Name of the IRC channel to join. |  | String
 |===
 
 
-==== Query Parameters (25 parameters):
+==== Query Parameters (27 parameters):
 
 
 [width="100%",cols="2,5,^1,2",options="header"]
 |===
 | Name | Description | Default | Type
 | *autoRejoin* (common) | Whether to auto re-join when being kicked | true | boolean
+| *channels* (common) | Comma separated list of IRC channels. |  | String
 | *commandTimeout* (common) | Delay in milliseconds before sending commands after the connection is established. | 5000 | long
+| *keys* (common) | Comma separated list of keys for channels. |  | String
 | *namesOnJoin* (common) | Sends NAMES command to channel after joining it. onReply has to be true in order to process the result which will have the header value irc.num = '353'. | false | boolean
 | *nickname* (common) | The nickname used in chat. |  | String
 | *persistent* (common) | *Deprecated* Use persistent messages. | true | boolean

@@ -60,7 +60,7 @@ public class IrcProducer extends DefaultProducer {
                 log.debug("Sending to: {} message: {}", sendTo, msg);
                 connection.doPrivmsg(sendTo, msg);
             } else {
-                for (IrcChannel channel : endpoint.getConfiguration().getChannels()) {
+                for (IrcChannel channel : endpoint.getConfiguration().getChannelList()) {
                     LOG.debug("Sending to: {} message: {}", channel, msg);
                     connection.doPrivmsg(channel.getName(), msg);
                 }
@@ -86,7 +86,7 @@ public class IrcProducer extends DefaultProducer {
     @Override
     protected void doStop() throws Exception {
         if (connection != null) {
-            for (IrcChannel channel : endpoint.getConfiguration().getChannels()) {
+            for (IrcChannel channel : endpoint.getConfiguration().getChannelList()) {
                 LOG.debug("Parting: {}", channel);
                 connection.doPart(channel.getName());
             }
