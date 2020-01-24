@@ -342,8 +342,8 @@
     <jain-sip-ri-bundle-version>1.2.154_2</jain-sip-ri-bundle-version>
     <jasn1-version>1.10.0</jasn1-version>
     <jasper-bundle-version>6.0.44_1</jasper-bundle-version>
-    <jasypt-bundle-version>1.9.2_1</jasypt-bundle-version>
-    <jasypt-version>1.9.2</jasypt-version>
+    <jasypt-bundle-version>1.9.3_1</jasypt-bundle-version>
+    <jasypt-version>1.9.3</jasypt-version>
     <java-apns-bundle-version>1.0.0.Beta6_1</java-apns-bundle-version>
     <java-apns-version>1.0.0.Beta6</java-apns-version>
     <java-ewah-version>1.1.6</java-ewah-version>
@@ -528,7 +528,7 @@
     <nekohtml-version>1.9.22</nekohtml-version>
     <neoscada-version>0.4.0</neoscada-version>
     <netty3-version>3.10.6.Final</netty3-version>
-    <netty-version>4.1.42.Final</netty-version>
+    <netty-version>4.1.43.Final</netty-version>
     <netty40-version>4.0.56.Final</netty40-version>
     <networknt-json-schema-validator-version>0.1.24</networknt-json-schema-validator-version>
     <noggit-bundle-version>0.5_1</noggit-bundle-version>
