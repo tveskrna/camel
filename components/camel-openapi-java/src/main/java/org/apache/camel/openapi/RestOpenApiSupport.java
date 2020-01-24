@@ -291,8 +291,8 @@ public class RestOpenApiSupport {
                 if (!configuration.isApiVendorExtension()) {
                     clearVendorExtensions(openApi);
                 }
-
-                byte[] bytes = mapper.writeValueAsBytes(openApi);
+                Object dump = io.apicurio.datamodels.Library.writeNode(openApi);
+                byte[] bytes = mapper.writeValueAsBytes(dump);
 
                 int len = bytes.length;
                 response.setHeader(Exchange.CONTENT_LENGTH, "" + len);
