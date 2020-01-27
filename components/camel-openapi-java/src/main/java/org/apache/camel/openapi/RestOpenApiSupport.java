@@ -26,6 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.management.AttributeNotFoundException;
 import javax.management.MBeanServer;
@@ -494,7 +497,7 @@ public class RestOpenApiSupport {
             if (((Oas30Document)openapi).getServers() != null 
                 && ((Oas30Document)openapi).getServers().get(0) != null) {
                 try {
-                    URL serverUrl = new URL(((Oas30Document)openapi).getServers().get(0).url);
+                    URL serverUrl = new URL(parseVariables(((Oas30Document)openapi).getServers().get(0).url, (Oas30Server)((Oas30Document)openapi).getServers().get(0)));
                     host = serverUrl.getHost();
                 
                 } catch (MalformedURLException e) {
@@ -520,7 +523,7 @@ public class RestOpenApiSupport {
                     }
                     if (basePath == null) {
                         // parse server url as fallback
-                        URL serverUrl = new URL(((Oas30Document)openapi).getServers().get(0).url);
+                        URL serverUrl = new URL(parseVariables(((Oas30Document)openapi).getServers().get(0).url, (Oas30Server)((Oas30Document)openapi).getServers().get(0)));
                         basePath = serverUrl.getPath();
                         if (basePath.indexOf("//") == 0) {
                             // strip off the first "/" if double "/" exists
@@ -540,6 +543,20 @@ public class RestOpenApiSupport {
         }
         return basePath;
         
+    }
+    
+    public static String parseVariables(String url, Oas30Server server) {
+        Pattern p = Pattern.compile("\\{(.*?)\\}");
+        Matcher m = p.matcher(url);
+        while (m.find()) {
+           
+            String var = m.group(1);
+            if (server != null && server.variables != null && server.variables.get(var) != null) {
+                String varValue = server.variables.get(var).default_;
+                url = url.replace("{" + var + "}", varValue);
+            }
+        }
+        return url;
     }
 }
 
