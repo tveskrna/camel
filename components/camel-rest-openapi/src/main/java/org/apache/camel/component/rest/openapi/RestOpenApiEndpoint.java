@@ -400,12 +400,15 @@ public final class RestOpenApiEndpoint extends DefaultEndpoint {
     }
     
     public static String parseVariables(String url, Oas30Server server) {
+        if (server == null || server.variables == null) {
+            return url;
+        }
         Pattern p = Pattern.compile("\\{(.*?)\\}");
         Matcher m = p.matcher(url);
         while (m.find()) {
            
             String var = m.group(1);
-            if (server != null && server.variables != null && server.variables.get(var) != null) {
+            if (server.variables.get(var) != null) {
                 String varValue = server.variables.get(var).default_;
                 url = url.replace("{" + var + "}", varValue);
             }
