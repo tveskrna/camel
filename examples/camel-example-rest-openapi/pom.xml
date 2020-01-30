@@ -17,7 +17,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -26,13 +27,12 @@
     <version>2.23.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camel-example-rest-swagger</artifactId>
-  <name>Camel :: Example :: REST Swagger</name>
-  <description>This example shows how to call a REST service defined using Swagger specification</description>
+  <artifactId>camel-example-rest-openapi</artifactId>
+  <name>Camel :: Example :: REST OPENAPI</name>
+  <description>This example shows how to call a REST service defined using OpenApi specification</description>
 
   <properties>
     <category>Beginner</category>
-    <title>REST Swagger</title>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -65,11 +65,12 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-http-starter</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-rest-swagger-starter</artifactId>
+      <artifactId>camel-rest-openapi-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
 

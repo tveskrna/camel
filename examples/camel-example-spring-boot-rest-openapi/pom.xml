@@ -17,7 +17,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -26,22 +27,18 @@
     <version>2.23.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camel-example-rest-swagger</artifactId>
-  <name>Camel :: Example :: REST Swagger</name>
-  <description>This example shows how to call a REST service defined using Swagger specification</description>
+  <artifactId>camel-example-spring-boot-rest-openapi</artifactId>
+  <name>Camel :: Example :: Spring Boot with REST DSL and OpenApi</name>
+  <description>An example showing Camel REST DSL and OpenApi with Spring Boot</description>
 
   <properties>
-    <category>Beginner</category>
-    <title>REST Swagger</title>
-
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <category>Rest</category>
     <spring.boot-version>${spring-boot-version}</spring.boot-version>
   </properties>
 
+  <!-- Spring-Boot and Camel BOM -->
   <dependencyManagement>
     <dependencies>
-      <!-- Spring Boot BOM -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -49,7 +46,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- Camel BOM -->
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-spring-boot-dependencies</artifactId>
@@ -61,35 +57,53 @@
   </dependencyManagement>
 
   <dependencies>
-
+    <!-- Spring Boot -->
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-http-starter</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-undertow</artifactId>
     </dependency>
 
+    <!-- Camel -->
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-rest-swagger-starter</artifactId>
-      <version>${project.version}</version>
+      <artifactId>camel-spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-openapi-java-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-servlet-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jackson-starter</artifactId>
     </dependency>
 
+    <!-- Test -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
-
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>${maven-resources-plugin-version}</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot-version}</version>
+        <version>${spring.boot-version}</version>
         <executions>
           <execution>
             <goals>

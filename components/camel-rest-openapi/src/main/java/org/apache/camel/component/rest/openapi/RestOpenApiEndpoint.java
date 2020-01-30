@@ -555,7 +555,8 @@ public final class RestOpenApiEndpoint extends DefaultEndpoint {
                         return openapiScheme + "://" + openapiHost;
                     }
                 } catch (MalformedURLException e) {
-                    throw new IllegalStateException(e);
+                    //throw new IllegalStateException(e);
+                    return null;
                 }
             }
         }

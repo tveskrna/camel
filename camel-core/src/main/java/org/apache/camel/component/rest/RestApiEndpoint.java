@@ -45,7 +45,7 @@ import org.apache.camel.util.ObjectHelper;
     consumerOnly = true, label = "core,rest", lenientProperties = true)
 public class RestApiEndpoint extends DefaultEndpoint {
 
-    public static final String DEFAULT_API_COMPONENT_NAME = "swagger";
+    public static final String DEFAULT_API_COMPONENT_NAME = "openapi";
     public static final String RESOURCE_PATH = "META-INF/services/org/apache/camel/restapi/";
 
     @UriPath
@@ -111,7 +111,7 @@ public class RestApiEndpoint extends DefaultEndpoint {
     }
 
     /**
-     * The Camel Rest API component to use for generating the API of the REST services, such as swagger.
+     * The Camel Rest API component to use for generating the API of the REST services, such as OpenApi.
      */
     public void setApiComponentName(String apiComponentName) {
         this.apiComponentName = apiComponentName;
@@ -140,7 +140,7 @@ public class RestApiEndpoint extends DefaultEndpoint {
             factory = factories.iterator().next();
         }
 
-        // lookup on classpath using factory finder to automatic find it (just add camel-swagger-java to classpath etc)
+        // lookup on classpath using factory finder to automatic find it (just add camel-openapi-java to classpath etc)
         if (factory == null) {
             String name = apiComponentName != null ? apiComponentName : config.getApiComponent();
             if (name == null) {
@@ -156,6 +156,23 @@ public class RestApiEndpoint extends DefaultEndpoint {
                 // ignore
             }
         }
+        
+        if (factory == null) {
+            String name = apiComponentName != null ? apiComponentName : config.getApiComponent();
+            if (name == null) {
+                name = "swagger"; //use swagger as fallback
+            }
+            try {
+                FactoryFinder finder = getCamelContext().getFactoryFinder(RESOURCE_PATH);
+                Object instance = finder.newInstance(name);
+                if (instance instanceof RestApiProcessorFactory) {
+                    factory = (RestApiProcessorFactory) instance;
+                }
+            } catch (NoFactoryAvailableException e) {
+                // ignore
+            }
+        }
+
 
         if (factory != null) {
 
@@ -201,7 +218,7 @@ public class RestApiEndpoint extends DefaultEndpoint {
             Processor processor = factory.createApiProcessor(getCamelContext(), path, getContextIdPattern(), contextIdListing, config, getParameters());
             return new RestApiProducer(this, processor);
         } else {
-            throw new IllegalStateException("Cannot find RestApiProcessorFactory in Registry or classpath (such as the camel-swagger-java component)");
+            throw new IllegalStateException("Cannot find RestApiProcessorFactory in Registry or classpath (such as the camel-openapi-java component)");
         }
     }
 
@@ -211,7 +228,7 @@ public class RestApiEndpoint extends DefaultEndpoint {
         String cname = null;
 
         // we use the rest component as the HTTP consumer to service the API
-        // the API then uses the api component (eg usually camel-swagger-java) to build the API
+        // the API then uses the api component (eg usually camel-openapi-java) to build the API
         if (getComponentName() != null) {
             Object comp = getCamelContext().getRegistry().lookupByName(getComponentName());
             if (comp instanceof RestApiConsumerFactory) {

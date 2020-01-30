@@ -95,6 +95,7 @@
     <module>camel-example-reportincident-wssecurity</module>
     <module>camel-example-rest-producer</module>
     <module>camel-example-rest-swagger</module>
+    <module>camel-example-rest-openapi</module>
     <module>camel-example-restlet-jdbc</module>
     <module>camel-example-route-throttling</module>
     <module>camel-example-scala</module>
@@ -118,6 +119,7 @@
     <module>camel-example-spring-boot-pojo</module>
     <module>camel-example-spring-boot-rest-jpa</module>
     <module>camel-example-spring-boot-rest-swagger</module>
+    <module>camel-example-spring-boot-rest-openapi</module>
     <module>camel-example-spring-boot-servicecall</module>
     <module>camel-example-spring-boot-supervising-route-controller</module>
     <module>camel-example-spring-boot-xml</module>
@@ -133,7 +135,9 @@
     <module>camel-example-ssh-security</module>
     <module>camel-example-sql-blueprint</module>
     <module>camel-example-swagger-cdi</module>
+    <module>camel-example-openapi-cdi</module>
     <module>camel-example-swagger-osgi</module>
+    <module>camel-example-openapi-osgi</module>
     <module>camel-example-tracer</module>
     <module>camel-example-transformer-blueprint</module>
     <module>camel-example-transformer-cdi</module>
