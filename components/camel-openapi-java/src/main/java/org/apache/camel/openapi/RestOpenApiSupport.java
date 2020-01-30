@@ -310,8 +310,8 @@ public class RestOpenApiSupport {
                     clearVendorExtensions(openApi);
                 }
 
-                byte[] jsonData = mapper.writeValueAsBytes(openApi);
-
+                Object dump = io.apicurio.datamodels.Library.writeNode(openApi);
+                byte[] jsonData = mapper.writeValueAsBytes(dump);
                 // json to yaml
                 JsonNode node = mapper.readTree(jsonData);
                 byte[] bytes = new YAMLMapper().writeValueAsString(node).getBytes();
