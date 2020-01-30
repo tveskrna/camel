@@ -156,6 +156,23 @@ public class RestApiEndpoint extends DefaultEndpoint {
                 // ignore
             }
         }
+        
+        if (factory == null) {
+            String name = apiComponentName != null ? apiComponentName : config.getApiComponent();
+            if (name == null) {
+                name = "swagger"; //use swagger as fallback
+            }
+            try {
+                FactoryFinder finder = getCamelContext().getFactoryFinder(RESOURCE_PATH);
+                Object instance = finder.newInstance(name);
+                if (instance instanceof RestApiProcessorFactory) {
+                    factory = (RestApiProcessorFactory) instance;
+                }
+            } catch (NoFactoryAvailableException e) {
+                // ignore
+            }
+        }
+
 
         if (factory != null) {
 
