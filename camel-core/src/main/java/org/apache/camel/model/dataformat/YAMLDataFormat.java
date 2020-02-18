@@ -228,7 +228,11 @@ public class YAMLDataFormat extends DataFormatDefinition {
         this.maxAliasesForCollections = maxAliasesForCollections;
     }
 
+<<<<<<< HEAD
     public boolean isAllowRecursiveKeys() {
+=======
+    public String getAllowRecursiveKeys() {
+>>>>>>> 7b6d9d8... CAMEL-14532 - Changing method signature
         return allowRecursiveKeys;
     }
 
