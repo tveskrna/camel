@@ -446,6 +446,8 @@ issues. Some Camel end users can only download files if they use
 stepwise, while others can only download if they do not. At least you
 have the choice to pick (from Camel 2.6 onwards).
 
+*Important*: Stepwise=true is not supported for stream download.
+
 In Camel 2.0 - 2.5 there is only one mode and it is:
 
 * before 2.5 not stepwise
