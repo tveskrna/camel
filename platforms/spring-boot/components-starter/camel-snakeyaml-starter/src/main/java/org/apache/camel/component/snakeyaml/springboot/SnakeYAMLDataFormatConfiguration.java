@@ -82,14 +82,6 @@ public class SnakeYAMLDataFormatConfiguration
      */
     private List<YAMLTypeFilterDefinition> typeFilter;
     /**
-     * Set the maximum amount of aliases allowed for collections.
-     */
-    private String maxAliasesForCollections = "50";
-    /**
-     * Set whether recursive keys are allowed.
-     */
-    private String allowRecursiveKeys;
-    /**
      * Whether the data format should set the Content-Type header with the type
      * from the data format if the data format is capable of doing so. For
      * example application/xml for data formats marshalling to XML, or
@@ -176,22 +168,6 @@ public class SnakeYAMLDataFormatConfiguration
 
     public void setTypeFilter(List<YAMLTypeFilterDefinition> typeFilter) {
         this.typeFilter = typeFilter;
-    }
-
-    public String getMaxAliasesForCollections() {
-        return maxAliasesForCollections;
-    }
-
-    public void setMaxAliasesForCollections(String maxAliasesForCollections) {
-        this.maxAliasesForCollections = maxAliasesForCollections;
-    }
-
-    public String getAllowRecursiveKeys() {
-        return allowRecursiveKeys;
-    }
-
-    public void setAllowRecursiveKeys(String allowRecursiveKeys) {
-        this.allowRecursiveKeys = allowRecursiveKeys;
     }
 
     public Boolean getContentTypeHeader() {
