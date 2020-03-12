@@ -71,7 +71,7 @@ public class YAMLDataFormat extends DataFormatDefinition {
     private int maxAliasesForCollections = 50;
     @XmlAttribute
     @Metadata(javaType = "java.lang.Boolean", defaultValue = "false")
-    private boolean allowRecursiveKeys;
+    private String allowRecursiveKeys;
 
     public YAMLDataFormat() {
         this(YAMLLibrary.SnakeYAML);
@@ -228,18 +228,14 @@ public class YAMLDataFormat extends DataFormatDefinition {
         this.maxAliasesForCollections = maxAliasesForCollections;
     }
 
-<<<<<<< HEAD
-    public boolean isAllowRecursiveKeys() {
-=======
     public String getAllowRecursiveKeys() {
->>>>>>> 7b6d9d8... CAMEL-14532 - Changing method signature
         return allowRecursiveKeys;
     }
 
     /**
      * Set whether recursive keys are allowed.
      */
-    public void setAllowRecursiveKeys(boolean allowRecursiveKeys) {
+    public void setAllowRecursiveKeys(String allowRecursiveKeys) {
         this.allowRecursiveKeys = allowRecursiveKeys;
     }
 
