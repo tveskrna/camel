@@ -129,7 +129,7 @@ with the following path and query parameters:
 === Spring Boot Auto-Configuration
 
 
-The component supports 31 options, which are listed below.
+The component supports 32 options, which are listed below.
 
 
 
@@ -151,6 +151,7 @@ The component supports 31 options, which are listed below.
 | *camel.component.aws-sqs.configuration.maximum-message-size* | The maximumMessageSize (in bytes) an SQS message can contain for this queue. |  | Integer
 | *camel.component.aws-sqs.configuration.message-attribute-names* | A list of message attribute names to receive when consuming. Multiple names can be separated by comma. |  | String
 | *camel.component.aws-sqs.configuration.message-retention-period* | The messageRetentionPeriod (in seconds) a message will be retained by SQS for this queue. |  | Integer
+| *camel.component.aws-sqs.configuration.operation* | The operation to do in case the user don't want to send only a message |  | SqsOperations
 | *camel.component.aws-sqs.configuration.policy* | The policy for this queue |  | String
 | *camel.component.aws-sqs.configuration.proxy-host* | To define a proxy host when instantiating the SQS client |  | String
 | *camel.component.aws-sqs.configuration.proxy-port* | To define a proxy port when instantiating the SQS client |  | Integer
