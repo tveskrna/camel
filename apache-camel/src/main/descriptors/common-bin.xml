@@ -293,6 +293,7 @@
         <include>org.apache.camel:camel-twilio</include>
         <include>org.apache.camel:camel-twitter</include>
         <include>org.apache.camel:camel-undertow</include>
+        <include>org.apache.camel:camel-undertow-spring-security</include>
         <include>org.apache.camel:camel-univocity-parsers</include>
         <include>org.apache.camel:camel-urlrewrite</include>
         <include>org.apache.camel:camel-velocity</include>
@@ -600,6 +601,7 @@
         <include>org.apache.camel:camel-tika-starter</include>
         <include>org.apache.camel:camel-twilio-starter</include>
         <include>org.apache.camel:camel-twitter-starter</include>
+        <include>org.apache.camel:camel-undertow-spring-security-starter</include>
         <include>org.apache.camel:camel-undertow-starter</include>
         <include>org.apache.camel:camel-univocity-parsers-starter</include>
         <include>org.apache.camel:camel-urlrewrite-starter</include>

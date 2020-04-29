@@ -2477,6 +2477,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
+      <artifactId>camel-undertow-spring-security-starter</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
       <artifactId>camel-univocity-parsers-starter</artifactId>
       <version>${project.version}</version>
     </dependency>

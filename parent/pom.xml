@@ -533,6 +533,7 @@
     <networknt-json-schema-validator-version>0.1.24</networknt-json-schema-validator-version>
     <noggit-bundle-version>0.5_1</noggit-bundle-version>
     <objenesis-version>2.6</objenesis-version>
+    <nimbus-jose-jwt>8.9</nimbus-jose-jwt>
     <!-- should be in-sync with deltaspike -->
     <openwebbeans1-version>1.2.7</openwebbeans1-version>
     <openwebbeans-version>1.7.3</openwebbeans-version>
@@ -2218,6 +2219,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
+        <artifactId>camel-undertow-spring-security</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
         <artifactId>camel-univocity-parsers</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -3648,6 +3654,11 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-twitter-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-undertow-spring-security-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
