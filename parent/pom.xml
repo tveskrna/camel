@@ -527,6 +527,8 @@
     <neethi-bundle-version>3.0.1</neethi-bundle-version>
     <nekohtml-version>1.9.22</nekohtml-version>
     <neoscada-version>0.4.0</neoscada-version>
+    <nessus-ipfs-version>1.0.0.Beta4</nessus-ipfs-version>
+    <nessus-weka-version>1.0.1</nessus-weka-version>
     <netty3-version>3.10.6.Final</netty3-version>
     <netty-version>4.1.44.Final</netty-version>
     <netty40-version>4.0.56.Final</netty40-version>
@@ -3692,6 +3694,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
+        <artifactId>camel-weka</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
         <artifactId>camel-wordpress-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -4978,7 +4985,12 @@
       <dependency>
         <groupId>io.nessus</groupId>
         <artifactId>nessus-ipfs-client</artifactId>
-        <version>${nessus-version}</version>
+        <version>${nessus-ipfs-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.nessus.weka</groupId>
+        <artifactId>nessus-weka-api</artifactId>
+        <version>${nessus-weka-version}</version>
       </dependency>
 
       <!-- apache pulsar -->
