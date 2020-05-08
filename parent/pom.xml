@@ -2522,11 +2522,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
-        <artifactId>camel-bonita-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
         <artifactId>camel-boon-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -2673,11 +2668,6 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-drill-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-eclipse-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -3082,11 +3072,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
-        <artifactId>camel-jxpath-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
         <artifactId>camel-kafka-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -3107,11 +3092,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.camel</groupId>
-        <artifactId>camel-kura-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
         <artifactId>camel-ldap-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -3123,11 +3103,6 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-leveldb-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-lra-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -3538,11 +3513,6 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-spring-cloud-zookeeper-starter</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-spring-integration-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
