@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "defaultValue": true,
+      "name": "camel.component.undertow.spring.security.enabled",
+      "description": "Enable undertow spring security component",
+      "type": "java.lang.Boolean"
+    }
+  ]
+}

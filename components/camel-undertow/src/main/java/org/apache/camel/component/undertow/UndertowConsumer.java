@@ -21,7 +21,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
@@ -69,6 +71,14 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler, Su
         return (UndertowEndpoint) super.getEndpoint();
     }
 
+    public List<String> computeAllowedRoles() {
+        String allowedRolesString = getEndpoint().getAllowedRoles();
+        if (allowedRolesString == null) {
+            allowedRolesString = getEndpoint().getComponent().getAllowedRoles();
+        }
+        return allowedRolesString == null ? null : Arrays.asList(allowedRolesString.split("\\s*,\\s*"));
+    }
+
     @Override
     protected void doStart() throws Exception {
         super.doStart();
@@ -78,7 +88,8 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler, Su
              * note that the new CamelWebSocketHandler() we pass to registerEndpoint() does not necessarily have to be
              * the same instance that is returned from there
              */
-            this.webSocketHandler = (CamelWebSocketHandler) endpoint.getComponent().registerEndpoint(endpoint.getHttpHandlerRegistrationInfo(), endpoint.getSslContext(), new CamelWebSocketHandler());
+            this.webSocketHandler = (CamelWebSocketHandler) endpoint.getComponent().registerEndpoint(endpoint.getHttpHandlerRegistrationInfo(),
+                    endpoint.getSslContext(), new CamelWebSocketHandler(), endpoint.getSecurityProvider());
             this.webSocketHandler.setConsumer(this);
         } else {
             // allow for HTTP 1.1 continue
@@ -97,7 +108,7 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler, Su
             }
             endpoint.getComponent().registerEndpoint(endpoint.getHttpHandlerRegistrationInfo(), endpoint.getSslContext(), Handlers.httpContinueRead(
                     // wrap with EagerFormParsingHandler to enable undertow form parsers
-                    httpHandler));
+                    httpHandler), endpoint.getSecurityProvider());
         }
     }
 
@@ -152,6 +163,23 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler, Su
         //perform blocking operation on exchange
         if (httpExchange.isInIoThread()) {
             httpExchange.dispatch(this);
+            return;
+        }
+
+        if (getEndpoint().getSecurityProvider() != null) {
+            //security provider decides, whether endpoint is accessible
+            int statusCode = getEndpoint().getSecurityProvider().authenticate(httpExchange, computeAllowedRoles());
+            if (statusCode != StatusCodes.OK) {
+                httpExchange.setStatusCode(statusCode);
+                httpExchange.endExchange();
+                return;
+            }
+        } else if (computeAllowedRoles() != null && !computeAllowedRoles().isEmpty()) {
+            //this case could happen due to bad configuration
+            //if allowedRoles are present but securityProvider is not, access has to be denied in this case
+            LOG.warn("Illegal state caused by missing securitProvider but existing allowed roles!");
+            httpExchange.setStatusCode(StatusCodes.FORBIDDEN);
+            httpExchange.endExchange();
             return;
         }
 
