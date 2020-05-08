@@ -177,6 +177,11 @@
         <version>4.1.0</version>
       </dependency>
       <dependency>
+        <groupId>io.nessus.weka</groupId>
+        <artifactId>nessus-weka-api</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+      <dependency>
         <groupId>io.nessus</groupId>
         <artifactId>nessus-ipfs-client</artifactId>
         <version>1.0.0.Beta4</version>
@@ -2992,6 +2997,11 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-websocket-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-weka</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
