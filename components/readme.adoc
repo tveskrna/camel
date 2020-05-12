@@ -2,7 +2,7 @@ Components
 ^^^^^^^^^^
 
 // components: START
-Number of Components: 304 in 205 JAR artifacts (21 deprecated)
+Number of Components: 306 in 207 JAR artifacts (20 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -426,7 +426,7 @@ Number of Components: 304 in 205 JAR artifacts (21 deprecated)
 `ipfs:host:port/cmd` | 2.23 | The camel-ipfs component provides access to the Interplanetary File System (IPFS).
 
 | link:camel-irc/src/main/docs/irc-component.adoc[IRC] (camel-irc) +
-`irc:hostname:port` | 1.1 | The irc component implements an IRC (Internet Relay Chat) transport.
+`irc:hostname:port/channel` | 1.1 | The irc component implements an IRC (Internet Relay Chat) transport.
 
 | link:camel-ironmq/src/main/docs/ironmq-component.adoc[IronMQ] (camel-ironmq) +
 `ironmq:queueName` | 2.17 | The ironmq provides integration with IronMQ an elastic and durable hosted message queue as a service.
@@ -458,8 +458,8 @@ Number of Components: 304 in 205 JAR artifacts (21 deprecated)
 | link:camel-jing/src/main/docs/jing-component.adoc[Jing] (camel-jing) +
 `jing:resourceUri` | 1.1 | Validates the payload of a message using RelaxNG Syntax using Jing library.
 
-| link:camel-jira/src/main/docs/jira-component.adoc[JIRA] (camel-jira) +
-`jira:type` | 2.15 | *deprecated* The jira component interacts with the JIRA issue tracker.
+| link:camel-jira/src/main/docs/jira-component.adoc[Jira] (camel-jira) +
+`jira:type` | 2.21 | The jira component interacts with the JIRA issue tracker.
 
 | link:camel-jms/src/main/docs/jms-component.adoc[JMS] (camel-jms) +
 `jms:destinationType:destinationName` | 1.0 | The jms component allows messages to be sent to (or consumed from) a JMS Queue or Topic.
@@ -713,6 +713,9 @@ Number of Components: 304 in 205 JAR artifacts (21 deprecated)
 | link:../camel-core/src/main/docs/rest-api-component.adoc[REST API] (camel-core) +
 `rest-api:path/contextIdPattern` | 2.16 | The rest-api component is used for providing Swagger API of the REST services which has been defined using the rest-dsl in Camel.
 
+| link:camel-rest-openapi/src/main/docs/rest-openapi-component.adoc[REST OpenApi] (camel-rest-openapi) +
+`rest-openapi:specificationUri#operationId` | 3.1 | An awesome REST endpoint backed by OpenApi specifications.
+
 | link:camel-rest-swagger/src/main/docs/rest-swagger-component.adoc[REST Swagger] (camel-rest-swagger) +
 `rest-swagger:specificationUri#operationId` | 2.19 | An awesome REST endpoint backed by Swagger specifications.
 
@@ -886,6 +889,9 @@ Number of Components: 304 in 205 JAR artifacts (21 deprecated)
 
 | link:camel-web3j/src/main/docs/web3j-component.adoc[Web3j Ethereum Blockchain] (camel-web3j) +
 `web3j:nodeAddress` | 2.22 | The web3j component uses the Web3j client API and allows you to add/read nodes to/from a web3j compliant content repositories.
+
+| link:camel-weka/src/main/docs/weka-component.adoc[Weka] (camel-weka) +
+`weka:command` | 3.1 | The camel-weka component provides Data Mining functionality through Weka.
 
 | link:camel-wordpress/src/main/docs/wordpress-component.adoc[Wordpress] (camel-wordpress) +
 `wordpress:operationDetail` | 2.21 | Integrates Camel with Wordpress.
@@ -1100,7 +1106,7 @@ Miscellaneous Components
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 // others: START
-Number of Miscellaneous Components: 44 in 44 JAR artifacts (13 deprecated)
+Number of Miscellaneous Components: 46 in 46 JAR artifacts (13 deprecated)
 
 [width="100%",cols="4,1,5",options="header"]
 |===
@@ -1133,6 +1139,8 @@ Number of Miscellaneous Components: 44 in 44 JAR artifacts (13 deprecated)
 | link:camel-leveldb/src/main/docs/leveldb.adoc[LevelDB] (camel-leveldb) | 2.10 | Using LevelDB as persistent EIP store
 
 | link:camel-lra/src/main/docs/lra.adoc[Lra] (camel-lra) | 2.21 | Camel saga binding for Long-Running-Action framework
+
+| link:camel-openapi-java/src/main/docs/openapi-java.adoc[Openapi Java] (camel-openapi-java) | 3.1 | Rest-dsl support for using openapi doc
 
 | link:camel-opentracing/src/main/docs/opentracing.adoc[OpenTracing] (camel-opentracing) | 2.19 | Distributed tracing using OpenTracing
 
@@ -1187,6 +1195,8 @@ Number of Miscellaneous Components: 44 in 44 JAR artifacts (13 deprecated)
 | link:camel-testcontainers-spring/src/main/docs/testcontainers-spring.adoc[Testcontainers Spring] (camel-testcontainers-spring) | 2.22 | Camel unit testing with Spring and testcontainers
 
 | link:camel-testng/src/main/docs/testng.adoc[TestNG] (camel-testng) | 2.8 | *deprecated* Camel unit testing with TestNG
+
+| link:camel-undertow-spring-security/src/main/docs/undertow-spring-security.adoc[Undertow Spring Security] (camel-undertow-spring-security) |  | Camel Components
 
 | link:camel-urlrewrite/src/main/docs/urlrewrite.adoc[URLRewrite] (camel-urlrewrite) | 2.11 | *deprecated* URL rewrite support for HTTP components
 
