@@ -40,6 +40,8 @@ import org.apache.camel.util.IOHelper;
 public class DefaultFactoryFinder implements FactoryFinder {
 
     private final ConcurrentMap<String, Class<?>> classMap = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Boolean> classesNotFound = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Exception> classesNotFoundExceptions = new ConcurrentHashMap<>();
     private final ClassResolver classResolver;
     private final String path;
 
@@ -166,20 +168,38 @@ public class DefaultFactoryFinder implements FactoryFinder {
      */
     protected Class<?> addToClassMap(String key, ClassSupplier mappingFunction) throws ClassNotFoundException, IOException {
         try {
-            return classMap.computeIfAbsent(key, new Function<String, Class<?>>() {
+            if (classesNotFoundExceptions.containsKey(key) || classesNotFound.containsKey(key)) {
+                Exception e = classesNotFoundExceptions.get(key);
+                if (e == null) {
+                    return null;
+                } else {
+                    throw new WrappedRuntimeException(e);
+                }
+            }
+
+            Class<?> suppliedClass = classMap.computeIfAbsent(key, new Function<String, Class<?>>() {
                 @Override
                 public Class<?> apply(String classKey) {
                     try {
                         return mappingFunction.get();
                     } catch (ClassNotFoundException e) {
+                        classesNotFoundExceptions.put(key, e);
                         throw new WrappedRuntimeException(e);
                     } catch (NoFactoryAvailableException e) {
+                        classesNotFoundExceptions.put(key, e);
                         throw new WrappedRuntimeException(e);
                     } catch (IOException e) {
                         throw new WrappedRuntimeException(e);
                     }
                 }
             });
+
+            if (suppliedClass == null) {
+                // mark the key as non-resolvable to prevent pointless searching
+                classesNotFound.put(key, Boolean.TRUE);
+            }
+
+            return suppliedClass;
         } catch (WrappedRuntimeException e) {
             if (e.getCause() instanceof ClassNotFoundException) {
                 throw (ClassNotFoundException)e.getCause();
