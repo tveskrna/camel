@@ -39,6 +39,8 @@
     <camel.osgi.export.service>
       org.apache.camel.spi.ComponentResolver;component=kafka,
     </camel.osgi.export.service>
+    <scala-version>2.12.10</scala-version>
+    <zookeeper-version>3.5.7</zookeeper-version>
   </properties>
 
   <dependencies>
