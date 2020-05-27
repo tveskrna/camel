@@ -158,14 +158,16 @@ public class HttpClientInitializerFactory extends ClientInitializerFactory {
                         "file:" + configuration.getKeyStoreFile().getPath(),
                         "file:" + configuration.getTrustStoreFile().getPath(),
                         configuration.getPassphrase().toCharArray());
-            } else {
+            } else if (configuration.getKeyStoreResource() != null || configuration.getTrustStoreResource() != null) {
                 sslEngineFactory = new SSLEngineFactory();
-                answer = sslEngineFactory.createSSLContext(producer.getContext().getClassResolver(),
+                answer = sslEngineFactory.createSSLContext(producer.getContext(),
                         configuration.getKeyStoreFormat(),
                         configuration.getSecurityProvider(),
                         configuration.getKeyStoreResource(),
                         configuration.getTrustStoreResource(),
-                        configuration.getPassphrase().toCharArray());
+                        pw);
+            } else {
+                answer = SSLContext.getDefault();
             }
         }
 

@@ -150,8 +150,9 @@ public class DefaultNettyHttpBinding implements NettyHttpBinding, Cloneable {
         //   /foo
         //   http://servername/foo
         String http = configuration.isSsl() ? "https://" : "http://";
-        if (!s.startsWith(http)) {
-            if (configuration.getPort() != 80) {
+        if (!s.startsWith("http://") && !s.startsWith("https://")) {
+            String http = configuration.isSsl() ? "https://" : "http://";
+            if (configuration.getPort() != 80 && configuration.getPort() != 443) {
                 s = http + configuration.getHost() + ":" + configuration.getPort() + s;
             } else {
                 s = http + configuration.getHost() + s;
