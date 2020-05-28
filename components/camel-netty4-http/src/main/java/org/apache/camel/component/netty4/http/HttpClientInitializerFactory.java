@@ -148,7 +148,7 @@ public class HttpClientInitializerFactory extends ClientInitializerFactory {
             if (configuration.getPassphrase().toCharArray() == null) {
                 LOG.debug("passphrase is null");
             }
-
+            char[] pw = configuration.getPassphrase() != null ? configuration.getPassphrase().toCharArray() : null;
             SSLEngineFactory sslEngineFactory;
             if (configuration.getKeyStoreFile() != null || configuration.getTrustStoreFile() != null) {
                 sslEngineFactory = new SSLEngineFactory();
@@ -160,7 +160,7 @@ public class HttpClientInitializerFactory extends ClientInitializerFactory {
                         configuration.getPassphrase().toCharArray());
             } else if (configuration.getKeyStoreResource() != null || configuration.getTrustStoreResource() != null) {
                 sslEngineFactory = new SSLEngineFactory();
-                answer = sslEngineFactory.createSSLContext(producer.getContext(),
+                answer = sslEngineFactory.createSSLContext(producer.getContext().getClassResolver(),
                         configuration.getKeyStoreFormat(),
                         configuration.getSecurityProvider(),
                         configuration.getKeyStoreResource(),
