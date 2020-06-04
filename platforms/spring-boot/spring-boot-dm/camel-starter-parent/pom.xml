@@ -57,6 +57,13 @@
 
     <dependencies>
 
+      <!-- Override the Spring Boot jackson-databind version in order to fix polymorphic deserialization CVEs -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.9.10.4-redhat-00001</version>
+      </dependency>
+
       <!-- The spring-boot dependencies will be used by end users, so it's ok to use it in the parent -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
