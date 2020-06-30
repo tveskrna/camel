@@ -494,6 +494,10 @@ public class JmsConfiguration implements Cloneable {
     @UriParam(label = "producer", description = "Sets whether JMS date properties should be formatted according to the ISO 8601 standard.")
     private boolean formatDateHeadersToIso8601;
 
+    @UriParam(defaultValue = "-1", label = "producer", description = "Sets delivery delay to use for send calls for JMS. "
+         + "This option requires JMS 2.0 compliant broker.")
+    private long deliveryDelay = -1;
+
     public JmsConfiguration() {
     }
 
@@ -730,6 +734,9 @@ public class JmsConfiguration implements Cloneable {
                 template.setSessionAcknowledgeModeName(acknowledgementModeName);
             }
         }
+
+        template.setDeliveryDelay(deliveryDelay);
+
         return template;
     }
 
@@ -2231,6 +2238,17 @@ public class JmsConfiguration implements Cloneable {
      */
     public void setFormatDateHeadersToIso8601(boolean formatDateHeadersToIso8601) {
         this.formatDateHeadersToIso8601 = formatDateHeadersToIso8601;
+    }
+
+    public long getDeliveryDelay() {
+        return deliveryDelay;
+    }
+
+    /**
+     * Sets delivery delay to use for send calls for JMS.
+     */
+    public void setDeliveryDelay(long deliveryDelay) {
+        this.deliveryDelay = deliveryDelay;
     }
 
 }
