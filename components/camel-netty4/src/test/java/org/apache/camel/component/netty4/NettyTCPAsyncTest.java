@@ -19,6 +19,9 @@ package org.apache.camel.component.netty4;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import io.netty.channel.ChannelHandler;
+import io.netty.handler.codec.serialization.ClassResolvers;
+
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -31,9 +34,6 @@ import org.apache.camel.converter.IOConverter;
 import org.apache.camel.impl.JndiRegistry;
 import org.apache.camel.util.IOHelper;
 import org.junit.Test;
-
-import io.netty.channel.ChannelHandler;
-import io.netty.handler.codec.serialization.ClassResolvers;
 
 public class NettyTCPAsyncTest extends BaseNettyTest {
     @EndpointInject(uri = "mock:result")
