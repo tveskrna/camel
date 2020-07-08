@@ -19,6 +19,9 @@ package org.apache.camel.component.netty4;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+import io.netty.channel.ChannelHandler;
+import io.netty.handler.codec.serialization.ClassResolvers;
+
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
@@ -30,9 +33,6 @@ import org.apache.camel.component.netty4.codec.ObjectDecoder;
 import org.apache.camel.component.netty4.codec.ObjectEncoder;
 import org.apache.camel.impl.JndiRegistry;
 import org.junit.Test;
-
-import io.netty.channel.ChannelHandler;
-import io.netty.handler.codec.serialization.ClassResolvers;
 
 /**
  * @version
