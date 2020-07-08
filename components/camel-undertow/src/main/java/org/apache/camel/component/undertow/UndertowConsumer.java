@@ -156,7 +156,7 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler, Su
             httpExchange.getResponseHeaders().put(ExchangeHeaders.CONTENT_LENGTH, 0);
             // do not include content-type as that would indicate to the caller that we can only do text/plain
             httpExchange.getResponseHeaders().put(Headers.ALLOW, allowedMethods);
-            httpExchange.getResponseSender().close();
+            httpExchange.endExchange();
             return;
         }
 
@@ -223,7 +223,6 @@ public class UndertowConsumer extends DefaultConsumer implements HttpHandler, Su
             ByteBuffer bodyAsByteBuffer = tc.mandatoryConvertTo(ByteBuffer.class, body);
             httpExchange.getResponseSender().send(bodyAsByteBuffer);
         }
-        httpExchange.getResponseSender().close();
     }
 
     /**
