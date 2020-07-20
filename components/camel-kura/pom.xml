@@ -58,7 +58,8 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.configadmin</artifactId>
-      <version>${felix-configadmin-version}</version>
+      <!-- Mockito has problems mocking Configuration interfaces from configadmin 1.9.16 -->
+      <version>1.8.8</version>
     </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>
