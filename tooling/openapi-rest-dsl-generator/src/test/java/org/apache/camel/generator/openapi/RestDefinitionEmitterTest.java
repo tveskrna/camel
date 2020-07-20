@@ -16,6 +16,7 @@
  */
 package org.apache.camel.generator.openapi;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.camel.impl.DefaultCamelContext;
@@ -30,8 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestDefinitionEmitterTest {
     @Test
-    public void shouldGenerateObjects() {
-        final DefaultCamelContext context = new DefaultCamelContext();
+    public void shouldGenerateObjects() throws IOException {
+        DefaultCamelContext context = new DefaultCamelContext();
 
         final RestDefinitionEmitter emitter = new RestDefinitionEmitter(context);
 

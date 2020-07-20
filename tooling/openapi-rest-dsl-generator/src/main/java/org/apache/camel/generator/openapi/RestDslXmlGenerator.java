@@ -38,22 +38,20 @@ import org.apache.camel.model.ModelHelper;
 import org.apache.camel.model.rest.RestsDefinition;
 import org.apache.camel.util.ObjectHelper;
 
-
 public class RestDslXmlGenerator extends RestDslGenerator<RestDslXmlGenerator> {
 
     private boolean blueprint;
 
-    RestDslXmlGenerator(final OasDocument openapi) {
-        super(openapi);
+    RestDslXmlGenerator(final OasDocument document) {
+        super(document);
     }
 
     public String generate(final CamelContext context) throws Exception {
         final RestDefinitionEmitter emitter = new RestDefinitionEmitter(context);
-        String basePath = RestDslGenerator.getBasePathFromOasDocument(openapi);
-        final PathVisitor<RestsDefinition> restDslStatement = new PathVisitor<>(basePath, emitter, filter,
-            destinationGenerator());
+        final String basePath = RestDslGenerator.determineBasePathFrom(document);
+        final PathVisitor<RestsDefinition> restDslStatement = new PathVisitor<>(basePath, emitter, filter, destinationGenerator());
 
-        openapi.paths.getPathItems().forEach(restDslStatement::visit);
+        document.paths.getPathItems().forEach(restDslStatement::visit);
 
         final RestsDefinition rests = emitter.result();
         final String xml = ModelHelper.dumpModelAsXml(context, rests);
@@ -76,7 +74,7 @@ public class RestDslXmlGenerator extends RestDslGenerator<RestDslXmlGenerator> {
         // remove all customId attributes as we do not want them in the output
         final NodeList elements = document.getElementsByTagName("*");
         for (int i = 0; i < elements.getLength(); i++) {
-            final Element element = (Element) elements.item(i);
+            final Element element = (Element)elements.item(i);
             element.removeAttribute("customId");
         }
 
