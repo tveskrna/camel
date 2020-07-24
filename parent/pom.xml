@@ -692,6 +692,7 @@
     <swagger-java-parser-version>1.0.37</swagger-java-parser-version>
     <!-- upstream swagger2 (1.5.x) uses Guava 20 and reflections library, jboss-fuse/swagger 2 uses Guava 27 and no reflections library -->
     <swagger-java-guava-version>27.1-jre</swagger-java-guava-version>
+    <swagger-java-guava-failureaccess-version>1.0.1</swagger-java-guava-failureaccess-version>
     <swagger-ui-version>2.2.10</swagger-ui-version>
     <apicurio-version>1.0.16.Final</apicurio-version>
     <stax-api-version>1.0.1</stax-api-version>
