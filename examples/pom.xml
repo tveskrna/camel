@@ -101,6 +101,7 @@
     <module>camel-example-scala</module>
     <module>camel-example-servlet-httpregistry-blueprint</module>
     <module>camel-example-servlet-rest-blueprint</module>
+    <module>camel-example-servlet-rest-karaf-jaas</module>
     <module>camel-example-servlet-tomcat</module>
     <module>camel-example-servlet-tomcat-no-spring</module>
     <module>camel-example-simplejirabot</module>
