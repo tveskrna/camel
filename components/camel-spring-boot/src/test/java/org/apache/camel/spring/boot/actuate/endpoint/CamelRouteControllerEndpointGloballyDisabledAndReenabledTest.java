@@ -39,6 +39,7 @@ import org.springframework.test.context.junit4.SpringRunner;
     classes = {CamelAutoConfiguration.class, CamelRoutesEndpointAutoConfiguration.class,
                CamelRouteControllerEndpointAutoConfiguration.class, ActuatorTestRoute.class},
     properties = {"management.endpoints.enabled-by-default = false",
+                  "management.endpoint.camelroutes.enabled = false",
                   "management.endpoint.camelroutecontroller.enabled = true"}
 )
 public class CamelRouteControllerEndpointGloballyDisabledAndReenabledTest extends Assert {
