@@ -37,6 +37,6 @@ public class KubernetesTestSupport extends CamelTestSupport {
     }
     
     public static String toUrlEncoded(String str) {
-        return str.replaceAll("=", "%3D");
+        return str.replaceAll("=", "%3D").replaceAll(",", "%2C");
     }
 }
