@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
 import static org.hamcrest.core.Is.is;
 
 public class SslGlobalTest extends CamelSpringTestSupport {
@@ -58,14 +57,6 @@ public class SslGlobalTest extends CamelSpringTestSupport {
     @Test
     public void testInvokingTrustRoute() throws Exception {
         Exchange reply = sendJaxWsMessage("direct:trust");
-        if (reply.isFailed()) {
-            Exception exception = reply.getException();
-            String msg = exception.getMessage();
-            if (msg.contains("socket reset for TTL")) {
-                // ignore flaky test on JDK11
-                return;
-            }
-        }
         assertFalse("We expect no exception here", reply.isFailed());
     }
 
