@@ -32,7 +32,7 @@ http://cxf.apache.org/transports/jms http://cxf.apache.org/schemas/configuration
 <bean id="logginInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
 
 <cxf:cxfEndpoint id="jmsEndpoint"
-address="jms:jndi:dynamicQueues/test.cxf.jmstransport.queue?jndiInitialContextFactory=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;jndiConnectionFactoryName=ConnectionFactory&amp;jndiURL=vm://localhost"
+address="jms:jndi:dynamicQueues/test.cxf.jmstransport.queue?jndiInitialContextFactory=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;jndiConnectionFactoryName=ConnectionFactory&amp;jndiURL=tcp://localhost:9001"
   serviceClass="org.apache.hello_world_soap_http.Greeter"
   endpointName="s:SoapPort"
   serviceName="s:SOAPService"
