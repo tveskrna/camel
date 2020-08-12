@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 package org.apache.camel.component.cxf.jms;
+import java.io.IOException;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -23,18 +25,43 @@ import org.apache.camel.spring.SpringCamelContext;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.apache.camel.util.IOHelper;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.testutil.common.AbstractTestServerBase;
+import org.apache.cxf.testutil.common.EmbeddedJMSBrokerLauncher;
+import org.apache.cxf.testutil.common.ServerLauncher;
 import org.apache.hello_world_soap_http.Greeter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class CxfEndpointJMSConsumerTest extends CamelTestSupport {
     protected AbstractXmlApplicationContext applicationContext;
+    
+    
+    public static boolean launchServer(AbstractTestServerBase base) {
+        boolean ok = false;
+        try {
+            ServerLauncher sl = new ServerLauncher(base.getClass().getName(), false);
+            ok = sl.launchServer();
+            assertTrue("server failed to launch", ok);
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            fail("failed to launch server " + base);
+        }
+
+        return ok;
+    }
 
     @Before
     public void setUp() throws Exception {
+        EmbeddedJMSBrokerLauncher broker = new EmbeddedJMSBrokerLauncher("tcp://localhost:9001");
+        launchServer(broker);
         applicationContext = createApplicationContext();
         super.setUp();
         assertNotNull("Should have created a valid spring context", applicationContext);
@@ -78,7 +105,7 @@ public class CxfEndpointJMSConsumerTest extends CamelTestSupport {
             + "?jndiInitialContextFactory"
             + "=org.apache.activemq.jndi.ActiveMQInitialContextFactory"
             + "&jndiConnectionFactoryName=ConnectionFactory&jndiURL="
-            + "vm://localhost";
+            + "tcp://localhost:9001";
    
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(Greeter.class);
