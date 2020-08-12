@@ -38,7 +38,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @SpringBootApplication
-@SpringBootTest(classes = {CamelAutoConfiguration.class, CamelRouteControllerEndpointAutoConfiguration.class, ActuatorTestRoute.class})
+@SpringBootTest(classes = {CamelAutoConfiguration.class, CamelRouteControllerEndpointAutoConfiguration.class, ActuatorTestRoute.class},
+        properties = {"management.endpoint.camelroutecontroller.enabled = true"})
 public class CamelRouteControllerEndpointTest extends Assert {
 
     @Autowired

@@ -18,11 +18,11 @@ package org.apache.camel.spring.boot.actuate.endpoint;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.spring.boot.CamelAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,7 +37,7 @@ public class CamelRouteControllerEndpointAutoConfiguration {
     @Bean
     @ConditionalOnClass(CamelContext.class)
     @ConditionalOnMissingBean
-    @ConditionalOnEnabledEndpoint
+    @ConditionalOnProperty("management.endpoint.camelroutecontroller.enabled")
     public CamelRouteControllerEndpoint routeControllerEndpoint(CamelContext camelContext) {
         return new CamelRouteControllerEndpoint(camelContext);
     }

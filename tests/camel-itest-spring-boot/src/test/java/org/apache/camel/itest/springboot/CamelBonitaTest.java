@@ -20,11 +20,13 @@ import org.apache.camel.itest.springboot.util.ArquillianPackager;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 @RunWith(Arquillian.class)
+@Ignore("ENTESB-12161: deprecated in Fuse 7.7")
 public class CamelBonitaTest extends AbstractSpringBootTestSupport {
 
     @Deployment

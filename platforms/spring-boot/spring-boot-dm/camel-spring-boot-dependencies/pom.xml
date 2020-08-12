@@ -174,7 +174,7 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model</artifactId>
-        <version>4.1.0</version>
+        <version>4.6.2</version>
       </dependency>
       <dependency>
         <groupId>io.nessus.weka</groupId>
