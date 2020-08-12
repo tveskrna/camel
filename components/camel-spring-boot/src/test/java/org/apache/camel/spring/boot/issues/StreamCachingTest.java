@@ -57,6 +57,11 @@ public class StreamCachingTest extends CamelTestSupport {
 
     @Test
     public void streamCachingWithSpring() throws Exception {
+        //we need start manually in case other tests set system property that avoid
+        //camel context to start. eg. System.setProperty("skipStartingCamelContext", "false");
+        context.start();
+        context.startAllRoutes();
+
         endOfRoute.expectedMessageCount(1);
 
         template.sendBody("direct:foo", new FileInputStream(new File("src/test/resources/logback.xml")));
