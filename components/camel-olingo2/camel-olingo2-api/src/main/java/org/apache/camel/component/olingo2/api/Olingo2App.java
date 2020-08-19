@@ -23,6 +23,8 @@ import java.util.Map;
 import org.apache.camel.component.olingo2.api.batch.Olingo2BatchResponse;
 import org.apache.olingo.odata2.api.commons.HttpStatusCodes;
 import org.apache.olingo.odata2.api.edm.Edm;
+import org.apache.olingo.odata2.api.ep.EntityProviderReadProperties;
+import org.apache.olingo.odata2.api.ep.EntityProviderWriteProperties;
 
 /**
  * Olingo2 Client Api Interface.
@@ -46,6 +48,34 @@ public interface Olingo2App {
      * @param httpHeaders custom Http headers.
      */
     void setHttpHeaders(Map<String, String> httpHeaders);
+
+    /**
+     * Specify custom entity provider read properties.
+     *
+     * @param entityProviderReadProperties the custom properties to set.
+     */
+    void setEntityProviderReadProperties(EntityProviderReadProperties entityProviderReadProperties);
+
+    /**
+     * Obtains the custom entity provider read properties.
+     *
+     * @return the custom read properties.
+     */
+    EntityProviderReadProperties getEntityProviderReadProperties();
+
+    /**
+     * Specify custom entity provider write properties.
+     *
+     * @param entityProviderWriteProperties the custom properties to set.
+     */
+    void setEntityProviderWriteProperties(EntityProviderWriteProperties entityProviderWriteProperties);
+
+    /**
+     * Obtains the custom entity provider write properties.
+     *
+     * @return the custom write properties.
+     */
+    EntityProviderWriteProperties getEntityProviderWriteProperties();
 
     /**
      * Returns custom Http headers.
@@ -103,7 +133,7 @@ public interface Olingo2App {
      * @param endpointHttpHeaders HTTP Headers to add/override the component versions
      * @param responseHandler {@link org.apache.olingo.odata2.api.commons.HttpStatusCodes} callback handler
      */
-    void delete(String resourcePath, Map<String, String> endpointHttpHeaders, 
+    void delete(String resourcePath, Map<String, String> endpointHttpHeaders,
                 Olingo2ResponseHandler<HttpStatusCodes> responseHandler);
 
     /**
@@ -114,7 +144,7 @@ public interface Olingo2App {
      * @param data request data
      * @param responseHandler callback handler
      */
-    <T> void create(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data, 
+    <T> void create(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data,
                     Olingo2ResponseHandler<T> responseHandler);
 
     /**
@@ -125,7 +155,7 @@ public interface Olingo2App {
      * @param data updated data
      * @param responseHandler {@link org.apache.olingo.odata2.api.ep.entry.ODataEntry} callback handler
      */
-    <T> void update(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data, 
+    <T> void update(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data,
                     Olingo2ResponseHandler<T> responseHandler);
 
     /**
@@ -136,7 +166,7 @@ public interface Olingo2App {
      * @param data patch/merge data
      * @param responseHandler {@link org.apache.olingo.odata2.api.ep.entry.ODataEntry} callback handler
      */
-    <T> void patch(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data, 
+    <T> void patch(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data,
                    Olingo2ResponseHandler<T> responseHandler);
 
     /**
@@ -147,7 +177,7 @@ public interface Olingo2App {
      * @param data patch/merge data
      * @param responseHandler {@link org.apache.olingo.odata2.api.ep.entry.ODataEntry} callback handler
      */
-    <T> void merge(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data, 
+    <T> void merge(Edm edm, String resourcePath, Map<String, String> endpointHttpHeaders, Object data,
                    Olingo2ResponseHandler<T> responseHandler);
 
     /**
@@ -157,6 +187,6 @@ public interface Olingo2App {
      * @param data ordered {@link org.apache.camel.component.olingo2.api.batch.Olingo2BatchRequest} list
      * @param responseHandler callback handler
      */
-    void batch(Edm edm, Map<String, String> endpointHttpHeaders, Object data, 
+    void batch(Edm edm, Map<String, String> endpointHttpHeaders, Object data,
                Olingo2ResponseHandler<List<Olingo2BatchResponse>> responseHandler);
 }

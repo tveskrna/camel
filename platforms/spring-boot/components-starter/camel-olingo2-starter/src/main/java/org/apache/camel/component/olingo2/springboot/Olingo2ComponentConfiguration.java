@@ -24,6 +24,8 @@ import org.apache.camel.util.jsse.SSLContextParameters;
 import org.apache.http.HttpHost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.olingo.odata2.api.ep.EntityProviderReadProperties;
+import org.apache.olingo.odata2.api.ep.EntityProviderWriteProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -110,6 +112,21 @@ public class Olingo2ComponentConfiguration
          */
         private Map httpHeaders;
         /**
+         * Custom entity provider read properties applied to all read
+         * operations.
+         */
+        private EntityProviderReadProperties entityProviderReadProperties;
+        /**
+         * Custom entity provider write properties applied to create, update,
+         * patch, batch and merge operations. For instance users can skip the
+         * Json object wrapper or enable content only mode when sending request
+         * data. A service URI set in the properties will always be overwritten
+         * by the serviceUri configuration parameter. Please consider to using
+         * the serviceUri configuration parameter instead of setting the
+         * respective write property here.
+         */
+        private EntityProviderWriteProperties entityProviderWriteProperties;
+        /**
          * HTTP connection creation timeout in milliseconds, defaults to 30,000
          * (30 seconds)
          */
@@ -184,6 +201,24 @@ public class Olingo2ComponentConfiguration
 
         public void setHttpHeaders(Map httpHeaders) {
             this.httpHeaders = httpHeaders;
+        }
+
+        public EntityProviderReadProperties getEntityProviderReadProperties() {
+            return entityProviderReadProperties;
+        }
+
+        public void setEntityProviderReadProperties(
+                EntityProviderReadProperties entityProviderReadProperties) {
+            this.entityProviderReadProperties = entityProviderReadProperties;
+        }
+
+        public EntityProviderWriteProperties getEntityProviderWriteProperties() {
+            return entityProviderWriteProperties;
+        }
+
+        public void setEntityProviderWriteProperties(
+                EntityProviderWriteProperties entityProviderWriteProperties) {
+            this.entityProviderWriteProperties = entityProviderWriteProperties;
         }
 
         public Integer getConnectTimeout() {

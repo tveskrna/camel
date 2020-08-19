@@ -29,6 +29,8 @@ import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.olingo.odata2.api.ep.EntityProviderReadProperties;
+import org.apache.olingo.odata2.api.ep.EntityProviderWriteProperties;
 
 /**
  * Component configuration for Olingo2 component.
@@ -50,6 +52,10 @@ public class Olingo2Configuration {
     private String contentType = DEFAULT_CONTENT_TYPE;
     @UriParam
     private Map<String, String> httpHeaders;
+    @UriParam
+    private EntityProviderReadProperties entityProviderReadProperties;
+    @UriParam
+    private EntityProviderWriteProperties entityProviderWriteProperties;
     @UriParam(defaultValue = "" + DEFAULT_TIMEOUT)
     private int connectTimeout = DEFAULT_TIMEOUT;
     @UriParam(defaultValue = "" + DEFAULT_TIMEOUT)
@@ -118,6 +124,31 @@ public class Olingo2Configuration {
      */
     public void setHttpHeaders(Map<String, String> httpHeaders) {
         this.httpHeaders = httpHeaders;
+    }
+
+    public EntityProviderReadProperties getEntityProviderReadProperties() {
+        return entityProviderReadProperties;
+    }
+
+    /**
+     * Custom entity provider read properties applied to all read operations.
+     */
+    public void setEntityProviderReadProperties(EntityProviderReadProperties entityProviderReadProperties) {
+        this.entityProviderReadProperties = entityProviderReadProperties;
+    }
+
+    public EntityProviderWriteProperties getEntityProviderWriteProperties() {
+        return entityProviderWriteProperties;
+    }
+
+    /**
+     * Custom entity provider write properties applied to create, update, patch, batch and merge operations. For
+     * instance users can skip the Json object wrapper or enable content only mode when sending request data. A service
+     * URI set in the properties will always be overwritten by the serviceUri configuration parameter. Please consider
+     * to using the serviceUri configuration parameter instead of setting the respective write property here.
+     */
+    public void setEntityProviderWriteProperties(EntityProviderWriteProperties entityProviderWriteProperties) {
+        this.entityProviderWriteProperties = entityProviderWriteProperties;
     }
 
     public int getConnectTimeout() {
