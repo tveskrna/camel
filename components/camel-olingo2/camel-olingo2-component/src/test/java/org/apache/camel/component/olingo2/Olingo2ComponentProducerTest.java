@@ -178,7 +178,7 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         propertiesToUpdate.put("Name", "MyCarManufacturer Updated");
 
         HttpStatusCodes status = requestBody("direct:MERGE", propertiesToUpdate);
-        assertNotNull("Merge status", status );
+        assertNotNull("Merge status", status);
         assertEquals("Merge status", HttpStatusCodes.NO_CONTENT.getStatusCode(), status.getStatusCode());
         LOG.info("Merge status: {}", status);
 
