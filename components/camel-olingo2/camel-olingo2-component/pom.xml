@@ -75,7 +75,7 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- logging -->   
+    <!-- logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -162,7 +162,7 @@
     <defaultGoal>install</defaultGoal>
 
     <plugins>
-      
+
       <!-- generate Component source and test source -->
       <plugin>
         <groupId>org.apache.camel</groupId>
@@ -290,7 +290,7 @@
       </properties>
     </profile>
     <profile>
-      <!-- REVISIT as of now, the olingo odata2 sample service that is used in the tests 
+      <!-- REVISIT as of now, the olingo odata2 sample service that is used in the tests
            is not available in nexus and needs to be generated and built using its architype plugin.
            If the sample service jar becomes available, we can use it directly -->
       <id>get-olingo2-sample</id>
@@ -345,6 +345,12 @@
                 <dependency>
                     <groupId>org.codehaus.groovy</groupId>
                     <artifactId>groovy</artifactId>
+                    <version>${groovy-version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-ant</artifactId>
                     <version>${groovy-version}</version>
                     <scope>runtime</scope>
                 </dependency>
