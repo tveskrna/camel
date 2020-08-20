@@ -61,7 +61,10 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
     private static final String ADDRESS = "Address";
     private static final String TEST_RESOURCE = "$1";
     private static final String TEST_RESOURCE_ADDRESS = TEST_RESOURCE + "/Address";
-    private static final String TEST_CREATE_MANUFACTURER = "DefaultContainer.Manufacturers('123')";
+    private static final String TEST_MERGE_MANUFACTURER_ID = "124";
+    private static final String TEST_CREATE_MANUFACTURER_ID = "123";
+    private static final String TEST_CREATE_MANUFACTURER
+            = String.format("DefaultContainer.Manufacturers('%s')", TEST_CREATE_MANUFACTURER_ID);
     private static final String TEST_SERVICE_URL = "http://localhost:" + PORT + "/MyFormula.svc";
 
     private static Olingo2SampleServer server;
@@ -130,7 +133,7 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         final ODataEntry manufacturer = requestBody("direct://CREATE", data);
         assertNotNull("Created Manufacturer", manufacturer);
         final Map<String, Object> properties = manufacturer.getProperties();
-        assertEquals("Created Manufacturer Id", "123", properties.get(ID_PROPERTY));
+        assertEquals("Created Manufacturer Id", TEST_CREATE_MANUFACTURER_ID, properties.get(ID_PROPERTY));
         LOG.info("Created Manufacturer: {}", properties);
 
         // update
@@ -143,6 +146,15 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         assertEquals("Update status", HttpStatusCodes.NO_CONTENT.getStatusCode(), status.getStatusCode());
         LOG.info("Update status: {}", status);
 
+        final Map<String, Object> headers = new HashMap<>();
+        headers.put(Olingo2Constants.PROPERTY_PREFIX + "keyPredicate", String.format("'%s'", TEST_CREATE_MANUFACTURER_ID));
+        final ODataEntry updatedManufacturer = requestBodyAndHeaders("direct:READENTRY", null, headers);
+        assertNotNull(updatedManufacturer);
+        final Map<String, Object> updatedProperties = updatedManufacturer.getProperties();
+        assertEquals("Manufacturer Id", updatedProperties.get(ID_PROPERTY), TEST_CREATE_MANUFACTURER_ID);
+        assertEquals("Manufacturer Name", updatedProperties.get("Name"), "MyCarManufacturer Renamed");
+        LOG.info("Updated Manufacturer: {}", updatedProperties);
+
         // delete
         status = requestBody("direct://DELETE", null);
         assertNotNull("Delete status", status);
@@ -150,9 +162,40 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
         LOG.info("Delete status: {}", status);
     }
 
+    @Test
+    public void testCreateMerge() throws Exception {
+        final Map<String, Object> data = getEntityData();
+        data.put(ID_PROPERTY, TEST_MERGE_MANUFACTURER_ID);
+
+        final ODataEntry manufacturer = requestBody("direct:CREATE", data);
+        assertNotNull("Created Manufacturer", manufacturer);
+        final Map<String, Object> properties = manufacturer.getProperties();
+        assertEquals("Created Manufacturer Id", TEST_MERGE_MANUFACTURER_ID, properties.get(ID_PROPERTY));
+        LOG.info("Created Manufacturer: {}", properties);
+
+        final Map<String, Object> propertiesToUpdate = new HashMap<>();
+        propertiesToUpdate.put(ID_PROPERTY, TEST_MERGE_MANUFACTURER_ID);
+        propertiesToUpdate.put("Name", "MyCarManufacturer Updated");
+
+        HttpStatusCodes status = requestBody("direct:MERGE", propertiesToUpdate);
+        assertNotNull("Merge status", status);
+        assertEquals("Merge status", HttpStatusCodes.NO_CONTENT.getStatusCode(), status.getStatusCode());
+        LOG.info("Merge status: {}", status);
+
+        final Map<String, Object> headers = new HashMap<>();
+        headers.put(Olingo2Constants.PROPERTY_PREFIX + "keyPredicate", String.format("'%s'", TEST_MERGE_MANUFACTURER_ID));
+        final ODataEntry mergedManufacturer = requestBodyAndHeaders("direct:READENTRY", null, headers);
+        assertNotNull(mergedManufacturer);
+        final Map<String, Object> mergedProperties = mergedManufacturer.getProperties();
+        assertEquals("Manufacturer Id", TEST_MERGE_MANUFACTURER_ID, mergedProperties.get(ID_PROPERTY));
+        assertEquals("Manufacturer Name", "MyCarManufacturer Updated", mergedProperties.get("Name"));
+        assertNotNull("Manufacturer Address", mergedProperties.get("Address"));
+        LOG.info("Merged Manufacturer: {}", mergedProperties);
+    }
+
     private Map<String, Object> getEntityData() {
         final Map<String, Object> data = new HashMap<>();
-        data.put("Id", "123");
+        data.put(ID_PROPERTY, TEST_CREATE_MANUFACTURER_ID);
         data.put("Name", "MyCarManufacturer");
         data.put("Founded", new Date());
         Map<String, Object> address = new HashMap<>();
@@ -353,17 +396,16 @@ public class Olingo2ComponentProducerTest extends AbstractOlingo2TestSupport {
 
                 // test route for update
                 from("direct://UPDATE")
-                    .to("olingo2://update/Manufacturers('123')");
+                    .to(String.format("olingo2://update/Manufacturers('%s')", TEST_CREATE_MANUFACTURER_ID));
 
                 // test route for delete
                 from("direct://DELETE")
-                    .to("olingo2://delete/Manufacturers('123')");
+                    .to(String.format("olingo2://delete/Manufacturers('%s')", TEST_CREATE_MANUFACTURER_ID));
+
+                // test route for merge
+                from("direct:MERGE").to(String.format("olingo2://merge/Manufacturers('%s')", TEST_MERGE_MANUFACTURER_ID));
 
 /*
-                // test route for merge
-                from("direct://MERGE")
-                    .to("olingo2://merge");
-
                 // test route for patch
                 from("direct://PATCH")
                     .to("olingo2://patch");

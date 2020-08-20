@@ -82,7 +82,7 @@ with the following path and query parameters:
 |===
 
 
-==== Query Parameters (15 parameters):
+==== Query Parameters (17 parameters):
 
 
 [width="100%",cols="2,5,^1,2",options="header"]
@@ -90,6 +90,8 @@ with the following path and query parameters:
 | Name | Description | Default | Type
 | *connectTimeout* (common) | HTTP connection creation timeout in milliseconds, defaults to 30,000 (30 seconds) | 30000 | int
 | *contentType* (common) | Content-Type header value can be used to specify JSON or XML message format, defaults to application/json;charset=utf-8 | application/json;charset=utf-8 | String
+| *entityProviderRead Properties* (common) | Custom entity provider read properties applied to all read operations. |  | EntityProviderRead Properties
+| *entityProviderWrite Properties* (common) | Custom entity provider write properties applied to create, update, patch, batch and merge operations. For instance users can skip the Json object wrapper or enable content only mode when sending request data. A service URI set in the properties will always be overwritten by the serviceUri configuration parameter. Please consider to using the serviceUri configuration parameter instead of setting the respective write property here. |  | EntityProviderWrite Properties
 | *filterAlreadySeen* (common) | Set this to true to filter out results that have already been communicated by this component. | false | boolean
 | *httpAsyncClientBuilder* (common) | Custom HTTP async client builder for more complex HTTP client configuration, overrides connectionTimeout, socketTimeout, proxy and sslContext. Note that a socketTimeout MUST be specified in the builder, otherwise OData requests could block indefinitely |  | HttpAsyncClientBuilder
 | *httpClientBuilder* (common) | Custom HTTP client builder for more complex HTTP client configuration, overrides connectionTimeout, socketTimeout, proxy and sslContext. Note that a socketTimeout MUST be specified in the builder, otherwise OData requests could block indefinitely |  | HttpClientBuilder
@@ -156,13 +158,13 @@ specified. 
 |=======================================================================
 |Name |Type |Description
 |data |Object |Data with appropriate type used to create or modify the OData resource
-|keyPredicate |String |Key predicate to create a parameterized OData resource endpoint. Useful for 
+|keyPredicate |String |Key predicate to create a parameterized OData resource endpoint. Useful for
 create/update operations where the key predicate value is dynamically provided in a header
-|queryParams |java.util.Map<String,String> |OData system options and custom query options. For more 
+|queryParams |java.util.Map<String,String> |OData system options and custom query options. For more
 information see http://www.odata.org/documentation/odata-version-2-0/uri-conventions/[OData 2.0 URI Conventions]
 |resourcePath |String |OData resource path, may or may not contain key predicate
 |endpointHttpHeaders |java.util.Map<String, String> |Dynamic HTTP Headers to be sent to the endpoint
-|responseHttpHeaders |java.util.Map<String, String> |Dynamic HTTP Response Headers from the endpoint 
+|responseHttpHeaders |java.util.Map<String, String> |Dynamic HTTP Response Headers from the endpoint
 |=======================================================================
 
 Note that the resourcePath option can either in specified in the URI as
@@ -194,12 +196,12 @@ org.apache.olingo.odata2.api.commons.HttpStatusCodes for other OData resources
 |=======================================================================
 
 ### Endpoint HTTP Headers (Since 2.20)
-The component level configuration property **httpHeaders** supplies static HTTP header information. 
+The component level configuration property **httpHeaders** supplies static HTTP header information.
 However, some systems requires dynamic header information to be passed to and received from the endpoint.
-A sample use case would be systems that require dynamic security tokens.  The **endpointHttpHeaders** 
-and **responseHttpHeaders** endpoint properties provides this capability.  Set headers that need to 
-be passed to the endpoint in the *`CamelOlingo2.endpointHttpHeaders`* property and the 
-response headers will be returned in a *`CamelOlingo2.responseHttpHeaders`* property.  
+A sample use case would be systems that require dynamic security tokens.  The **endpointHttpHeaders**
+and **responseHttpHeaders** endpoint properties provides this capability.  Set headers that need to
+be passed to the endpoint in the *`CamelOlingo2.endpointHttpHeaders`* property and the
+response headers will be returned in a *`CamelOlingo2.responseHttpHeaders`* property.
 Both properties are of the type *`java.util.Map<String, String>`*.
 
 ### OData Resource Type Mapping
