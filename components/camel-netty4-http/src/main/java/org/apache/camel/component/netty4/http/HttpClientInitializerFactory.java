@@ -145,7 +145,7 @@ public class HttpClientInitializerFactory extends ClientInitializerFactory {
             if (configuration.getTrustStoreFile() == null && configuration.getTrustStoreResource() == null) {
                 LOG.debug("truststorefile is null");
             }
-            if (configuration.getPassphrase().toCharArray() == null) {
+            if (configuration.getPassphrase() == null) {
                 LOG.debug("passphrase is null");
             }
             char[] pw = configuration.getPassphrase() != null ? configuration.getPassphrase().toCharArray() : null;
@@ -157,7 +157,7 @@ public class HttpClientInitializerFactory extends ClientInitializerFactory {
                         configuration.getSecurityProvider(),
                         "file:" + configuration.getKeyStoreFile().getPath(),
                         "file:" + configuration.getTrustStoreFile().getPath(),
-                        configuration.getPassphrase().toCharArray());
+                        pw);
             } else if (configuration.getKeyStoreResource() != null || configuration.getTrustStoreResource() != null) {
                 sslEngineFactory = new SSLEngineFactory();
                 answer = sslEngineFactory.createSSLContext(producer.getContext().getClassResolver(),

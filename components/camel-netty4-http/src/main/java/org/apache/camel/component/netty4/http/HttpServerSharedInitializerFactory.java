@@ -115,11 +115,12 @@ public class HttpServerSharedInitializerFactory extends HttpServerInitializerFac
             if (configuration.getTrustStoreFile() == null && configuration.getTrustStoreResource() == null) {
                 LOG.debug("truststorefile is null");
             }
-            if (configuration.getPassphrase().toCharArray() == null) {
+            if (configuration.getPassphrase() == null) {
                 LOG.debug("passphrase is null");
             }
 
             SSLEngineFactory sslEngineFactory;
+            char[] pw = configuration.getPassphrase() != null ? configuration.getPassphrase().toCharArray() : null;
             if (configuration.getKeyStoreFile() != null || configuration.getTrustStoreFile() != null) {
                 sslEngineFactory = new SSLEngineFactory();
                 answer = sslEngineFactory.createSSLContext(classResolver,
@@ -127,7 +128,7 @@ public class HttpServerSharedInitializerFactory extends HttpServerInitializerFac
                         configuration.getSecurityProvider(),
                         "file:" + configuration.getKeyStoreFile().getPath(),
                         "file:" + configuration.getTrustStoreFile().getPath(),
-                        configuration.getPassphrase().toCharArray());
+                        pw);
             } else {
                 sslEngineFactory = new SSLEngineFactory();
                 answer = sslEngineFactory.createSSLContext(classResolver,
@@ -135,7 +136,7 @@ public class HttpServerSharedInitializerFactory extends HttpServerInitializerFac
                         configuration.getSecurityProvider(),
                         configuration.getKeyStoreResource(),
                         configuration.getTrustStoreResource(),
-                        configuration.getPassphrase().toCharArray());
+                        pw);
             }
         }
 
