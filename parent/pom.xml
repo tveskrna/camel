@@ -700,7 +700,7 @@
     <swagger-ui-version>2.2.10</swagger-ui-version>
     <apicurio-version>1.0.16.Final</apicurio-version>
     <stax-api-version>1.0.1</stax-api-version>
-    <stax2-api-bundle-version>3.1.4</stax2-api-bundle-version>
+    <stax2-api-bundle-version>4.2.1</stax2-api-bundle-version>
     <stringtemplate-bundle-version>4.0.8_1</stringtemplate-bundle-version>
     <stringtemplate-version>4.0.8</stringtemplate-version>
     <tagsoup-bundle-version>1.2.1_1</tagsoup-bundle-version>
@@ -735,7 +735,7 @@
     <weld3-version>3.0.5.Final</weld3-version>
     <werken-xpath-bundle-version>0.9.4_5</werken-xpath-bundle-version>
     <wiremock-version>2.19.0</wiremock-version>
-    <woodstox-version>4.4.1</woodstox-version>
+    <woodstox-version>5.2.1</woodstox-version>
     <ws-commons-util-bundle-version>1.0.2_2</ws-commons-util-bundle-version>
     <wsdl4j-bundle-version>1.6.3_1</wsdl4j-bundle-version>
     <wsdl4j-version>1.6.3</wsdl4j-version>
@@ -4849,10 +4849,15 @@
         <version>${xml-apis-version}</version>
       </dependency>
       <dependency>
-        <groupId>org.codehaus.woodstox</groupId>
-        <artifactId>woodstox-core-asl</artifactId>
+        <groupId>com.fasterxml.woodstox</groupId>
+        <artifactId>woodstox-core</artifactId>
         <version>${woodstox-version}</version>
         <exclusions>
+          <exclusion>
+            <groupId>stax</groupId>
+            <artifactId>stax-api</artifactId>
+          </exclusion>
+          <!-- this one comes from sjsxp -->
           <exclusion>
             <groupId>javax.xml.stream</groupId>
             <artifactId>stax-api</artifactId>
@@ -5798,8 +5803,8 @@
 
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.woodstox</groupId>
-          <artifactId>woodstox-core-asl</artifactId>
+          <groupId>com.fasterxml.woodstox</groupId>
+          <artifactId>woodstox-core</artifactId>
           <version>${woodstox-version}</version>
           <scope>test</scope>
         </dependency>
