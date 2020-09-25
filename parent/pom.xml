@@ -63,7 +63,7 @@
     <arquillian-version>1.4.0.Final</arquillian-version>
     <arquillian-weld-embedded-version>2.0.0.Final</arquillian-weld-embedded-version>
     <asciidoctorj-version>1.5.6</asciidoctorj-version>
-    <asm-version>8.0.1</asm-version>
+    <asm-version>5.0.4</asm-version>
     <aspectj-version>1.9.2</aspectj-version>
     <assertj-version>3.16.1</assertj-version>
     <asterisk-java-version>1.0.0-final</asterisk-java-version>
@@ -71,7 +71,7 @@
     <atlassian-fugue-version>3.0.0</atlassian-fugue-version>
     <atmos-client-version>2.2.2</atmos-client-version>
     <atmosphere-version>2.5.2</atmosphere-version>
-    <atmosphere-version-range>[2.5,3.0)</atmosphere-version-range>
+    <atmosphere-version-range>[2.4,3.0)</atmosphere-version-range>
     <atomix-version>1.0.8</atomix-version>
     <atomix-catalyst-version>1.2.1</atomix-catalyst-version>
     <atomix-copycat-version>1.2.8</atomix-copycat-version>
@@ -340,6 +340,7 @@
     <!-- ENTESB-12869: versions from com.fasterxml.jackson/jackson-bom/2.9.10.20200411-redhat-00001 -->
     <jackson2-version>2.9.10</jackson2-version>
     <jackson2-databind-version>2.9.10.4-redhat-00001</jackson2-databind-version>
+    <jackson2-jsonschema-version>2.9.10.redhat-00005</jackson2-jsonschema-version>
     <jackrabbit-version>2.17.6</jackrabbit-version>
     <jackrabbit-guava-version>15.0</jackrabbit-guava-version>
     <jain-sip-ri-bundle-version>1.2.154_2</jain-sip-ri-bundle-version>
@@ -700,7 +701,7 @@
     <swagger-ui-version>2.2.10</swagger-ui-version>
     <apicurio-version>1.0.16.Final</apicurio-version>
     <stax-api-version>1.0.1</stax-api-version>
-    <stax2-api-bundle-version>3.1.4</stax2-api-bundle-version>
+    <stax2-api-bundle-version>4.2.1</stax2-api-bundle-version>
     <stringtemplate-bundle-version>4.0.8_1</stringtemplate-bundle-version>
     <stringtemplate-version>4.0.8</stringtemplate-version>
     <tagsoup-bundle-version>1.2.1_1</tagsoup-bundle-version>
@@ -735,7 +736,7 @@
     <weld3-version>3.0.5.Final</weld3-version>
     <werken-xpath-bundle-version>0.9.4_5</werken-xpath-bundle-version>
     <wiremock-version>2.19.0</wiremock-version>
-    <woodstox-version>4.4.1</woodstox-version>
+    <woodstox-version>5.2.1</woodstox-version>
     <ws-commons-util-bundle-version>1.0.2_2</ws-commons-util-bundle-version>
     <wsdl4j-bundle-version>1.6.3_1</wsdl4j-bundle-version>
     <wsdl4j-version>1.6.3</wsdl4j-version>
@@ -784,8 +785,8 @@
       !org.springframework.context.annotation.*;resolution:=optional,
       org.osgi.framework;version="[1.5,2)",
       org.osgi.framework.wiring;version="[1.0,2)",
-      org.springframework.ws.*;version="[2,3)",
-      org.springframework.xml.*;version="[2,3)",
+      org.springframework.ws.*;version="[2,4)",
+      org.springframework.xml.*;version="[2,4)",
       org.springframework.*;version="${spring-version-range}",
       org.apache.cxf.*;version="${cxf-version-range}",
       org.apache.qpid.*;version="[0.20,1)",
@@ -3859,7 +3860,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.module</groupId>
         <artifactId>jackson-module-jsonSchema</artifactId>
-        <version>${jackson2-version}</version>
+        <version>${jackson2-jsonschema-version}</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.jr</groupId>
@@ -4849,10 +4850,15 @@
         <version>${xml-apis-version}</version>
       </dependency>
       <dependency>
-        <groupId>org.codehaus.woodstox</groupId>
-        <artifactId>woodstox-core-asl</artifactId>
+        <groupId>com.fasterxml.woodstox</groupId>
+        <artifactId>woodstox-core</artifactId>
         <version>${woodstox-version}</version>
         <exclusions>
+          <exclusion>
+            <groupId>stax</groupId>
+            <artifactId>stax-api</artifactId>
+          </exclusion>
+          <!-- this one comes from sjsxp -->
           <exclusion>
             <groupId>javax.xml.stream</groupId>
             <artifactId>stax-api</artifactId>
@@ -5798,8 +5804,8 @@
 
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.woodstox</groupId>
-          <artifactId>woodstox-core-asl</artifactId>
+          <groupId>com.fasterxml.woodstox</groupId>
+          <artifactId>woodstox-core</artifactId>
           <version>${woodstox-version}</version>
           <scope>test</scope>
         </dependency>
