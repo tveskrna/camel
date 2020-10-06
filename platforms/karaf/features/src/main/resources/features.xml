@@ -1278,6 +1278,7 @@
   </feature>
   <feature name='camel-johnzon' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
+    <bundle dependency="true">mvn:javax.json/javax.json-api/${json-api-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${aries-spifly-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.johnzon/johnzon-core/${johnzon-version}</bundle>
     <bundle dependency='true'>mvn:org.apache.johnzon/johnzon-mapper/${johnzon-version}</bundle>
