@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 package org.apache.camel.component.mina2;
+import java.util.Collections;
+
 import org.apache.camel.impl.JndiRegistry;
 import org.apache.camel.test.AvailablePortFinder;
 import org.apache.camel.test.junit4.CamelTestSupport;
@@ -23,6 +25,7 @@ import org.apache.camel.util.jsse.KeyManagersParameters;
 import org.apache.camel.util.jsse.KeyStoreParameters;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.apache.camel.util.jsse.SSLContextServerParameters;
+import org.apache.camel.util.jsse.SecureSocketProtocolsParameters;
 import org.apache.camel.util.jsse.TrustManagersParameters;
 import org.junit.BeforeClass;
 
@@ -81,6 +84,9 @@ public class BaseMina2Test extends CamelTestSupport {
         scsp.setClientAuthentication(ClientAuthentication.WANT.name());
 
         SSLContextParameters sslContextParameters = new SSLContextParameters();
+        SecureSocketProtocolsParameters secureSocketProtocols = new SecureSocketProtocolsParameters();
+        secureSocketProtocols.setSecureSocketProtocol(Collections.singletonList("TLSv1.2"));
+        sslContextParameters.setSecureSocketProtocols(secureSocketProtocols);
         sslContextParameters.setKeyManagers(kmp);
         sslContextParameters.setTrustManagers(tmp);
         sslContextParameters.setServerParameters(scsp);
