@@ -56,6 +56,16 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <version>${spring-boot-version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jdk8</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- End of test dependencies -->
     <!--START OF GENERATED CODE-->
