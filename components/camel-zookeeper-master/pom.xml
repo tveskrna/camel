@@ -36,6 +36,7 @@
     <camel.osgi.import>
       !com.google.common.base;,
       !org.apache.camel.component.zookeepermaster.group,
+      org.apache.curator.*;version="[2.11,3)",
       *
     </camel.osgi.import>
     <camel.osgi.export.pkg>
