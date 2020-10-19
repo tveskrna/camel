@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -42,13 +43,19 @@ public class OpenshiftBuildsProducerTest extends KubernetesTestSupport {
     @Override
     protected JndiRegistry createRegistry() throws Exception {
         JndiRegistry registry = super.createRegistry();
+        server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+                .addNewGroup()
+                .withApiVersion("v1")
+                .withName("security.openshift.io")
+                .endGroup()
+                .build()).always();
         registry.bind("client", server.getKubernetesClient().adapt(OpenShiftClient.class));
         return registry;
     }
 
     @Test
     public void listTest() throws Exception {
-        server.expect().withPath("/oapi/v1/builds").andReturn(200, new BuildListBuilder().addNewItem().and().addNewItem().and().build()).once();
+        server.expect().withPath("/apis/build.openshift.io/v1/builds").andReturn(200, new BuildListBuilder().addNewItem().and().addNewItem().and().build()).once();
         List<Build> result = template.requestBody("direct:list", "", List.class);
 
         assertEquals(2, result.size());
@@ -56,7 +63,7 @@ public class OpenshiftBuildsProducerTest extends KubernetesTestSupport {
 
     @Test
     public void listByLabelsTest() throws Exception {
-        server.expect().withPath("/oapi/v1/builds?labelSelector=" + toUrlEncoded("key1=value1,key2=value2"))
+        server.expect().withPath("/apis/build.openshift.io/v1/builds?labelSelector=" + toUrlEncoded("key1=value1,key2=value2"))
             .andReturn(200, new BuildListBuilder().addNewItem().and().addNewItem().and().build()).once();
         Exchange ex = template.request("direct:listByLabels", new Processor() {
 
