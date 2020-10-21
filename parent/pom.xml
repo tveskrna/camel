@@ -610,7 +610,8 @@
     <restlet-version>2.3.12</restlet-version>
     <restlet-woodstox-version>4.3.0</restlet-woodstox-version>
     <restlet-yaml-version>1.13</restlet-yaml-version>
-    <cmis-woodstox-version>4.4.1</cmis-woodstox-version>
+    <cmis-stax2-api-bundle-version>3.1.4</cmis-stax2-api-bundle-version>
+    <cmis-woodstox-version>4.4.1.redhat-00001</cmis-woodstox-version>
     <revapi-java-version>0.18.1</revapi-java-version>
     <revapi-maven-plugin-version>0.10.5</revapi-maven-plugin-version>
     <rhino-bundle-version>1.7.7.1_1</rhino-bundle-version>
