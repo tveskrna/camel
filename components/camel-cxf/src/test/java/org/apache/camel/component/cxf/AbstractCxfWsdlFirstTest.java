@@ -88,8 +88,10 @@ public abstract class AbstractCxfWsdlFirstTest extends CamelSpringTestSupport {
         } catch (WebServiceException ex) {
             // Caught expected WebServiceException here
             assertTrue("Should get the xml vaildate error! " + ex.getMessage(),
-                       ex.getMessage().indexOf("MyStringType") > 0
-                       || ex.getMessage().indexOf("Could not parse the XML stream") != -1);         
+                    ex.getMessage().indexOf("MyStringType") > 0
+                            || ex.getMessage().indexOf("Could not parse the XML stream") != -1
+                            || ex.getMessage().indexOf("the required maximum is 30") > 0
+            );
         }
 
         verifyJaxwsHandlers(fromHandler, toHandler);

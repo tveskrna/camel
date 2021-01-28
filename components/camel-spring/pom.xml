@@ -126,11 +126,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>jsr250-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
       <type>test-jar</type>
@@ -569,6 +564,11 @@
           <version>${woodstox-version}</version>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>javax.annotation</groupId>
+          <artifactId>jsr250-api</artifactId>
+          <scope>test</scope>
+        </dependency>
       </dependencies>
       <build>
         <plugins>
@@ -600,7 +600,7 @@
     <profile>
       <id>jdk9+-build</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
       <dependencies>
         <!-- xmltokenizer using woodstox -->
@@ -608,6 +608,11 @@
           <groupId>com.fasterxml.woodstox</groupId>
           <artifactId>woodstox-core</artifactId>
           <version>${woodstox-version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>javax.annotation</groupId>
+          <artifactId>jsr250-api</artifactId>
           <scope>test</scope>
         </dependency>
       </dependencies>

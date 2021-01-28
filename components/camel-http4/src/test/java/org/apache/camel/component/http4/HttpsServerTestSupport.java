@@ -32,7 +32,7 @@ import org.junit.Before;
  */
 public abstract class HttpsServerTestSupport extends HttpServerTestSupport {
 
-    protected static final String KEYSTORE_PATH = "./src/test/resources/localhost.ks";
+    protected static final String KEYSTORE_PATH = "./src/test/resources/localhost.p12";
     protected static final File KEYSTORE = new File(KEYSTORE_PATH);
     protected static final String SECURE_SOCKET_PROTOCOL = "TLS";
     protected static final String PASSWORD = "changeit";

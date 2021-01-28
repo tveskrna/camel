@@ -49,8 +49,9 @@ public class NettyHttpGlobalSSLTest extends CamelTestSupport {
     public static void setUpJaas() throws Exception {
         // ensure jsse clients can validate the self signed dummy localhost cert,
         // use the server keystore as the trust store for these tests
-        URL trustStoreUrl = NettyHttpSSLTest.class.getClassLoader().getResource("jsse/localhost.ks");
+        URL trustStoreUrl = NettyHttpSSLTest.class.getClassLoader().getResource("jsse/localhost.p12");
         System.setProperty("javax.net.ssl.trustStore", trustStoreUrl.toURI().getPath());
+        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
     }
 
     @AfterClass
@@ -68,7 +69,7 @@ public class NettyHttpGlobalSSLTest extends CamelTestSupport {
         KeyManagersParameters keyManagers = new KeyManagersParameters();
         keyManagers.setKeyPassword("changeit");
         KeyStoreParameters keyStore = new KeyStoreParameters();
-        keyStore.setResource("jsse/localhost.ks");
+        keyStore.setResource("jsse/localhost.p12");
         keyStore.setPassword("changeit");
         keyManagers.setKeyStore(keyStore);
         sslContextParameters.setKeyManagers(keyManagers);

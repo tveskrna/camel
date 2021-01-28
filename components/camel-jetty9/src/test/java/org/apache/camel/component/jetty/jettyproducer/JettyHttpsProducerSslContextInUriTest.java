@@ -34,7 +34,7 @@ public class JettyHttpsProducerSslContextInUriTest extends JettyProducerHttpsRou
     @Override
     protected JndiRegistry createRegistry() throws Exception {
         KeyStoreParameters ksp = new KeyStoreParameters();
-        ksp.setResource(this.getClass().getClassLoader().getResource("jsse/localhost.ks").toString());
+        ksp.setResource(this.getClass().getClassLoader().getResource("jsse/localhost.p12").toString());
         ksp.setPassword(pwd);
 
         KeyManagersParameters kmp = new KeyManagersParameters();
@@ -68,7 +68,7 @@ public class JettyHttpsProducerSslContextInUriTest extends JettyProducerHttpsRou
                 JettyHttpComponent componentJetty = (JettyHttpComponent) context.getComponent("jetty");
                 componentJetty.setSslPassword(pwd);
                 componentJetty.setSslKeyPassword(pwd);
-                URL keyStoreUrl = this.getClass().getClassLoader().getResource("jsse/localhost.ks");
+                URL keyStoreUrl = this.getClass().getClassLoader().getResource("jsse/localhost.p12");
                 componentJetty.setKeystore(keyStoreUrl.toURI().getPath());
                 
                 from("jetty:https://localhost:" + port1 + "/test?sslContextParameters=#sslContextParameters").to("mock:a");
