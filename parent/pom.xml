@@ -5936,6 +5936,7 @@
         <jdk>[11,)</jdk>
       </activation>
       <properties>
+        <glassfish-jaxb-runtime-version>2.3.3</glassfish-jaxb-runtime-version>
         <jakarta-activation-version>1.2.2</jakarta-activation-version>
         <jakarta-xml-bind-api-version>2.3.3</jakarta-xml-bind-api-version>
         <jakarta-xml-ws-version>2.3.0</jakarta-xml-ws-version>
@@ -5993,6 +5994,11 @@
           <groupId>com.sun.xml.messaging.saaj</groupId>
           <artifactId>saaj-impl</artifactId>
           <version>${xml-messaging-xaaj-version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.glassfish.jaxb</groupId>
+          <artifactId>jaxb-runtime</artifactId>
+          <version>${glassfish-jaxb-runtime-version}</version>
         </dependency>
       </dependencies>
     </profile>

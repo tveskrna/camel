@@ -672,7 +672,7 @@
     <profile>
       <id>jdk9+-build</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
       <dependencies>
 
@@ -724,6 +724,21 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+         <profile>
+      <id>jdk11</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+
+      <dependencies>
+        <!-- xmltokenizer using woodstox -->
+        <dependency>
+          <groupId>com.fasterxml.woodstox</groupId>
+          <artifactId>woodstox-core</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 
