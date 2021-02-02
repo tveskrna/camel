@@ -13,8 +13,8 @@ https://github.com/keycloak/keycloak-containers/tree/master/docker-compose-examp
 
 After logging into the Administration Console of the keycloak server:
 
-* Create a realm using import (exported file _realm-export.json_ is prepared in the  root of this example).
-It will create realm "example-app", with client _example-service_  and roles _role01_ and _role02_.
+* Create a realm using import (exported file _realm-export.json_ is prepared in the  root of this example) as *example-app*.
+It will create client _example-service_  and roles _role01_ and _role02_.
 * Create a user for each roles (_user01_ with role _role01_ and _user02_ with role _role02_).
 
 When the Keycloak server is configured and running, retrieve access tokens for both users.

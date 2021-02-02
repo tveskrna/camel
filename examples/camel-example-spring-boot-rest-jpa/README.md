@@ -25,13 +25,13 @@ $ mvn package
 You can run this example with Maven using:
 
 ```sh
-$ mvn spring-boot:run -Dspring.profiles.active=dev
+$ mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 Alternatively, you can also run this example using the executable JAR:
 
 ```sh
-$ java -jar -Dspring.profiles.active=dev target/camel-example-spring-boot-rest-jpa-${project.version}.jar
+$ java -jar -Dspring-boot.run.profiles=dev target/camel-example-spring-boot-rest-jpa-${project.version}.jar
 ```
 
 This uses an embedded in-memory HSQLDB database. You can use the default
