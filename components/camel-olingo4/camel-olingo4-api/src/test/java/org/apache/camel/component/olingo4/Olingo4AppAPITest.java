@@ -163,7 +163,7 @@ public class Olingo4AppAPITest {
         final ClientServiceDocument serviceDocument = responseHandler.await();
 
         final Map<String, URI> entitySets = serviceDocument.getEntitySets();
-        assertEquals("Service Entity Sets", 4, entitySets.size());
+        assertEquals("Service Entity Sets", 3, entitySets.size());
         LOG.info("Service Document Entries:  {}", entitySets);
     }
 
