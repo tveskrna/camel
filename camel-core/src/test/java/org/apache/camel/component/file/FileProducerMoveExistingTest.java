@@ -75,8 +75,7 @@ public class FileProducerMoveExistingTest extends ContextTestSupport {
         assertEquals("Hello World", context.getTypeConverter().convertTo(String.class, new File("target/file/renamed-hello.txt")));
     }
 
-
-
+    @Test
     public void testFailOnMoveExistingFileExistsEagerDeleteFalseTempFileName() throws Exception {
         template.sendBodyAndHeader("file://target/file?tempFileName=${file:onlyname}.temp", "First File", Exchange.FILE_NAME, "renamed-hello.txt");
 
@@ -95,6 +94,7 @@ public class FileProducerMoveExistingTest extends ContextTestSupport {
         assertEquals("First File", context.getTypeConverter().convertTo(String.class, new File("target/file/renamed-hello.txt")));
     }
 
+    @Test
     public void testExistingFileExistsTempFileNameMoveDynamicSubdir() throws Exception {
         final String subdirPrefix = generateRandomString(5);
         template.sendBodyAndHeader("file://target/file?tempFileName=${file:onlyname}.temp&fileExist=Move&moveExisting=" + subdirPrefix + "-${date:now:yyyyMMddHHmmssSSS}/",
@@ -119,7 +119,7 @@ public class FileProducerMoveExistingTest extends ContextTestSupport {
         assertEquals("Hello World", context.getTypeConverter().convertTo(String.class, movedFilePath));
     }
 
-
+    @Test
     public void testExistingFileExistsTempFileNameMoveSubDir() throws Exception {
         template.sendBodyAndHeader("file://target/file?tempFileName=${file:onlyname}.temp&fileExist=Move&moveExisting=archive",
                 "Hello World", Exchange.FILE_NAME, "hello.txt");
@@ -133,6 +133,7 @@ public class FileProducerMoveExistingTest extends ContextTestSupport {
         assertEquals("Hello World", context.getTypeConverter().convertTo(String.class, new File("target/file/archive/hello.txt")));
     }
 
+    @Test
     public void testExistingFileExistsMoveSubDir() throws Exception {
         template.sendBodyAndHeader("file://target/file?fileExist=Move&moveExisting=backup", "Hello World", Exchange.FILE_NAME, "hello.txt");
         template.sendBodyAndHeader("file://target/file?fileExist=Move&moveExisting=backup", "Bye World", Exchange.FILE_NAME, "hello.txt");
