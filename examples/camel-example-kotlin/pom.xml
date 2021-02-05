@@ -94,10 +94,9 @@
 
   <profiles>
     <profile>
-      <!-- kotlin 1.1.x only supports Java 8 -->
       <id>java8</id>
       <activation>
-        <jdk>1.8</jdk>
+        <jdk>[1.8,)</jdk>
       </activation>
 
       <build>
