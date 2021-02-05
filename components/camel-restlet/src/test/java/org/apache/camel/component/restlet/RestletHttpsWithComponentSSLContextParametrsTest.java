@@ -84,8 +84,10 @@ public class RestletHttpsWithComponentSSLContextParametrsTest extends RestletTes
     }
 
     private void postRequestMessage(String message, String path, Integer portIncrement) throws Exception {
-        URL trustStoreUrl = this.getClass().getClassLoader().getResource("jsse/localhost.ks");
+        URL trustStoreUrl = this.getClass().getClassLoader().getResource("jsse/localhost.p12");
         System.setProperty("javax.net.ssl.trustStore", trustStoreUrl.toURI().getPath());
+        System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
+        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         HttpPost post = new HttpPost("https://localhost:" + (portNum + portIncrement) + "/users/" + path);
         post.addHeader(Exchange.CONTENT_TYPE, "application/xml");
@@ -107,7 +109,7 @@ public class RestletHttpsWithComponentSSLContextParametrsTest extends RestletTes
 
     SSLContextParameters generateSSLContextParametrs(String password) {
         KeyStoreParameters ksp = new KeyStoreParameters();
-        ksp.setResource(new File("src/test/resources/jsse/localhost.ks").getAbsolutePath());
+        ksp.setResource(new File("src/test/resources/jsse/localhost.p12").getAbsolutePath());
         ksp.setPassword(password);
 
         KeyManagersParameters kmp = new KeyManagersParameters();
@@ -116,6 +118,8 @@ public class RestletHttpsWithComponentSSLContextParametrsTest extends RestletTes
 
         SSLContextParameters sslContextParameters = new SSLContextParameters();
         sslContextParameters.setKeyManagers(kmp);
+
+        sslContextParameters.setSecureSocketProtocol("TLSv1.2");
 
         return sslContextParameters;
     }

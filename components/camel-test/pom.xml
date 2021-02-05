@@ -74,7 +74,7 @@
         <profile>
             <id>jdk9+-build</id>
             <activation>
-                <jdk>[9,)</jdk>
+                <jdk>[9,11)</jdk>
             </activation>
             <build>
                 <plugins>

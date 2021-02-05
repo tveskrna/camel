@@ -16,6 +16,8 @@
  */
 package org.apache.camel.component.jpa;
 
+import java.util.Random;
+
 import javax.persistence.PersistenceException;
 
 import org.apache.camel.examples.Order;
@@ -23,6 +25,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+
 
 /**
  * @version 
@@ -39,12 +43,17 @@ public class JpaUsePersistTest extends AbstractJpaMethodTest {
     @Test
     public void produceExistingEntityShouldThrowAnException() throws Exception {
         setUp("jpa://" + Order.class.getName() + "?usePersist=true");
-        
-        Order order = createOrder();
-        save(order);
+        long id = new Random().nextLong();
+        Order order2 = new Order();
+        order2.setId(id);
+        order2.setProductName("Beer");
+        order2.setProductSku("12345");
+        order2.setQuantity(5);
+        save(order2);
 
-        // and adjust some values
-        order = createOrder();
+        // we cannot store the 2nd order as its using the same id as the 1st
+        Order order = new Order();
+        order.setId(id);
         order.setProductName("Cheese");
         order.setProductSku("54321");
         order.setQuantity(2);

@@ -496,7 +496,7 @@
     <profile>
       <id>jdk9+-weld-2.0</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
 
       <dependencies>

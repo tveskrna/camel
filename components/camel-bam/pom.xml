@@ -208,11 +208,11 @@
         </dependency>
       </dependencies>
     </profile>
-    
+
     <profile>
       <id>jdk9+-hibernate</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
       <build>
         <testResources>
@@ -220,7 +220,7 @@
             <directory>${basedir}/src/test/profiles/hibernate</directory>
           </testResource>
         </testResources>
-        
+
         <plugins>
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -243,5 +243,6 @@
         </dependency>
       </dependencies>
     </profile>
+
   </profiles>
 </project>
