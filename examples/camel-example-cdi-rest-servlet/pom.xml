@@ -173,7 +173,7 @@
     <profile>
       <id>jdk9+-build-jetty</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[9,11)</jdk>
       </activation>
       <dependencies>
         <dependency>

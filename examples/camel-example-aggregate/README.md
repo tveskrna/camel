@@ -41,6 +41,10 @@ To run the example type:
 
 	mvn camel:run
 
+To run on jdk11 it's necessary to make `jdk.internal.ref` accessible: 
+
+    MAVEN_OPTS="--add-opens=java.base/jdk.internal.ref=ALL-UNNAMED" mvn camel:run 
+    
 To stop the example hit <kbd>ctrl</kbd>+<kbd>c</kbd>.  If you restart it and resume
 entering numbers you should see that it remembered previously entered values, as it
 uses a persistent store.
