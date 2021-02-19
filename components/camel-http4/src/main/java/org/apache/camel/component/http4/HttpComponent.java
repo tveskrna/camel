@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ComponentVerifier;
@@ -43,6 +44,7 @@ import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.RestConfiguration;
 import org.apache.camel.spi.RestProducerFactory;
 import org.apache.camel.spi.RestProducerFactoryHelper;
+import org.apache.camel.util.CamelContextHelper;
 import org.apache.camel.util.FileUtil;
 import org.apache.camel.util.IntrospectionSupport;
 import org.apache.camel.util.ObjectHelper;
@@ -342,8 +344,9 @@ public class HttpComponent extends HttpCommonComponent implements RestProducerFa
         // need to check the parameters of maxTotalConnections and connectionsPerRoute
         final int maxTotalConnections = getAndRemoveParameter(parameters, "maxTotalConnections", int.class, 0);
         final int connectionsPerRoute = getAndRemoveParameter(parameters, "connectionsPerRoute", int.class, 0);
+        final boolean useSystemProperties = CamelContextHelper.mandatoryConvertTo(this.getCamelContext(), boolean.class, parameters.get("useSystemProperties"));
 
-        final Registry<ConnectionSocketFactory> connectionRegistry = createConnectionRegistry(hostnameVerifier, sslContextParameters);
+        final Registry<ConnectionSocketFactory> connectionRegistry = createConnectionRegistry(hostnameVerifier, sslContextParameters, useSystemProperties);
 
         return createConnectionManager(connectionRegistry, maxTotalConnections, connectionsPerRoute);
     }
@@ -366,7 +369,7 @@ public class HttpComponent extends HttpCommonComponent implements RestProducerFa
         return clientBuilder;
     }
 
-    protected Registry<ConnectionSocketFactory> createConnectionRegistry(HostnameVerifier x509HostnameVerifier, SSLContextParameters sslContextParams)
+    protected Registry<ConnectionSocketFactory> createConnectionRegistry(HostnameVerifier x509HostnameVerifier, SSLContextParameters sslContextParams, boolean useSystemProperties)
         throws GeneralSecurityException, IOException {
         // create the default connection registry to use
         RegistryBuilder<ConnectionSocketFactory> builder = RegistryBuilder.<ConnectionSocketFactory>create();
@@ -376,8 +379,8 @@ public class HttpComponent extends HttpCommonComponent implements RestProducerFa
             builder.register("https", new SSLConnectionSocketFactory(sslContextParams.createSSLContext(getCamelContext()), x509HostnameVerifier));
             builder.register("https4", new SSLConnectionSocketFactory(sslContextParams.createSSLContext(getCamelContext()), x509HostnameVerifier));
         } else {
-            builder.register("https4", new SSLConnectionSocketFactory(SSLContexts.createDefault(), x509HostnameVerifier));
-            builder.register("https", new SSLConnectionSocketFactory(SSLContexts.createDefault(), x509HostnameVerifier));
+            builder.register("https4", new SSLConnectionSocketFactory(useSystemProperties ? SSLContexts.createSystemDefault() : SSLContexts.createDefault(), x509HostnameVerifier));
+            builder.register("https", new SSLConnectionSocketFactory(useSystemProperties ? SSLContexts.createSystemDefault() : SSLContexts.createDefault(), x509HostnameVerifier));
         }
         return builder.build();
     }
