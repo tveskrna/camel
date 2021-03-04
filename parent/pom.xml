@@ -367,7 +367,7 @@
     <javax-mail-version>1.6.1.redhat-1</javax-mail-version>
     <javax.servlet-api-version>3.1.0</javax.servlet-api-version>
     <javax.ws.rs-api-version>2.0.1</javax.ws.rs-api-version>
-    <jaxb-bundle-version>2.2.11_1</jaxb-bundle-version>
+    <jaxb-bundle-version>2.3.1_1</jaxb-bundle-version>
     <jaxen-version>1.1.6</jaxen-version>
     <jbpm-version>7.14.0.Final</jbpm-version>
     <jboss-javaee-6-version>1.0.0.Final</jboss-javaee-6-version>
@@ -634,6 +634,7 @@
     <serp-bundle-version>1.14.1_1</serp-bundle-version>
     <servicemix-specs-version>2.9.0</servicemix-specs-version>
     <servicemix-specs-activation-version>1.2.1_2</servicemix-specs-activation-version>
+    <servicemix-specs-jaxb-version>2.3_3</servicemix-specs-jaxb-version>
     <servlet-api-3.0-version>1.0</servlet-api-3.0-version>
     <servlet-version-range>[3.1,5)</servlet-version-range>
     <shiro-version>1.7.0</shiro-version>
