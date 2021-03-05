@@ -90,7 +90,7 @@ public final class SshHelper {
             // either provide a keypair or password identity first
             if (keyPairProvider != null) {
                 LOG.debug("Attempting to authenticate username '{}' using a key identity", userName);
-                KeyPair pair = keyPairProvider.loadKey(configuration.getKeyType());
+                KeyPair pair = keyPairProvider.loadKey(session, configuration.getKeyType());
                 session.addPublicKeyIdentity(pair);
             } else {
                 String password = configuration.getPassword();

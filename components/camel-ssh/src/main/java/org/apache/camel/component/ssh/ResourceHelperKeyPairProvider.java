@@ -17,8 +17,10 @@
 
 package org.apache.camel.component.ssh;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.List;
 import org.apache.camel.spi.ClassResolver;
 import org.apache.camel.util.ResourceHelper;
 import org.apache.sshd.common.keyprovider.AbstractKeyPairProvider;
+import org.apache.sshd.common.session.SessionContext;
 import org.apache.sshd.common.util.io.IoUtils;
 import org.apache.sshd.common.util.security.SecurityUtils;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
@@ -95,7 +98,7 @@ public class ResourceHelperKeyPairProvider extends AbstractKeyPairProvider {
     }
 
     @Override
-    public Iterable<KeyPair> loadKeys() {
+    public Iterable<KeyPair> loadKeys(SessionContext sessionContext) throws IOException, GeneralSecurityException {
         if (!SecurityUtils.isBouncyCastleRegistered()) {
             throw new IllegalStateException("BouncyCastle must be registered as a JCE provider");
         }
