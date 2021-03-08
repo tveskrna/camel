@@ -71,7 +71,7 @@ public class EchoCommandFactory implements CommandFactory {
 
         @Override
         public void destroy(ChannelSession channel) throws Exception {
-            thread.interrupt();
+            // noop
         }
 
         @Override

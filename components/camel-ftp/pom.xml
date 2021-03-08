@@ -69,6 +69,12 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-ssh</artifactId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.sshd</groupId>
+          <artifactId>sshd-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
