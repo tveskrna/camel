@@ -2395,7 +2395,9 @@
   <feature name='camel-undertow' version='${project.version}' resolver='(obr)' start-level='50'>
     <feature version='${project.version}'>camel-core</feature>
     <bundle dependency='true'>mvn:io.undertow/undertow-core/${undertow-version}</bundle>
-    <bundle dependency="true">mvn:org.wildfly.common/wildfly-common/${wildfly-common-version}</bundle>
+    <!-- these 3 bundles are needed by XNIO 3.5+. pax-web-undertow-common feature provides needed packages and these 3 won't be installed -->
+    <bundle dependency="true">wrap:mvn:org.jboss.threads/jboss-threads/${jboss-threads-version}</bundle>
+    <bundle dependency="true">wrap:mvn:org.wildfly.common/wildfly-common/${wildfly-common-version}$Export-Package=org.wildfly.common.*;-noimport:=true;version="${wildfly-common-version}"</bundle>
     <bundle dependency="true">mvn:org.wildfly.client/wildfly-client-config/${wildfly-client-version}</bundle>
     <bundle dependency='true'>mvn:org.jboss.xnio/xnio-api/${jboss-xnio-version}</bundle>
     <bundle dependency='true'>mvn:org.jboss.xnio/xnio-nio/${jboss-xnio-version}</bundle>
