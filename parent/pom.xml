@@ -299,7 +299,7 @@
     <hbase-version>1.2.6</hbase-version>
     <hessian-version>4.0.51</hessian-version>
     <hdrhistrogram-version>2.1.10</hdrhistrogram-version>
-    <hibernate-validator-version>6.0.22.Final-redhat-00001</hibernate-validator-version>
+    <hibernate-validator-version>6.0.22.Final-redhat-00002</hibernate-validator-version>
     <hibernate-version>5.3.20.Final-redhat-00001</hibernate-version>
     <hikaricp-version>2.4.13</hikaricp-version>
     <hk2-version>2.3.0</hk2-version>
