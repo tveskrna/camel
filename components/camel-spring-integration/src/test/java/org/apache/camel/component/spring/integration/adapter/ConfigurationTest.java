@@ -40,11 +40,11 @@ public class ConfigurationTest {
         CamelSourceAdapter camelSourceA = context.getBean("camelSourceA", CamelSourceAdapter.class);
 
         assertNotNull(camelSourceA);
-        assertEquals("Get the wrong request channel name", camelSourceA.getChannel().toString(), "channelA");
+        assertEquals("Get the wrong request channel name", camelSourceA.getChannel().toString(), "bean 'channelA'");
         assertEquals("ExpectReply should be false ", camelSourceA.isExpectReply(), false);
         CamelSourceAdapter camelSourceB = context.getBean("camelSourceB", CamelSourceAdapter.class);
         assertNotNull(camelSourceB);
-        assertEquals("Get the wrong request channel name", camelSourceB.getChannel().toString(), "channelB");
+        assertEquals("Get the wrong request channel name", camelSourceB.getChannel().toString(), "bean 'channelB'");
         assertEquals("ExpectReply should be true ", camelSourceB.isExpectReply(), true);
     }
 
@@ -57,6 +57,6 @@ public class ConfigurationTest {
         assertEquals("Subscript the wrong CamelEndpointUri", camelTargetA.getCamelEndpointUri(), "direct:EndpointA");
         CamelTargetAdapter camelTargetB = context.getBean("camelTargetB", CamelTargetAdapter.class);
         assertNotNull(camelTargetB);
-        assertEquals("Subscript the wrong reply channel name", camelTargetB.getReplyChannel().toString(), "channelC");
+        assertEquals("Subscript the wrong reply channel name", camelTargetB.getReplyChannel().toString(), "bean 'channelC'");
     }
 }
