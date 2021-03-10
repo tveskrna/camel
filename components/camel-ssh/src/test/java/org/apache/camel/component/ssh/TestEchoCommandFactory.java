@@ -16,14 +16,16 @@
  */
 package org.apache.camel.component.ssh;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
+import org.apache.sshd.server.channel.ChannelSession;
 import org.apache.sshd.server.command.Command;
 
 public class TestEchoCommandFactory extends EchoCommandFactory {
 
     @Override
-    public Command createCommand(String command) {
+    public Command createCommand(ChannelSession channel, String command) throws IOException {
         return new TestEchoCommand(command);
     }
 
@@ -35,11 +37,11 @@ public class TestEchoCommandFactory extends EchoCommandFactory {
         }
 
         @Override
-        public void destroy() {
+        public void destroy(ChannelSession channel) throws Exception {
             if (latch != null) {
                 latch.countDown();
             }
-            super.destroy();
+            super.destroy(channel);
         }
     }
 }
