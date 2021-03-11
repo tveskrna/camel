@@ -68,6 +68,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.systemPackage;
 import static org.ops4j.pax.exam.CoreOptions.vmOption;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureConsole;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
@@ -348,7 +349,7 @@ public abstract class AbstractFeatureTest {
                                          + "    http://repository.apache.org/content/groups/snapshots-group@id=apache@snapshots@noreleases, "
                                          + "    https://oss.sonatype.org/content/repositories/ops4j-snapshots@id=ops4j.sonatype.snapshots.deploy@snapshots@noreleases, "
                                          + "    https://maven.repository.redhat.com/ga@id=rhga, "
-                                         + "    http://indy.psi.redhat.com/api/group/builds-untested+shared-imports+public@id=indy"),
+                                         + "    http://indy.psi.redhat.com/api/content/maven/group/static@id=indy"),
 
 
             // Assign unique ports for Karaf
@@ -363,7 +364,11 @@ public abstract class AbstractFeatureTest {
             features(getCamelKarafFeatureUrl(), camelFeatures),
 
             // install camel-test-karaf as bundle (not feature as the feature causes a bundle refresh that invalidates the @Inject bundleContext)
-            mavenBundle().groupId("org.apache.camel").artifactId("camel-test-karaf").versionAsInProject()
+            mavenBundle().groupId("org.apache.camel").artifactId("camel-test-karaf").versionAsInProject(),
+            mavenBundle().groupId("javax.servlet").artifactId("javax.servlet-api").versionAsInProject(),
+            mavenBundle().groupId("org.apache.karaf.itests").artifactId("servlet-compatibility").versionAsInProject(),
+
+            systemPackage("javax.xml.soap")
         };
 
         return options;

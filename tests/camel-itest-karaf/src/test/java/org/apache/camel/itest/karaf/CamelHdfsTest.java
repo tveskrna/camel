@@ -16,6 +16,7 @@
  */
 package org.apache.camel.itest.karaf;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.PaxExam;
@@ -26,6 +27,7 @@ public class CamelHdfsTest extends BaseKarafTest {
     public static final String COMPONENT = extractName(CamelHdfsTest.class);
 
     @Test
+    @Ignore("It requires (&(osgi.wiring.package=javax.servlet)(version>=2.5.0)(!(version>=3.0.0)))")
     public void test() throws Exception {
         testComponent(COMPONENT);
     }

@@ -19,8 +19,12 @@ package org.apache.camel.itest.karaf;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.PerClass;
+import org.ops4j.pax.exam.spi.reactors.PerMethod;
 
 @RunWith(PaxExam.class)
+@ExamReactorStrategy(PerClass.class)
 public class CamelAtomixTest extends BaseKarafTest {
 
     public static final String COMPONENT = extractName(CamelAtomixTest.class);
